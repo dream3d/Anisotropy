@@ -30,10 +30,8 @@ The correction alignment algorithm of this **Filter** attempts to improve the co
 3. From the candidate shifts identified in step 2 (one candidate shift for each pair of consecutive sections), select the one with minimum difference between the misalignment value of the candidate shift and the misalignment value of the current shift. Change the current state by this candidate shift and recompute the complementary fit.
 4. Repeat steps 2 - 3 until no improvement in the complementary fit is attained in step 2.
 
-
 The user can choose to write the determined shift to an output file by enabling *Write Alignment Shifts File* and providing a file path.  
 
-The user can also decide to remove a _background shift_ present in the sample. The process for this is to fit a line to the X and Y shifts along the Z-direction of the sample.  The individual shifts are then modified to make the slope of the fit line be 0.  Effectively, this process is trying to keep the top and bottom section of the sample fixed.  Some combinations of sample geometry and internal features can result in this algorithm introducing a 'shear' in the sample and the *Linear Background Subtraction* will attempt to correct for this.
 
 ## Parameters ##
 | Name | Type | Description |
