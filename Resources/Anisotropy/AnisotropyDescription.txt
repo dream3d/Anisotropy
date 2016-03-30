@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>Anisotropy Plugin</title>
+</head>
+<body>
+<h3>Anisotropy Plugin</h3>
+
+<p>This plugin contains filters that help to analyse an anisotropy in morphology of grains and reconstruct a 3D data set of anisotropic material from 2D slices. These data sets can come from serial sectioning experiments or other experiments that generate a set of 2D data that are differentiated by an offset in the Z Axis (typically). This plugin contains improved versions of alignment filters, implemented in Reconstruction plugin, which can deal with these data. This plugin further contains filters for analysis of morphological anisotropy present in the data.</p>
+
+
+</body>
+</html>
