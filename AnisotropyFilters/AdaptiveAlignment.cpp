@@ -741,59 +741,6 @@ void AdaptiveAlignment::execute()
 	// estimate shifts between slices from EBSD images
 	find_shifts(xshifts, yshifts, xneedshifts, yneedshifts);
 
-	if (xneedshifts.size() == 0)
-	{
-		std::ofstream outFile;
-		//char name[80];
-		//sprintf(name, "%s_lbs.txt",);
-		outFile.open(getAlignmentShiftFileName().left(getAlignmentShiftFileName().length() - 8).append("lbs.txt").toLatin1().data());
-		//outFile.open("lbs.txt");
-		//if (getSubtractBackground())
-		{
-			uint64_t slice;
-			// same for both
-			double sumX = 0.0; // sum(x_i)
-			double sumX_2 = 0.0; // sum(x_i^2)
-
-			// x shift line
-			double x_sumY = 0.0; // sum(y_i)
-			double x_sumXY = 0.0; // sum(x_i * y_i)
-
-			// y shift line
-			double y_sumY = 0.0; // sum(y_i)
-			double y_sumXY = 0.0; // sum(x_i * y_i)
-
-			for (int64_t iter = 0; iter < dims[2]; iter++)
-			{
-				slice = static_cast<int64_t>((dims[2] - 1) - iter);
-				sumX = static_cast<double>(sumX + iter);
-				sumX_2 = static_cast<double>(sumX_2 + iter * iter);
-				x_sumY = static_cast<double>(x_sumY + xshifts[iter]);
-				x_sumXY = static_cast<double>(x_sumXY + iter * xshifts[iter]);
-				y_sumY = static_cast<double>(y_sumY + yshifts[iter]);
-				y_sumXY = static_cast<double>(y_sumXY + iter * yshifts[iter]);
-				//outFile << iter << " " << xshifts[iter] << " " << yshifts[iter] << " " << sumX << " " << sumX_2 << " " << x_sumY << " " << x_sumXY << " " << y_sumY << " " << y_sumXY << std::endl;
-			}
-			//outFile << std::endl;
-
-			double mx = static_cast<double>((dims[2] * x_sumXY - sumX * x_sumY) / (dims[2] * sumX_2 - sumX * sumX));
-			double my = static_cast<double>((dims[2] * y_sumXY - sumX * y_sumY) / (dims[2] * sumX_2 - sumX * sumX));
-
-			outFile << mx << " " << my << std::endl;
-			// adjust shifts so that fit line has 0 slope (~ends of the sample are fixed)
-			for (uint64_t iter = 1; iter < dims[2]; iter++)
-			{
-				slice = (dims[2] - 1) - iter;
-				xshifts[iter] = static_cast<int64_t>(xshifts[iter] - iter * mx);
-				yshifts[iter] = static_cast<int64_t>(yshifts[iter] - iter * my);
-
-				outFile << slice << "	" << slice + 1 << "	" << xshifts[iter] - xshifts[iter - 1] << " " << yshifts[iter] - yshifts[iter - 1] << "	" << xshifts[iter] << " " << yshifts[iter] << "\n";
-			}
-		}
-		outFile.close();
-
-	}
-	
 	uint64_t xspot = 0, yspot = 0;
 	uint64_t newPosition = 0;
 	uint64_t currentPosition = 0;
