@@ -23,7 +23,7 @@
             "l": 0
         },
         "ZEndIndex": "9",
-        "ZResolution": 1,
+        "ZResolution": 0.1,
         "ZStartIndex": "0"
     },
     "PipelineBuilder": {
