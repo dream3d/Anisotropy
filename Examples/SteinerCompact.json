@@ -6,7 +6,7 @@
         "FilterVersion": "6.2.48",
         "Filter_Human_Label": "Read H5EBSD File",
         "Filter_Name": "ReadH5Ebsd",
-        "InputFile": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/AlMgSc.h5ebsd",
+        "InputFile": "data\\AlMgSc.h5ebsd",
         "RefFrameZDir": 2,
         "SelectedArrayNames": [
             "SEM Signal",
@@ -173,7 +173,7 @@
         "Filter_Name": "SteinerCompact",
         "Plane": 0,
         "Sites": 1,
-        "VtkFileName": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/SteinerCompactXY.vtk"
+        "VtkFileName": "SteinerCompactXY.vtk"
     },
     "PipelineBuilder": {
         "Name": "SteinerCompact",
