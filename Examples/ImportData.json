@@ -12,8 +12,8 @@
         "FilterVersion": "6.2.48",
         "Filter_Human_Label": "Import Orientation File(s) to H5EBSD",
         "Filter_Name": "EbsdToH5Ebsd",
-        "InputPath": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/ang",
-        "OutputFile": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/AlMgSc.h5ebsd",
+        "InputPath": "data/ang",
+        "OutputFile": "data/AlMgSc.h5ebsd",
         "PaddingDigits": 3,
         "RefFrameZDir": 0,
         "SampleTransformation": {
