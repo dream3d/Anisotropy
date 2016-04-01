@@ -131,7 +131,7 @@ void AdaptiveAlignment::readFilterParameters(AbstractFilterParametersReader* rea
 	setWriteAlignmentShifts(reader->readValue("WriteAlignmentShifts", getWriteAlignmentShifts()));
 	setUseImages(reader->readValue("UseImages", getUseImages()));
 	setImageDataArrayPath(reader->readDataArrayPath("ImageDataArrayPath", getImageDataArrayPath()));
-	setShiftX(reader->readValue("UserDefinedShifts", getUserDefinedShifts()));
+	setUserDefinedShifts(reader->readValue("UserDefinedShifts", getUserDefinedShifts()));
 	setShiftX(reader->readValue("ShiftX", getShiftX()));
 	setShiftY(reader->readValue("ShiftY", getShiftY()));
 
