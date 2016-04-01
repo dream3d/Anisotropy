@@ -510,8 +510,7 @@ bool AdaptiveAlignment::find_interface_edges()
 		for (uint64_t y = yrange1; y <= yrange2; y++)
 			for (uint64_t x = xrange1; x <= xrange2; x++)
 			{
-				//mean[y - yrange1] += m_FlatImageData[i * dims[0] * dims[1] + y * dims[0] + x] / static_cast<float>(mean.size());
-				mean[y - yrange1] += i;
+				mean[y - yrange1] += m_FlatImageData[i * dims[0] * dims[1] + y * dims[0] + x] / static_cast<float>(mean.size());
 			}
 
 		// maximum difference between two rows of vertical distance 2 is found
