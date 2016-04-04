@@ -469,7 +469,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
 
 			do
 			{
-				QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts || Iteration %1").arg(++progInt);;
+				QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);;
 				notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 				if (getCancel() == true)
 				{
