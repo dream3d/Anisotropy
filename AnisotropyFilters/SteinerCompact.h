@@ -58,8 +58,17 @@ class SteinerCompact : public AbstractFilter
 
 	SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
 
-	SIMPL_INSTANCE_STRING_PROPERTY(VtkFileName)
+	SIMPL_FILTER_PARAMETER(bool, VtkOutput)
+	Q_PROPERTY(bool VtkOutput READ getVtkOutput WRITE setVtkOutput)
+
+	SIMPL_FILTER_PARAMETER(QString, VtkFileName)
 	Q_PROPERTY(QString VtkFileName READ getVtkFileName WRITE setVtkFileName)
+
+	SIMPL_FILTER_PARAMETER(bool, TxtOutput)
+	Q_PROPERTY(bool TxtOutput READ getTxtOutput WRITE setTxtOutput)
+
+	SIMPL_FILTER_PARAMETER(QString, TxtFileName)
+	Q_PROPERTY(QString TxtFileName READ getTxtFileName WRITE setTxtFileName)
 
 	SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
 	Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -184,14 +193,24 @@ class SteinerCompact : public AbstractFilter
 	virtual uint64_t line_rectangle_intersections(float xintersections[2], float yintersections[2], float rectangle[4], float line[3]);
 
 	/**
-	* @brief find_vertices Identifies vertices of the Steiner compact
+	* @brief find_one_site_vertices Identifies vertices of a site of the Steiner compact
 	*/
-	virtual void find_vertices(std::vector<float> ROI, int64_t index, float vertices[4], float& length);
+	virtual void find_one_site_vertices(std::vector<float> ROI, int64_t index, float vertices[4], float& length);
 
 	/**
-	* @brief writeVTK Writes the Steiner compact to a vtk file
+	* @brief find_all_vertices Identifies vertices of all sites of the Steiner compact
 	*/
-	virtual void writeVTK(FILE *f, std::vector<std::vector<float>>& ROI);
+	virtual	void SteinerCompact::find_all_vertices(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& radii, std::vector<std::vector<float>>& ROI);
+
+	/**
+	* @brief output_vtk Writes the Steiner compact to a vtk file
+	*/
+	virtual void output_vtk(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& radii, std::vector<std::vector<float>>& ROI);
+
+	/**
+	* @brief output_txt Writes the Steiner compact to a text file
+	*/
+	virtual void output_txt(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& ROI);
 
 
   private:
