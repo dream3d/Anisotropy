@@ -71,7 +71,10 @@ SteinerCompact::SteinerCompact() :
   m_Plane(0),
   m_Sites(1),
   m_DataContainerName(DREAM3D::Defaults::ImageDataContainerName),
+  m_VtkOutput(true),
   m_VtkFileName(""),
+  m_TxtOutput(false),
+  m_TxtFileName(""),
   m_FeatureIds(NULL),
   m_CellPhases(NULL),
   m_FeatureIdsArrayPath(DREAM3D::Defaults::ImageDataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::FeatureIds),
@@ -93,6 +96,7 @@ SteinerCompact::~SteinerCompact()
 void SteinerCompact::setupFilterParameters()
 {
 	FilterParameterVector parameters;
+	QStringList linkedProps;
 	{
 		LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
 		parameter->setHumanLabel("Section Plane");
@@ -122,7 +126,14 @@ void SteinerCompact::setupFilterParameters()
 		parameters.push_back(parameter);
 	}
 	//parameters.push_back(IntFilterParameter::New("Number Of Sites", "Sites", getSites(), FilterParameter::Parameter));
-	parameters.push_back(OutputFileFilterParameter::New("Output File", "VtkFileName", getVtkFileName(), FilterParameter::Parameter, "*.vtk", "VTK polydata"));
+	linkedProps.clear();
+	linkedProps << "VtkFileName";
+	parameters.push_back(LinkedBooleanFilterParameter::New("Graphical Output As .vtk", "VtkOutput", getVtkOutput(), linkedProps, FilterParameter::Parameter));
+	parameters.push_back(OutputFileFilterParameter::New("Output Vtk File", "VtkFileName", getVtkFileName(), FilterParameter::Parameter, "*.vtk", "VTK Polydata"));
+	linkedProps.clear();
+	linkedProps << "TxtFileName";
+	parameters.push_back(LinkedBooleanFilterParameter::New("Text Output As .txt", "TxtOutput", getTxtOutput(), linkedProps, FilterParameter::Parameter));
+	parameters.push_back(OutputFileFilterParameter::New("Output Text File", "TxtFileName", getTxtFileName(), FilterParameter::Parameter, "*.txt", "Text"));
 	parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
 	{
 		DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(DREAM3D::TypeNames::Int32, 1, DREAM3D::AttributeMatrixType::Cell, DREAM3D::GeometryType::ImageGeometry);
@@ -146,7 +157,10 @@ void SteinerCompact::readFilterParameters(AbstractFilterParametersReader* reader
   setCellPhasesArrayPath(reader->readDataArrayPath("CellPhasesArrayPath", getCellPhasesArrayPath()));
   setPlane(reader->readValue("Plane", getPlane()));
   setSites(reader->readValue("Sites", getSites()));
+  setVtkOutput(reader->readValue("VtkOutput", getVtkOutput()));
   setVtkFileName(reader->readString("VtkFileName", getVtkFileName()));
+  setTxtOutput(reader->readValue("TxtOutput", getTxtOutput()));
+  setTxtFileName(reader->readString("TxtFileName", getTxtFileName()));
   reader->closeFilterGroup();
 }
 
@@ -161,7 +175,10 @@ int SteinerCompact::writeFilterParameters(AbstractFilterParametersWriter* writer
   SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayPath)
   SIMPL_FILTER_WRITE_PARAMETER(Plane)
   SIMPL_FILTER_WRITE_PARAMETER(Sites)
+  SIMPL_FILTER_WRITE_PARAMETER(VtkOutput)
   SIMPL_FILTER_WRITE_PARAMETER(VtkFileName)
+  SIMPL_FILTER_WRITE_PARAMETER(TxtOutput)
+  SIMPL_FILTER_WRITE_PARAMETER(TxtFileName)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -175,29 +192,60 @@ void SteinerCompact::dataCheck()
 	QVector<size_t> cDims(1, 1);
 	QVector<DataArrayPath> dataArrayPaths;
 
-	if (m_VtkFileName.isEmpty() == true)
+	if (m_VtkOutput == true)
 	{
-		QString ss = QObject::tr("The output file must be set before executing this filter.");
-		setErrorCondition(-1);
-		notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-	}
-
-	// Make sure what we are checking is an actual file name and not a directory
-	QFileInfo fi(m_VtkFileName);
-	if (fi.isDir() == false)
-	{
-		QDir parentPath = fi.path();
-		if (parentPath.exists() == false)
+		if (m_VtkFileName.isEmpty() == true)
 		{
-			QString ss = QObject::tr("The directory path for the output file does not exist.");
-			notifyWarningMessage(getHumanLabel(), ss, -1);
+			QString ss = QObject::tr("The vtk output file must be set before executing this filter.");
+			setErrorCondition(-1);
+			notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		}
+
+		// Make sure what we are checking is an actual file name and not a directory
+		QFileInfo fi(m_VtkFileName);
+		if (fi.isDir() == false)
+		{
+			QDir parentPath = fi.path();
+			if (parentPath.exists() == false)
+			{
+				QString ss = QObject::tr("The directory path for the output file does not exist.");
+				notifyWarningMessage(getHumanLabel(), ss, -1);
+			}
+		}
+		else
+		{
+			QString ss = QObject::tr("The output file path is a path to an existing directory. Please change the path to point to a file");
+			setErrorCondition(-1);
+			notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
 		}
 	}
-	else
+
+	if (m_TxtOutput == true)
 	{
-		QString ss = QObject::tr("The output file path is a path to an existing directory. Please change the path to point to a file");
-		setErrorCondition(-1);
-		notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		if (m_TxtFileName.isEmpty() == true)
+		{
+			QString ss = QObject::tr("The text output file must be set before executing this filter.");
+			setErrorCondition(-1);
+			notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		}
+
+		// Make sure what we are checking is an actual file name and not a directory
+		QFileInfo fi(m_TxtFileName);
+		if (fi.isDir() == false)
+		{
+			QDir parentPath = fi.path();
+			if (parentPath.exists() == false)
+			{
+				QString ss = QObject::tr("The directory path for the output file does not exist.");
+				notifyWarningMessage(getHumanLabel(), ss, -1);
+			}
+		}
+		else
+		{
+			QString ss = QObject::tr("The output file path is a path to an existing directory. Please change the path to point to a file");
+			setErrorCondition(-1);
+			notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		}
 	}
 	
 	m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -700,7 +748,7 @@ uint64_t SteinerCompact::line_rectangle_intersections(float xintersections[2], f
 // find coordinates of vertices of given site of the steiner compact 
 // input: ROI (rose of intersections), index of the site
 // output: vertices = (x1, y1, x2, y2) of the site, length of the site
-void SteinerCompact::find_vertices(std::vector<float> ROI, int64_t index, float vertices[4], float& length)
+void SteinerCompact::find_one_site_vertices(std::vector<float> ROI, int64_t index, float vertices[4], float& length)
 {
 	float cmin = std::numeric_limits<float>::max();
 	float cmax = -std::numeric_limits<float>::max();
@@ -756,78 +804,114 @@ void SteinerCompact::find_vertices(std::vector<float> ROI, int64_t index, float 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-// find coordinates of vertices of Steiner compact and write the polygon in vtk file
-void SteinerCompact::writeVTK(FILE *f, std::vector<std::vector<float>>& ROI)
+// find coordinates of all vertices of the Steiner compact 
+void SteinerCompact::find_all_vertices(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& radii, std::vector<std::vector<float>>& ROI)
 {
 	float vertices[4];
-	std::vector<std::vector<float>> draw_vertices_x(ROI.size());
-	std::vector<std::vector<float>> draw_vertices_y(ROI.size());
-	std::vector<std::vector<float>> radii(ROI.size());
 	float length = 0.0f;
 	int64_t numvertices = 0;
 	int64_t numphases = ROI.size() - 1;
 	int64_t numdirections = ROI[1].size();
+
+	vertices_x.resize(ROI.size());
+	vertices_y.resize(ROI.size());
+	radii.resize(ROI.size());
 
 	// find coordinates of vertices of the Steiner compact from the rose of intersections
 	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
 		for (int64_t direction = 0; direction < numdirections; direction++)
 		{
-			find_vertices(ROI[phase], direction, vertices, length);
+			find_one_site_vertices(ROI[phase], direction, vertices, length);
 			if (length > 0)		// use only sites with positive length
 			{
-				draw_vertices_x[phase].push_back(vertices[0]);
-				draw_vertices_y[phase].push_back(vertices[1]);
+				vertices_x[phase].push_back(vertices[0]);
+				vertices_y[phase].push_back(vertices[1]);
 				radii[phase].push_back(ROI[phase][direction]);
-				numvertices++;
 			}
 		}
 	}
+}
+
+void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& radii, std::vector<std::vector<float>>& ROI)
+{
+	std::ofstream pom("pom.txt");
+	pom << m_VtkOutput << std::endl;
+
+	FILE *vtk = NULL;
+
+	// Make sure any directory path is also available as the user may have just typed
+	// in a path without actually creating the full path
+	QFileInfo fi(m_VtkFileName);
+	QString parentPath = fi.path();
+	QDir dir;
+	if (!dir.mkpath(parentPath))
+	{
+		QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
+		setErrorCondition(-2031000);
+		notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		return;
+	}
+
+	int err = 0;
+	vtk = fopen(getVtkFileName().toLatin1().data(), "w");
+	ScopedFileMonitor fMon(vtk);
+	if (NULL == vtk)
+	{
+		QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
+		setErrorCondition(-2031001);
+		notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		return;
+	}
+
+	int64_t numvertices = vertices_x[1].size();
+	int64_t numphases = ROI.size() - 1;
+	int64_t numdirections = ROI[1].size();
 
 	// header
-	fprintf(f, "# vtk DataFile Version 2.0\n");
-	fprintf(f, "Steiner compact\n");
-	fprintf(f, "ASCII\n");
-	fprintf(f, "DATASET POLYDATA\n");
+	fprintf(vtk, "# vtk DataFile Version 2.0\n");
+	fprintf(vtk, "Steiner compact\n");
+	fprintf(vtk, "ASCII\n");
+	fprintf(vtk, "DATASET POLYDATA\n");
 
-	fprintf(f, "POINTS %d float\n", 2 * numvertices + numphases + numphases * 2 * numdirections);
-	for (int64_t phase = 1; phase <= numphases; phase++)			
+	fprintf(vtk, "POINTS %d float\n", 2 * numvertices + numphases + numphases * 2 * numdirections);
+	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
 		if (m_Plane == 0)
 		{
-			for (uint64_t i = 0; i < draw_vertices_x[phase].size(); i++)
+			for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
 			{
-				fprintf(f, "%f %f %f\n", draw_vertices_x[phase][i], draw_vertices_y[phase][i], static_cast<float>(phase));
+				fprintf(vtk, "%f %f %f\n", vertices_x[phase][i], vertices_y[phase][i], static_cast<float>(phase));
 			}
-			for (uint64_t i = 0; i < draw_vertices_x[phase].size(); i++)
+			for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
 			{
-				fprintf(f, "%f %f %f\n", -draw_vertices_x[phase][i], -draw_vertices_y[phase][i], static_cast<float>(phase));
+				fprintf(vtk, "%f %f %f\n", -vertices_x[phase][i], -vertices_y[phase][i], static_cast<float>(phase));
 			}
-			fprintf(f, "%f %f %f\n", 0.0f, 0.0f, static_cast<float>(phase));  // origin
+			fprintf(vtk, "%f %f %f\n", 0.0f, 0.0f, static_cast<float>(phase));  // origin
 		}
 		else if (m_Plane == 1)
 		{
-			for (uint64_t i = 0; i < draw_vertices_x[phase].size(); i++)
+			for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
 			{
-				fprintf(f, "%f %f %f\n", draw_vertices_x[phase][i], static_cast<float>(phase), draw_vertices_y[phase][i]);
+				fprintf(vtk, "%f %f %f\n", vertices_x[phase][i], static_cast<float>(phase), vertices_y[phase][i]);
 			}
-			for (uint64_t i = 0; i < draw_vertices_x[phase].size(); i++)
+			for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
 			{
-				fprintf(f, "%f %f %f\n", -draw_vertices_x[phase][i], static_cast<float>(phase), -draw_vertices_y[phase][i]);
+				fprintf(vtk, "%f %f %f\n", -vertices_x[phase][i], static_cast<float>(phase), -vertices_y[phase][i]);
 			}
-			fprintf(f, "%f %f %f\n", 0.0f, static_cast<float>(phase), 0.0f);  // origin
+			fprintf(vtk, "%f %f %f\n", 0.0f, static_cast<float>(phase), 0.0f);  // origin
 		}
 		else if (m_Plane == 2)
 		{
-			for (uint64_t i = 0; i < draw_vertices_x[phase].size(); i++)
+			for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
 			{
-				fprintf(f, "%f %f %f\n", static_cast<float>(phase), draw_vertices_x[phase][i], draw_vertices_y[phase][i]);
+				fprintf(vtk, "%f %f %f\n", static_cast<float>(phase), vertices_x[phase][i], vertices_y[phase][i]);
 			}
-			for (uint64_t i = 0; i < draw_vertices_x[phase].size(); i++)
+			for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
 			{
-				fprintf(f, "%f %f %f\n", static_cast<float>(phase), -draw_vertices_x[phase][i], -draw_vertices_y[phase][i]);
+				fprintf(vtk, "%f %f %f\n", static_cast<float>(phase), -vertices_x[phase][i], -vertices_y[phase][i]);
 			}
-			fprintf(f, "%f %f %f\n", static_cast<float>(phase), 0.0f, 0.0f);  // origin
+			fprintf(vtk, "%f %f %f\n", static_cast<float>(phase), 0.0f, 0.0f);  // origin
 		}
 	}
 
@@ -838,70 +922,138 @@ void SteinerCompact::writeVTK(FILE *f, std::vector<std::vector<float>>& ROI)
 	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
 		p = static_cast<float>(phase);
-		for (int64_t i = 0; i < 2 * numdirections; i ++)
+		for (int64_t i = 0; i < 2 * numdirections; i++)
 		{
-			s = sin(static_cast<float>(i) * angle + 0.5f * SIMPLib::Constants::k_Pi);
-			c = cos(static_cast<float>(i) * angle + 0.5f * SIMPLib::Constants::k_Pi);
-			if (m_Plane == 0) fprintf(f, "%f %f %f\n", r * c, r * s, p);
-			else if (m_Plane == 1) fprintf(f, "%f %f %f\n", r * c, p, r * s);
-			else if (m_Plane == 2) fprintf(f, "%f %f %f\n", p, r * c, r * s);
+			s = sin(static_cast<float>(i)* angle);
+			c = cos(static_cast<float>(i)* angle);
+			if (m_Plane == 0) fprintf(vtk, "%f %f %f\n", r * c, r * s, p);
+			else if (m_Plane == 1) fprintf(vtk, "%f %f %f\n", r * c, p, r * s);
+			else if (m_Plane == 2) fprintf(vtk, "%f %f %f\n", p, r * c, r * s);
 		}
 	}
 
 	// lines of reference Steiner compact(regular polygon)
 	int64_t curindex = 0;
-	fprintf(f, "LINES %d %d\n", numphases, numphases * (2 * numdirections + 2));
+	fprintf(vtk, "LINES %d %d\n", numphases, numphases * (2 * numdirections + 2));
 	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
-		fprintf(f, "%d ", 2 * numdirections + 1);
+		fprintf(vtk, "%d ", 2 * numdirections + 1);
 		for (int64_t i = 0; i < 2 * numdirections; i++)
 		{
-			fprintf(f, "%d ", 2 * numvertices + numphases + curindex + i);
+			fprintf(vtk, "%d ", 2 * numvertices + numphases + curindex + i);
 		}
-		fprintf(f, "%d\n", 2 * numvertices + numphases + curindex);           // return to 0
+		fprintf(vtk, "%d\n", 2 * numvertices + numphases + curindex);           // return to 0
 		curindex += 2 * numdirections;
 	}
 
 	// Steiner compact for each phase
-	fprintf(f, "POLYGONS %d %d\n", 2 * numvertices, 2 * 4 * numvertices);
+	fprintf(vtk, "POLYGONS %d %d\n", 2 * numvertices, 2 * 4 * numvertices);
 	curindex = 0;
 	int64_t origin = 2 * numvertices + numphases - 1;
 	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
-		for (uint64_t i = 0; i < 2 * draw_vertices_x[phase].size() - 1; i++)
+		for (uint64_t i = 0; i < 2 * vertices_x[phase].size() - 1; i++)
 		{
-			fprintf(f, "%d %d %d %d\n", 3, curindex + i, curindex + i + 1, origin);
+			fprintf(vtk, "%d %d %d %d\n", 3, curindex + i, curindex + i + 1, origin);
 		}
-		fprintf(f, "%d %d %d %d\n", 3, curindex, curindex + 2 * draw_vertices_x[phase].size() - 1, origin);  // last triangle
-		curindex += 2 * draw_vertices_x[phase].size();
+		fprintf(vtk, "%d %d %d %d\n", 3, curindex, curindex + 2 * vertices_x[phase].size() - 1, origin);  // last triangle
+		curindex += 2 * vertices_x[phase].size();
 	}
 
-	fprintf(f, "CELL_DATA %d\n", 2 * numvertices + numphases);
-	fprintf(f, "SCALARS data float\n");
-	fprintf(f, "LOOKUP_TABLE default\n");
+	fprintf(vtk, "CELL_DATA %d\n", 2 * numvertices + numphases);
+	fprintf(vtk, "SCALARS data float\n");
+	fprintf(vtk, "LOOKUP_TABLE default\n");
 
 	// data for reference Steiner compact (regular polygon)
-	for (int64_t phase = 1; phase <= numphases; phase++)     
+	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
-		fprintf(f, "%f\n", 1.0f);
+		fprintf(vtk, "%f\n", 1.0f);
 	}
 
 	// data for Steiner compact for each phase
-	for (int64_t phase = 1; phase <= numphases; phase++)     
+	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
 		for (int64_t sign = 0; sign <= 1; sign++)
 		{
 			for (uint64_t i = 0; i < radii[phase].size(); i++)
 			{
-				fprintf(f, "%f ", radii[phase][i]);
+				fprintf(vtk, "%f ", radii[phase][i]);
 			}
 		}
-		fprintf(f, "\n");
+		fprintf(vtk, "\n");
 	}
-	
+	fclose(vtk);
 }
 
+void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& ROI)
+{
+	FILE *txt = NULL;
 
+	// Make sure any directory path is also available as the user may have just typed
+	// in a path without actually creating the full path
+	QFileInfo fi(m_TxtFileName);
+	QString parentPath = fi.path();
+	QDir dir;
+	if (!dir.mkpath(parentPath))
+	{
+		QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
+		setErrorCondition(-2031000);
+		notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		return;
+	}
+
+	int err = 0;
+	txt = fopen(getTxtFileName().toLatin1().data(), "w");
+	ScopedFileMonitor fMon(txt);
+	if (NULL == txt)
+	{
+		QString ss = QObject::tr("Error opening output txt file '%1'\n ").arg(m_TxtFileName);
+		setErrorCondition(-2031001);
+		notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+		return;
+	}
+
+	int64_t numvertices = vertices_x[1].size();
+	int64_t numphases = ROI.size() - 1;
+	int64_t numdirections = ROI[1].size();
+
+	fprintf(txt, "Distances_of_edges_from_origin\n");
+	fprintf(txt, "Phase   Angle   Distance\n");
+	int64_t size = static_cast<int64_t>(ROI[0].size());
+	float stepangle = SIMPLib::Constants::k_Pi / numdirections;
+	float angle = 0;
+	for (int64_t phase = 1; phase <= numphases; phase++)
+	{
+		for (int64_t symmetry = 0; symmetry <= 1; symmetry++)
+		{
+			for (int64_t site = 0; site < numdirections; site++)
+			{
+				angle = (static_cast<float>(site + symmetry * numdirections) + 0.5f) * stepangle + 0.5f * SIMPLib::Constants::k_Pi;
+				angle *= 180.0f / SIMPLib::Constants::k_Pi;
+				if (angle >= 360.0f) angle -= 360.0f;
+				fprintf(txt, "%d   %f   %f\n", phase, angle, ROI[phase][site]);
+			}
+		}
+	}
+	fprintf(txt, "\n");
+	
+	// Steiner compact for each phase
+	fprintf(txt, "Coordinates_of_vertices\n");
+	fprintf(txt, "Phase   Vertex   X   Y\n");
+	for (int64_t phase = 1; phase <= numphases; phase++)
+	{
+		for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
+		{
+			fprintf(txt, "%d   %d   %f   %f\n", phase, i, vertices_x[phase][i], vertices_y[phase][i]);
+		}
+		for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
+		{
+			fprintf(txt, "%d   %d   %f   %f\n", phase, vertices_x[phase].size() + i, -vertices_x[phase][i], -vertices_y[phase][i]);
+		}
+	}
+
+	fclose(txt);
+}
 
 
 // -----------------------------------------------------------------------------
@@ -921,31 +1073,6 @@ void SteinerCompact::execute()
     setErrorCondition(-99999999);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
-  }
-
-  // Make sure any directory path is also available as the user may have just typed
-  // in a path without actually creating the full path
-  QFileInfo fi(m_VtkFileName);
-  QString parentPath = fi.path();
-  QDir dir;
-  if (!dir.mkpath(parentPath))
-  {
-	  QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-	  setErrorCondition(-2031000);
-	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-	  return;
-  }
-
-  int err = 0;
-  FILE* f = NULL;
-  f = fopen(getVtkFileName().toLatin1().data(), "w");
-  ScopedFileMonitor fMon(f);
-  if (NULL == f)
-  {
-	  QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
-	  setErrorCondition(-2031001);
-	  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-	  return;
   }
 
   int32_t maxPhase = 0;
@@ -975,9 +1102,18 @@ void SteinerCompact::execute()
   // find number of intersections per unit length of test lines in all directions
   rose_of_intersections(ROI);
   
-  // write the Steiner compact to vtk file
-  writeVTK(f, ROI);
-  fclose(f);
+  // write the Steiner compact to vtk or txt file
+  if (m_VtkOutput == true || m_TxtOutput == true)
+  {
+	  QString ss = QObject::tr("Write Output File(s)");
+	  notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+	  std::vector<std::vector<float>> draw_vertices_x;
+	  std::vector<std::vector<float>> draw_vertices_y;
+	  std::vector<std::vector<float>> radii;
+	  find_all_vertices(draw_vertices_x, draw_vertices_y, radii, ROI);
+	  if (m_VtkOutput == true) output_vtk(draw_vertices_x, draw_vertices_y, radii, ROI);
+	  if (m_TxtOutput == true) output_txt(draw_vertices_x, draw_vertices_y, ROI);
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
