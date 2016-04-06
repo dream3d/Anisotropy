@@ -46,7 +46,7 @@
  * @class AnisotropyPlugin AnisotropyPlugin.h Anisotropy/AnisotropyPlugin.h
  * @brief
  *
- * @date May 10, 2012
+ * @date April 06, 2016
  * @version 1.0
  */
 class AnisotropyPlugin : public QObject, public ISIMPLibPlugin
