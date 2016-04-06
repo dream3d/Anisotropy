@@ -52,12 +52,12 @@
 //
 // -----------------------------------------------------------------------------
 AnisotropyPlugin::AnisotropyPlugin() :
-  m_Version(SIMPLib::Version::Package()),
-  m_CompatibilityVersion(SIMPLib::Version::Package()),
-  m_Vendor(DREAM3D::BlueQuartz::VendorName),
-  m_URL(DREAM3D::BlueQuartz::URL),
+  m_Version(AnisotropyConstants::Version),
+  m_CompatibilityVersion(AnisotropyConstants::CompatibilityVersion),
+  m_Vendor(AnisotropyConstants::VendorName),
+  m_URL(AnisotropyConstants::URL),
   m_Location(""),
-  m_Copyright(DREAM3D::BlueQuartz::Copyright),
+  m_Copyright(AnisotropyConstants::Copyright),
   m_Filters(QList<QString>()),
   m_DidLoad(false)
 {
@@ -152,7 +152,7 @@ QString AnisotropyPlugin::getCopyright()
 // -----------------------------------------------------------------------------
 QString AnisotropyPlugin::getLicense()
 {
-  QFile licenseFile(":/DREAM3D/DREAM3DLicense.txt");
+  QFile licenseFile(":/Anisotropy/AnisotropyLicense.txt");
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--License was not read-->>";
 
