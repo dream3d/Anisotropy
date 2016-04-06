@@ -15,15 +15,11 @@ Unless otherwise indicated, this SOFTWARE has been authored by an
 employee or employees of the Czech Academy of Sciences, or one of
 its contractors or subcontractors.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.
-
-Redistributions in binary form must reproduce the above copyright notice, this
-list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
+The Government of the Czech Republic has rights to use, reproduce, and
+distribute this SOFTWARE. The public may copy, distribute, prepare
+derivative works and publicly display this SOFTWARE without charge,
+provided that this Notice and any statement of authorship are
+reproduced on all copies.
 
 Neither the Czech Academy of Sciences makes any warranty, either express
 or implied, nor assumes any liability or responsibility for the use of 
