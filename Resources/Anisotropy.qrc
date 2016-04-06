@@ -2,5 +2,6 @@
  <RCC version="1.0">
  <qresource>
  <file>Anisotropy/AnisotropyDescription.txt</file>
+ <file>Anisotropy/AnisotropyLicense.txt</file>
  </qresource>
  </RCC>
