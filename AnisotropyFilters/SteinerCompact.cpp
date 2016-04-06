@@ -874,7 +874,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
 	fprintf(vtk, "ASCII\n");
 	fprintf(vtk, "DATASET POLYDATA\n");
 
-	fprintf(vtk, "POINTS %d float\n", 2 * numvertices + numphases + numphases * 2 * numdirections);
+	fprintf(vtk, "\nPOINTS %d float\n", 2 * numvertices + numphases + numphases * 2 * numdirections);
 	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
 		if (m_Plane == 0)
@@ -934,7 +934,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
 
 	// lines of reference Steiner compact(regular polygon)
 	int64_t curindex = 0;
-	fprintf(vtk, "LINES %d %d\n", numphases, numphases * (2 * numdirections + 2));
+	fprintf(vtk, "\nLINES %d %d\n", numphases, numphases * (2 * numdirections + 2));
 	for (int64_t phase = 1; phase <= numphases; phase++)
 	{
 		fprintf(vtk, "%d ", 2 * numdirections + 1);
@@ -947,7 +947,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
 	}
 
 	// Steiner compact for each phase
-	fprintf(vtk, "POLYGONS %d %d\n", 2 * numvertices, 2 * 4 * numvertices);
+	fprintf(vtk, "\nPOLYGONS %d %d\n", 2 * numvertices, 2 * 4 * numvertices);
 	curindex = 0;
 	int64_t origin = 2 * numvertices + numphases - 1;
 	for (int64_t phase = 1; phase <= numphases; phase++)
@@ -960,7 +960,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
 		curindex += 2 * vertices_x[phase].size();
 	}
 
-	fprintf(vtk, "CELL_DATA %d\n", 2 * numvertices + numphases);
+	fprintf(vtk, "\nCELL_DATA %d\n", 2 * numvertices + numphases);
 	fprintf(vtk, "SCALARS data float\n");
 	fprintf(vtk, "LOOKUP_TABLE default\n");
 
