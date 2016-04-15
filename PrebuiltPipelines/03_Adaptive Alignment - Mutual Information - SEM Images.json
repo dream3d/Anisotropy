@@ -3,10 +3,10 @@
         "CellAttributeMatrixName": "CellData",
         "CellEnsembleAttributeMatrixName": "CellEnsembleData",
         "DataContainerName": "ImageDataContainer",
-        "FilterVersion": "6.2.48",
+        "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Read H5EBSD File",
         "Filter_Name": "ReadH5Ebsd",
-        "InputFile": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/AlMgSc.h5ebsd",
+        "InputFile": "Data/AlMgSc.h5ebsd",
         "RefFrameZDir": 2,
         "SelectedArrayNames": [
             "Y Position",
@@ -26,7 +26,7 @@
         "BoundsFile": "",
         "CellAttributeMatrixName": "CellData",
         "DataContainerName": "SEMImageDataContainer",
-        "FilterVersion": "6.2.48",
+        "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Import Images (3D Stack)",
         "Filter_Name": "ImportImageStack",
         "GeometryType": 0,
@@ -36,7 +36,7 @@
             "FileExtension": "tif",
             "FilePrefix": "AlMgSc-TD_",
             "FileSuffix": "",
-            "InputPath": "I:\\Ondrej\\Alignment\\Pipelines\\PrebuiltPipelines\\AlMgSc\\tif",
+            "InputPath": "Data/tif",
             "Ordering": 0,
             "PaddingDigits": 3,
             "StartIndex": 0
@@ -53,7 +53,7 @@
         }
     },
     "2": {
-        "FilterVersion": "6.2.48",
+        "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Convert Orientation Representation",
         "Filter_Name": "ConvertOrientations",
         "InputOrientationArrayPath": {
@@ -66,7 +66,7 @@
         "OutputType": 2
     },
     "3": {
-        "AlignmentShiftFileName": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/SEM-ImagesBasedAlignment.txt",
+        "AlignmentShiftFileName": "TestDataAdaptiveAlignment-MutualInformation-SEMImages.txt",
         "CellPhasesArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "Phases",
@@ -77,9 +77,9 @@
             "Data Array Name": "CrystalStructures",
             "Data Container Name": "ImageDataContainer"
         },
-        "FilterVersion": "6.2.48",
-        "Filter_Human_Label": "Adaptive Alignment (Misorientation)",
-        "Filter_Name": "AdaptiveAlignmentMisorientation",
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Adaptive Alignment (Mutual Information)",
+        "Filter_Name": "AdaptiveAlignmentMutualInformation",
         "GoodVoxelsArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "",
@@ -90,7 +90,6 @@
             "Data Array Name": "ImageData",
             "Data Container Name": "SEMImageDataContainer"
         },
-        "MisorientationTolerance": 5,
         "QuatsArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "Quats",
@@ -104,7 +103,7 @@
         "WriteAlignmentShifts": 1
     },
     "PipelineBuilder": {
-        "Name": "SEM-ImagesBasedAlignment",
+        "Name": "03_Adaptive Alignment - Mutual Information - SEM Images",
         "Number_Filters": 4,
         "Version": "6.2"
     }
