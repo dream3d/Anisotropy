@@ -35,8 +35,6 @@
 
 #include "AdaptiveAlignmentMisorientation.h"
 
-#include <fstream>
-
 #include <QtCore/QDateTime>
 
 #include "SIMPLib/Common/Constants.h"
@@ -48,8 +46,6 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-
-#include <iomanip>
 
 #include "Reconstruction/ReconstructionConstants.h"
 #include "moc_AdaptiveAlignmentMisorientation.cpp"
