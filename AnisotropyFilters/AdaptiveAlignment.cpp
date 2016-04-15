@@ -675,8 +675,8 @@ void AdaptiveAlignment::execute()
 	if (m_UserDefinedShifts)
 	{
 		// user-defined shifts related to one pair of consecutive sections and converted to voxels
-		float xinitvalue = m_ShiftX / (float)dims[2] / res[0];
-		float yinitvalue = m_ShiftY / (float)dims[2] / res[1];
+		float xinitvalue = m_ShiftX / (float)dims[2] / res[2];
+		float yinitvalue = m_ShiftY / (float)dims[2] / res[2];
 		xneedshifts.resize(1, xinitvalue);
 		yneedshifts.resize(1, yinitvalue);
 	}
