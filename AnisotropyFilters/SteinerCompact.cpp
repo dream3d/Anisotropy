@@ -510,6 +510,17 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 			}
 		}
 	}
+	
+	// finally only some intersections are counted to the rose of intersections:
+	// 1) intersection between two grains can be counted only once at each direction, 
+	//    this shall avoid multiple counting of points close to each other at irregular boundaries,
+	//    this is utilized by the stack named interfaces
+	// 2) grain boundaries are dilated (parameter smooth sets multiple of a voxel for the dilation)
+	//    and intersections are identified with the dilated set
+	//    this should diminish the influence of voxelation on the shape of Steiner compact
+	//    (intersections occur more frequently for specific directions in voxelated data)
+
+	std::vector<uint64_t> interfaces;
 	bool penalization;
 	float squaredlength;
 	uint64_t g0 = 0, g1 = 0, g2 = 0;
@@ -541,7 +552,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 		g1 = m_FeatureIds[point1];
 		phase0 = m_CellPhases[point0];
 		phase1 = m_CellPhases[point1];
-		if (g0 != g1 && (bound.size() == 0 || (std::find(bound.begin(), bound.end(), g0*numfeatures + g1) == bound.end())))
+		if (g0 != g1 && (interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0*numfeatures + g1) == interfaces.end())))
 		{
 			penalization = false;
 			if (i < static_cast<int64_t>(xvoxels.size()) - 2)
@@ -559,6 +570,8 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 					point2 = yvoxels[i + 2] * (dims[2] * dims[0]) + xvoxels[i + 2] * dims[2] + z;
 				}
 				g2 = m_FeatureIds[point2];
+
+				// intersection is not counted if the line just slightly hits a "corner pixel" (corner of L-shaped boundary)
 				if (g0 == g2 && llabs(xvoxels[i] - xvoxels[i + 2]) == 1 && llabs(yvoxels[i] - yvoxels[i + 2]) == 1)
 				{
 					squaredlength = (xcoor0[i + 1] - xcoor1[i + 1]) * (xcoor0[i + 1] - xcoor1[i + 1]) + (ycoor0[i + 1] - ycoor1[i + 1]) * (ycoor0[i + 1] - ycoor1[i + 1]);
@@ -570,12 +583,12 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 			}
 			if (penalization == false)
 			{
-				bound.push_back(g0 * numfeatures + g1);
+				interfaces.push_back(g0 * numfeatures + g1);
 				numofintersections[phase0] += 1.0f;
 				numofintersections[phase1] += 1.0f;
 			}
 		}
-		else if (g0 == g1)
+		else if (g0 == g1)  // boundary can be identified even here if the line is close enough to the neighbouring point2
 		{
 			if (std::fabs(xcoor0[i] - xcoor1[i] - 1) < zero)      // line hits the pixel horizontally
 			{
@@ -597,10 +610,10 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 					g2 = m_FeatureIds[point2];
 					if (g0 != g2)
 					{
-						if (bound.size() == 0 || (std::find(bound.begin(), bound.end(), g0*numfeatures + g2) == bound.end()))
+						if (interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0*numfeatures + g2) == interfaces.end()))
 						{
 							phase2 = m_CellPhases[point2];
-							bound.push_back(g0 * numfeatures + g2);
+							interfaces.push_back(g0 * numfeatures + g2);
 							numofintersections[phase0] += 1.0f;
 							numofintersections[phase2] += 1.0f;
 						}
@@ -623,10 +636,10 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 					g2 = m_FeatureIds[point2];
 					if (g0 != g2)
 					{
-						if (bound.size() == 0 || (std::find(bound.begin(), bound.end(), g0*numfeatures + g2) == bound.end()))
+						if (interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0*numfeatures + g2) == interfaces.end()))
 						{
 							phase2 = m_CellPhases[point2];
-							bound.push_back(g0 * numfeatures + g2);
+							interfaces.push_back(g0 * numfeatures + g2);
 							numofintersections[phase0] += 1.0f;
 							numofintersections[phase2] += 1.0f;
 						}
@@ -652,10 +665,10 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 					g2 = m_FeatureIds[point2];
 					if (g0 != g2)
 					{
-						if (bound.size() == 0 || (std::find(bound.begin(), bound.end(), g0*numfeatures + g2) == bound.end()))
+						if (interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0*numfeatures + g2) == interfaces.end()))
 						{
 							phase2 = m_CellPhases[point2];
-							bound.push_back(g0 * numfeatures + g2);
+							interfaces.push_back(g0 * numfeatures + g2);
 							numofintersections[phase0] += 1.0f;
 							numofintersections[phase2] += 1.0f;
 						}
@@ -678,10 +691,10 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 					g2 = m_FeatureIds[point2];
 					if (g0 != g2)
 					{
-						if (bound.size() == 0 || (std::find(bound.begin(), bound.end(), g0*numfeatures + g2) == bound.end()))
+						if (interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0*numfeatures + g2) == interfaces.end()))
 						{
 							phase2 = m_CellPhases[point2];
-							bound.push_back(g0 * numfeatures + g2);
+							interfaces.push_back(g0 * numfeatures + g2);
 							numofintersections[phase0] += 1.0f;
 							numofintersections[phase2] += 1.0f;
 						}
