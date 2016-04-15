@@ -35,8 +35,6 @@
 
 #include "AdaptiveAlignmentMutualInformation.h"
 
-#include <fstream>
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
