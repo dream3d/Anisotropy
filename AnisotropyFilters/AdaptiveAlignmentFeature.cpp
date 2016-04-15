@@ -46,6 +46,8 @@
 #include "Reconstruction/ReconstructionConstants.h"
 
 #include "moc_AdaptiveAlignmentFeature.cpp"
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
