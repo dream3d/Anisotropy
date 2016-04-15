@@ -50,6 +50,16 @@ set(TEST_TEMP_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Temp)
 # Make sure the directory is created during CMake time
 file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
 
+file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data" "${${PLUGIN_NAME}_SOURCE_DIR}/Data/*")
+    foreach(templateFile ${templateFiles})
+	    set(srcTemplatePath ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${templateFile})
+        if(NOT IS_DIRECTORY ${srcTemplatePath})
+           configure_file(
+                    ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${templateFile}
+                    ${${PLUGIN_NAME}_BINARY_DIR}/Test/Temp/${templateFile}
+                    COPYONLY)
+		endif(NOT IS_DIRECTORY ${srcTemplatePath})
+    endforeach(templateFile)	
 
 configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
                ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
