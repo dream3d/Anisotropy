@@ -3,10 +3,10 @@
         "CellAttributeMatrixName": "CellData",
         "CellEnsembleAttributeMatrixName": "CellEnsembleData",
         "DataContainerName": "ImageDataContainer",
-        "FilterVersion": "6.2.48",
+        "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Read H5EBSD File",
         "Filter_Name": "ReadH5Ebsd",
-        "InputFile": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/AlMgSc.h5ebsd",
+        "InputFile": "Data/AlMgSc.h5ebsd",
         "RefFrameZDir": 2,
         "SelectedArrayNames": [
             "Fit",
@@ -23,7 +23,7 @@
         "ZStartIndex": 0
     },
     "1": {
-        "FilterVersion": "6.2.48",
+        "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Convert Orientation Representation",
         "Filter_Name": "ConvertOrientations",
         "InputOrientationArrayPath": {
@@ -36,7 +36,7 @@
         "OutputType": 2
     },
     "2": {
-        "AlignmentShiftFileName": "I:/Ondrej/Alignment/Pipelines/PrebuiltPipelines/AlMgSc/ZeroTotalShiftAlignment.txt",
+        "AlignmentShiftFileName": "TestDataAdaptiveAlignment-Misorientation-ZeroShifts.txt",
         "CellPhasesArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "Phases",
@@ -47,7 +47,7 @@
             "Data Array Name": "CrystalStructures",
             "Data Container Name": "ImageDataContainer"
         },
-        "FilterVersion": "6.2.48",
+        "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Adaptive Alignment (Misorientation)",
         "Filter_Name": "AdaptiveAlignmentMisorientation",
         "GoodVoxelsArrayPath": {
@@ -74,7 +74,7 @@
         "WriteAlignmentShifts": 1
     },
     "PipelineBuilder": {
-        "Name": "ZeroTotalShiftAlignment",
+        "Name": "02_Adaptive Alignment - Misorientation - Zero Shifts",
         "Number_Filters": 3,
         "Version": "6.2"
     }
