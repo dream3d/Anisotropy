@@ -548,9 +548,9 @@ float AdaptiveAlignmentMisorientation::compute_error1(uint64_t iter, uint64_t in
 	double xtrend = static_cast<double>((n * x_sumXY - sumX * x_sumY) / (n * sumX_2 - sumX * sumX));
 	double ytrend = static_cast<double>((n * y_sumXY - sumX * y_sumY) / (n * sumX_2 - sumX * sumX));
 
-	// error is computed from angular deviation as |tg(ang2 - ang1)| = |(tg(ang2) - tg(ang1)) / (1 + tg(ang1) * tg(ang2)|
-	// where tg(ang1) = xneedtrend (resp. yneedtrend) and tg(ang2) = xtrend (resp. ytrend)
-	return std::fabs((xtrend - xneedtrend) / (1 + xtrend * xneedtrend)) + std::fabs((ytrend - yneedtrend) / (1 + ytrend * yneedtrend));
+	// error is computed from angular deviation as
+	// |xang1 - xang2| + |yang1 - yang2| = |arctg(xtrend) - arctg(xneedtrend)| + |arctg(ytrend) - arctg(yneedtrend)|
+	return std::fabs(atan(xtrend) - atan(xneedtrend)) + std::fabs(atan(ytrend) - atan(yneedtrend));
 }
 
 // -----------------------------------------------------------------------------
