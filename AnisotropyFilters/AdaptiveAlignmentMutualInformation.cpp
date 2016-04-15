@@ -49,6 +49,8 @@
 #include "Anisotropy/AnisotropyConstants.h"
 
 #include "moc_AdaptiveAlignmentMutualInformation.cpp"
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
