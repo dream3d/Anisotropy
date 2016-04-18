@@ -68,7 +68,7 @@ void RemoveTestFiles()
 	bool hasMissingFiles = false;
 	bool orderAscending = true;
 	QVector<QString> fileList = FilePathGenerator::GenerateFileList(UnitTest::AnisotropyTest::TestTifStartIndex,
-		UnitTest::AnisotropyTest::TestTifStartIndex, hasMissingFiles, orderAscending,
+		UnitTest::AnisotropyTest::TestTifEndIndex, hasMissingFiles, orderAscending,
 		UnitTest::TestTempDir, UnitTest::AnisotropyTest::TestTifPrefix,
 		UnitTest::AnisotropyTest::TestTifSuffix, UnitTest::AnisotropyTest::TestTifExtension,
 		UnitTest::AnisotropyTest::TestTifPaddingDigits);
