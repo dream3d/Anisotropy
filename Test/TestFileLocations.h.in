@@ -19,11 +19,12 @@ namespace UnitTest
 
   const QString DataDir("@DREAM3D_DATA_DIR@");
   const QString TestTempDir("@TEST_TEMP_DIR@");
+  const QString TestDataDir("@TEST_DATA_DIR@");
   const QString DREAM3DProjDir("@DREAM3DProj_SOURCE_DIR@");
 
   namespace AnisotropyTest
   {
-    const QString TestInput("@TEST_TEMP_DIR@/AlMgSc.h5ebsd");
+    const QString TestInput("@TEST_DATA_DIR@/AlMgSc.h5ebsd");
 	  const QString TestOutput1("@TEST_TEMP_DIR@/AdaptiveAlignmentFeature.txt");
 	  const QString TestOutput2("@TEST_TEMP_DIR@/AdaptiveAlignmentMisorientation.txt");
 	  const QString TestOutput3("@TEST_TEMP_DIR@/AdaptiveAlignmentMutualInformation.txt");
