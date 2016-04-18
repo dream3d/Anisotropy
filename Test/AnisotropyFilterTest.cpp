@@ -69,7 +69,7 @@ void RemoveTestFiles()
 	bool orderAscending = true;
 	QVector<QString> fileList = FilePathGenerator::GenerateFileList(UnitTest::AnisotropyTest::TestTifStartIndex,
 		UnitTest::AnisotropyTest::TestTifEndIndex, hasMissingFiles, orderAscending,
-		UnitTest::TestTempDir, UnitTest::AnisotropyTest::TestTifPrefix,
+		UnitTest::TestDataDir, UnitTest::AnisotropyTest::TestTifPrefix,
 		UnitTest::AnisotropyTest::TestTifSuffix, UnitTest::AnisotropyTest::TestTifExtension,
 		UnitTest::AnisotropyTest::TestTifPaddingDigits);
 	if (fileList.size() == 0)
@@ -211,7 +211,7 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
 		QVariant var;
 
 		FileListInfo_t input;
-		input.InputPath = UnitTest::TestTempDir;
+		input.InputPath = UnitTest::TestDataDir;
 		input.StartIndex = UnitTest::AnisotropyTest::TestTifStartIndex;
 		input.EndIndex = UnitTest::AnisotropyTest::TestTifEndIndex;
 		input.FilePrefix = UnitTest::AnisotropyTest::TestTifPrefix;
