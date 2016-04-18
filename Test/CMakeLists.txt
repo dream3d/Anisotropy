@@ -61,6 +61,17 @@ file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data" "${${PLUGIN
 		endif(NOT IS_DIRECTORY ${srcTemplatePath})
     endforeach(templateFile)	
 
+file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif" "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif/*")
+    foreach(templateFile ${templateFiles})
+	    set(srcTemplatePath ${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif/${templateFile})
+        if(NOT IS_DIRECTORY ${srcTemplatePath})
+           configure_file(
+                    ${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif/${templateFile}
+                    ${${PLUGIN_NAME}_BINARY_DIR}/Test/Temp/${templateFile}
+                    COPYONLY)
+		endif(NOT IS_DIRECTORY ${srcTemplatePath})
+    endforeach(templateFile)	
+
 configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
                ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
 			   
