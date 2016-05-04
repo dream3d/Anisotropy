@@ -33,18 +33,15 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
-# project(AnisotropyFilterTest)
 set(${PLUGIN_NAME}Test_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 set(${PLUGIN_NAME}Test_BINARY_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Test)
 
-include(${DREAM3DProj_SOURCE_DIR}/Test/DREAM3DTestFunctions.cmake)
+#------------------------------------------------------------------------------
+# Include this file from the SIMPL Project
+include(${SIMPLProj_SOURCE_DIR}/Test/SIMPLTestFunctions.cmake)
 
-
-#include_directories(${${PLUGIN_NAME}_SOURCE_DIR})
-#include_directories(${${PLUGIN_NAME}_BINARY_DIR})
 include_directories(${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 include_directories(${${PLUGIN_NAME}_BINARY_DIR}/Test)
-
 
 set(TEST_TEMP_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Temp)
 # Make sure the directory is created during CMake time
@@ -79,10 +76,8 @@ file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif" "${${PL
 configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
                ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
 			   
-AddDREAM3DUnitTest(TESTNAME AnisotropyFilterTest
+AddSIMPLUnitTest(TESTNAME AnisotropyFilterTest
     SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
     FOLDER "${PLUGIN_NAME}Plugin/Test"
 	LINK_LIBRARIES Qt5::Core H5Support SIMPLib Qt5::Widgets)
-    #LINK_LIBRARIES ${${PLUGIN_NAME}_Link_Libs})
-
 

@@ -46,10 +46,20 @@ if(NOT Qt5Core_FOUND)
     message(FATAL_ERROR "Qt 5 is Needed for plugin ${PLUGIN_NAME}Plugin.")
 endif()
 
+set(CMP_TOP_HEADER_FILE "${PLUGIN_NAME}Plugin.h")
+set(VERSION_HEADER_FILE_NAME "${PLUGIN_NAME}Version.h")
+set(VERSION_SOURCE_FILE_NAME "${PLUGIN_NAME}Version.cpp")
+
+cmpRevisionString( GENERATED_HEADER_FILE_PATH "${VERSION_HEADER_FILE_NAME}"
+                    GENERATED_SOURCE_FILE_PATH "${VERSION_SOURCE_FILE_NAME}"
+                    NAMESPACE "${PLUGIN_NAME}"
+                    PROJECT_NAME "${PLUGIN_NAME}"
+                    EXPORT_MACRO "")
+
 
 set(${PLUGIN_NAME}_Project_SRCS "")
 
-include(${DREAM3DProj_SOURCE_DIR}/Source/SIMPLib/SIMPLibMacros.cmake)
+include(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/SIMPLibMacros.cmake)
 
 #-------
 # Start writing this header file
@@ -114,8 +124,6 @@ set(${PLUGIN_NAME}_Project_SRCS ${Project_SRCS})
 #-----------------------------------------------------
 # Close up all the files that we just generated
 file(APPEND ${AllFiltersHeaderFile} "\n#endif\n")
-#file(APPEND ${AllFilterWidgetsHeaderFile} "\n#endif\n")
-#file(APPEND ${RegisterKnownFilterWidgetsFile} "}\n")
 file(APPEND ${RegisterKnownFiltersFile} "\n }\n")
 
 #-----------------------------------------------------
@@ -130,15 +138,13 @@ cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_N
                           NEW_FILE_PATH  ${RegisterKnownFiltersFile} )
 
 set(AllFiltersHeaderFile ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/${PLUGIN_NAME}Filters.h)
-#set(AllFilterWidgetsHeaderFile ${${PLUGIN_NAME}_BINARY_DIR}/FilterWidgetHeaders.h)
-#set(RegisterKnownFilterWidgetsFile ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/RegisterKnownFilterWidgets.cpp)
 set(RegisterKnownFiltersFile ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters/RegisterKnownFilters.cpp)
 
 #--------------------------
 include_directories( ${HDF5_INCLUDE_DIR} )
 include_directories( ${PROJECT_CODE_DIR} )
-include_directories( ${QtSupportLib_BINARY_DIR} )
-include_directories( ${QtSupportLib_SOURCE_DIR} )
+include_directories( ${QtSupport_BINARY_DIR} )
+include_directories( ${QtSupport_SOURCE_DIR} )
 get_filename_component(PLUGINS_SOURCE_DIR  ${${PLUGIN_NAME}_SOURCE_DIR} DIRECTORY)
 get_filename_component(PLUGINS_BINARY_DIR  ${${PLUGIN_NAME}_BINARY_DIR} DIRECTORY)
 
@@ -150,6 +156,10 @@ include_directories( ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME})
 include_directories( ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/${PLUGIN_NAME}Filters)
 include_directories( ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/FilterParameterWidgets)
 include_directories( ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/Test)
+include_directories( ${SIMPLProj_SOURCE_DIR}/Source)
+include_directories( ${SIMPLViewProj_SOURCE_DIR}/Source)
+include_directories( ${SIMPLProj_BINARY_DIR})
+include_directories( ${SIMPLViewProj_BINARY_DIR})
 
 # Remove the temp files that we no longer need
 file(REMOVE ${FilterWidget_GEN_HDRS_File})
@@ -196,6 +206,8 @@ set(${PLUGIN_NAME}_GEN_HDRS
    ${RegisterKnownFiltersFile}
    ${AllFilterParameterWidgetsHeaderFile}
    ${RegisterKnownFilterParameterWidgetsFile}
+  "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.h"
+  "${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Version.cpp"
 )
 
 # --------------------------------------------------------------------
@@ -262,10 +274,9 @@ target_link_libraries(${PLUGIN_NAME}
                     Qt5::Core
                     SIMPLib
                     OrientationLib
-                    Qt5::Gui Qt5::Widgets
-                    QtSupportLib
-                    DREAM3DWidgetsLib
-					SimpleITKExplicit
+                    Qt5::Gui 
+                    SVWidgetsLib
+										SimpleITKExplicit
                     )
 SET_TARGET_PROPERTIES(${PLUGIN_NAME} PROPERTIES FOLDER ${PLUGIN_NAME}Plugin)
 qt5_use_modules(${PLUGIN_NAME} Core Gui Widgets)
@@ -283,7 +294,7 @@ if(NOT MSVC)
 endif()
 
 
-if(DREAM3D_BUILD_TESTING)
+if(SIMPL_BUILD_TESTING)
   include(${${PLUGIN_NAME}_SOURCE_DIR}/Test/CMakeLists.txt)
 endif()
 
