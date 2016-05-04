@@ -604,10 +604,11 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 
 	// xneedshifts: how the calibrating circles moved horizontally
 	// yneedshifts: how the vertical distance of the rectangle and the interface edge changed
+	// this goes with minus sign because that's how we need to correct the current position of the slices
 	for (uint32_t i = 0; i < dims[2] - 1; i++)
 	{
-		xneedshifts[dims[2] - 2 - i] = m_CalibratingCircles[i + 1][0] - m_CalibratingCircles[i][0];
-		yneedshifts[dims[2] - 2 - i] = m_CalibratingCircles[i + 1][1] - m_CalibratingCircles[i][1] + Slope - Edge[0];
+		xneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][0] - m_CalibratingCircles[i][0]);
+		yneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][1] - m_CalibratingCircles[i][1] + Slope - Edge[0]);
 
 		//convert to EBSD-voxel units
 		xneedshifts[dims[2] - 2 - i] *= dims[0] / rectangle_width;
