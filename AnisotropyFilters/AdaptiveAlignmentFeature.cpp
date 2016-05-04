@@ -283,16 +283,17 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     std::vector<float> yshiftsest;	// cumulative y-shifts estimated from SEM images
 
     float curerror = 0.0f;
-    float tolerance = 1.0f;
+    float tolerance = 0.0f;
 
     // evaluate error between current shifts and desired shifts
     if (xneedshifts.size() == 1)      // error is computed as misagreement between slopes
     {
+      tolerance = 1.0f / static_cast<float>(dims[2] - 1);
       curerror = compute_error1(dims[2], 0, xneedshifts[0], yneedshifts[0], newxshift, newyshift, curindex);
     }
     else if (xneedshifts.size() > 1)  // error is computed as misagreement with shifts estimated from SEM images
     {
-      tolerance = 1.0f / static_cast<float>(dims[2] - 1);
+      tolerance = 1.0f;
       xshiftsest.resize(dims[2], 0);
       yshiftsest.resize(dims[2], 0);
       for (uint64_t iter = 1; iter < dims[2]; iter++)
