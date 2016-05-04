@@ -559,15 +559,12 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 	float sumX2 = 0.0f; // sum(x_i^2)
 
 	float sumT = 0.0f;  // sum(y_i)
-	float sumT2 = 0.0f; // sum(y_i^2)
 	float sumXT = 0.0f; // sum(x_i * y_i)
 
 	float sumB = 0.0f;  // sum(y_i)
-	float sumB2 = 0.0f; // sum(y_i^2)
 	float sumXB = 0.0f; // sum(x_i * y_i)
 
 	float sumE = 0.0f;  // sum(z_i)
-	float sumE2 = 0.0f; // sum(z_i^2)
 	float sumXE = 0.0f; // sum(x_i * z_i)
 
 	for (uint64_t i = 0; i < dims[2]; i++)
@@ -576,15 +573,12 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 		sumX2 += static_cast<float>(i * i);
 
 		sumT += static_cast<float>(m_RectangleCorners[i][1]);
-		sumT2 += static_cast<float>(m_RectangleCorners[i][1] * m_RectangleCorners[i][1]);
 		sumXT += static_cast<float>(i * m_RectangleCorners[i][1]);
 
 		sumB += static_cast<float>(m_RectangleCorners[i][3]);
-		sumB2 += static_cast<float>(m_RectangleCorners[i][3] * m_RectangleCorners[i][3]);
 		sumXB += static_cast<double>(i * m_RectangleCorners[i][3]);
 
 		sumE += static_cast<float>(m_InterfaceEdges[i] - m_CalibratingCircles[i][1]);
-		sumE2 += static_cast<float>((m_InterfaceEdges[i] - m_CalibratingCircles[i][1]) * (m_InterfaceEdges[i] - m_CalibratingCircles[i][1]));
 		sumXE += static_cast<double>(i * (m_InterfaceEdges[i] - m_CalibratingCircles[i][1]));
 	}
 
