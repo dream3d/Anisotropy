@@ -282,8 +282,8 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     std::vector<float> xshiftsest;	// cumulative x-shifts estimated from SEM images
     std::vector<float> yshiftsest;	// cumulative y-shifts estimated from SEM images
 
-    float curerror = 0;
-    float tolerance = 1.0f / static_cast<float>(dims[2]);
+    float curerror = 0.0f;
+    float tolerance = 1.0f;
 
     // evaluate error between current shifts and desired shifts
     if (xneedshifts.size() == 1)      // error is computed as misagreement between slopes
@@ -292,6 +292,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     }
     else if (xneedshifts.size() > 1)  // error is computed as misagreement with shifts estimated from SEM images
     {
+      tolerance = 1.0f / static_cast<float>(dims[2] - 1);
       xshiftsest.resize(dims[2], 0);
       yshiftsest.resize(dims[2], 0);
       for (uint64_t iter = 1; iter < dims[2]; iter++)
@@ -467,6 +468,7 @@ float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, st
   float error = 0;
   float xdif = 0;
   float ydif = 0;
+  float divide = static_cast<float> (2 * n);
 
   for (uint64_t i = 1; i <= n; i++)
   {
@@ -483,7 +485,7 @@ float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, st
 
     xdif = static_cast<float>(xshifts)-xshiftsest[i];
     ydif = static_cast<float>(yshifts)-yshiftsest[i];
-    error += (xdif * xdif + ydif * ydif);
+    error += (xdif * xdif + ydif * ydif) / divide;
   }
   return error;
 }
