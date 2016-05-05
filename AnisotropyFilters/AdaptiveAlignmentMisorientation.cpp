@@ -306,7 +306,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
             {
               for (uint64_t n = 0; n < dims[0]; n = n + 4)
               {
-                if ((l + j + oldyshift) >= 0 && (l + j + oldyshift) < dims[1] && (n + k + oldxshift) >= 0 && (n + k + oldxshift) < dims[0])
+                if (int64_t((l + j + oldyshift)) >= 0 && (l + j + oldyshift) < dims[1] && int64_t((n + k + oldxshift)) >= 0 && (n + k + oldxshift) < dims[0])
                 {
                   count++;
                   refposition = ((slice + 1) * dims[0] * dims[1]) + (l * dims[0]) + n;

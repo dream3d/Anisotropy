@@ -397,9 +397,9 @@ bool AdaptiveAlignment::find_calibrating_circles()
         xmax = icenter[2 * circle] + range_factor * radius[circle];
         ymin = icenter[2 * circle + 1] - range_factor * radius[circle];
         ymax = icenter[2 * circle + 1] + range_factor * radius[circle];
-        if (xmin < 0) xmin = 0;
+        if (int64_t(xmin) < 0) xmin = 0;
         if (xmax > dims[0] - 1) xmax = dims[0] - 1;
-        if (ymin < 0) ymin = 0;
+        if (int64_t(ymin) < 0) ymin = 0;
         if (ymax > dims[1] - 1) ymax = dims[1] - 1;
 
         totalweight = 0.0f;
@@ -773,7 +773,7 @@ void AdaptiveAlignment::execute()
         else if (xshifts[i] < 0) { xspot = dims[0] - 1 - n; }
         newPosition = (slice * dims[0] * dims[1]) + (yspot * dims[0]) + xspot;
         currentPosition = (slice * dims[0] * dims[1]) + ((yspot + yshifts[i]) * dims[0]) + (xspot + xshifts[i]);
-        if ((yspot + yshifts[i]) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && (xspot + xshifts[i]) >= 0
+        if (int64_t((yspot + yshifts[i])) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && int64_t((xspot + xshifts[i])) >= 0
           && (xspot + xshifts[i]) <= dims[0] - 1)
         {
           for (QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
@@ -782,7 +782,7 @@ void AdaptiveAlignment::execute()
             p->copyTuple(currentPosition, newPosition);
           }
         }
-        if ((yspot + yshifts[i]) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || (xspot + xshifts[i]) < 0
+        if (int64_t((yspot + yshifts[i])) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || int64_t((xspot + xshifts[i])) < 0
           || (xspot + xshifts[i]) > dims[0] - 1)
         {
           for (QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
