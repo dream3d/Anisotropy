@@ -68,17 +68,17 @@
 // -----------------------------------------------------------------------------
 SteinerCompact::SteinerCompact() :
   AbstractFilter(),
-  m_Plane(0),
-  m_Sites(1),
   m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
   m_VtkOutput(true),
   m_VtkFileName(""),
   m_TxtOutput(false),
   m_TxtFileName(""),
-  m_FeatureIds(NULL),
-  m_CellPhases(NULL),
   m_FeatureIdsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::FeatureIds),
-  m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases)
+  m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases),
+  m_Plane(0),
+  m_Sites(1),
+  m_FeatureIds(NULL),
+  m_CellPhases(NULL)
 {
   setupFilterParameters();
 }
@@ -865,7 +865,6 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
     return;
   }
 
-  int err = 0;
   vtk = fopen(getVtkFileName().toLatin1().data(), "w");
   ScopedFileMonitor fMon(vtk);
   if (NULL == vtk)
@@ -1014,7 +1013,6 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
     return;
   }
 
-  int err = 0;
   txt = fopen(getTxtFileName().toLatin1().data(), "w");
   ScopedFileMonitor fMon(txt);
   if (NULL == txt)
@@ -1025,13 +1023,11 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
     return;
   }
 
-  int64_t numvertices = vertices_x[1].size();
   int64_t numphases = ROI.size() - 1;
   int64_t numdirections = ROI[1].size();
 
   fprintf(txt, "Distances_of_edges_from_origin\n");
   fprintf(txt, "Phase   Angle   Distance\n");
-  int64_t size = static_cast<int64_t>(ROI[0].size());
   float stepangle = SIMPLib::Constants::k_Pi / numdirections;
   float angle = 0;
   for (int64_t phase = 1; phase <= numphases; phase++)
