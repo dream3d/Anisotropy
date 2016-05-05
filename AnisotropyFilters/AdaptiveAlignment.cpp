@@ -376,7 +376,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       // circles are in lower part of the image
       if (icenter[1] < dims[1] / 2 || icenter[3] < dims[1] / 2) found = false;
       // y-coordinates of the circles do not differ much
-      if (std::labs(icenter[1] - icenter[3]) > 20) found = false;
+      if ((icenter[1] - icenter[3]) > 20) found = false;
     }
 
     if (found)
@@ -603,13 +603,13 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 
   float Slope = 0.5f * (RectangleTop[0] + RectangleBottom[0]);
 
-	// xneedshifts: how the calibrating circles moved horizontally
-	// yneedshifts: how the vertical distance of the rectangle and the interface edge changed
-	// this goes with minus sign because that's how we need to correct the current position of the slices
-	for (uint32_t i = 0; i < dims[2] - 1; i++)
-	{
-		xneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][0] - m_CalibratingCircles[i][0]);
-		yneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][1] - m_CalibratingCircles[i][1] + Slope - Edge[0]);
+  // xneedshifts: how the calibrating circles moved horizontally
+  // yneedshifts: how the vertical distance of the rectangle and the interface edge changed
+  // this goes with minus sign because that's how we need to correct the current position of the slices
+  for (uint32_t i = 0; i < dims[2] - 1; i++)
+  {
+    xneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][0] - m_CalibratingCircles[i][0]);
+    yneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][1] - m_CalibratingCircles[i][1] + Slope - Edge[0]);
 
     //convert to EBSD-voxel units
     xneedshifts[dims[2] - 2 - i] *= dims[0] / rectangle_width;
