@@ -72,8 +72,9 @@ m_InputPath(""),
 m_UserDefinedShifts(),
 m_ShiftX(0.0f),
 m_ShiftY(0.0f),
-m_FlatImageData(NULL),
-m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData)
+m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData),
+m_FlatImageData(NULL)
+
 {
   setupFilterParameters();
 }
