@@ -866,7 +866,6 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   }
 
   vtk = fopen(getVtkFileName().toLatin1().data(), "w");
-  ScopedFileMonitor fMon(vtk);
   if (NULL == vtk)
   {
     QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
@@ -874,10 +873,11 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
+  ScopedFileMonitor fMon(vtk);
 
-  int64_t numvertices = vertices_x[1].size();
-  int64_t numphases = ROI.size() - 1;
-  int64_t numdirections = ROI[1].size();
+  size_t numvertices = vertices_x[1].size();
+  size_t numphases = ROI.size() - 1;
+  size_t numdirections = ROI[1].size();
 
   // header
   fprintf(vtk, "# vtk DataFile Version 2.0\n");
@@ -885,8 +885,8 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   fprintf(vtk, "ASCII\n");
   fprintf(vtk, "DATASET POLYDATA\n");
 
-  fprintf(vtk, "\nPOINTS %lld float\n", 2 * numvertices + numphases + numphases * 2 * numdirections);
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  fprintf(vtk, "\nPOINTS %lld float\n", static_cast<long long int>(2 * numvertices + numphases + numphases * 2 * numdirections) );
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
     if (m_Plane == 0)
     {
@@ -927,16 +927,16 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   }
 
   // points for reference Steiner compact (regular polygon)
-  float angle = SIMPLib::Constants::k_Pi / numdirections;
-  float r = 1.0f / cos(0.5f * angle);
+  float angle = SIMPLib::Constants::k_Pif / static_cast<float>(numdirections);
+  float r = 1.0f / cosf(0.5f * angle);
   float s, c, p;
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
     p = static_cast<float>(phase);
     for (int64_t i = 0; i < 2 * numdirections; i++)
     {
-      s = sin(static_cast<float>(i)* angle);
-      c = cos(static_cast<float>(i)* angle);
+      s = sinf(static_cast<float>(i)* angle);
+      c = cosf(static_cast<float>(i)* angle);
       if (m_Plane == 0) fprintf(vtk, "%f %f %f\n", r * c, r * s, p);
       else if (m_Plane == 1) fprintf(vtk, "%f %f %f\n", r * c, p, r * s);
       else if (m_Plane == 2) fprintf(vtk, "%f %f %f\n", p, r * c, r * s);
@@ -945,44 +945,44 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
 
   // lines of reference Steiner compact(regular polygon)
   int64_t curindex = 0;
-  fprintf(vtk, "\nLINES %lld %lld\n", numphases, numphases * (2 * numdirections + 2));
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  fprintf(vtk, "\nLINES %lld %lld\n", static_cast<long long int>(numphases), static_cast<long long int>(numphases * (2 * numdirections + 2)) );
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
-    fprintf(vtk, "%d ", 2 * numdirections + 1);
-    for (int64_t i = 0; i < 2 * numdirections; i++)
+    fprintf(vtk, "%lld ", static_cast<long long int>(2 * numdirections + 1));
+    for (size_t i = 0; i < 2 * numdirections; i++)
     {
-      fprintf(vtk, "%d ", 2 * numvertices + numphases + curindex + i);
+      fprintf(vtk, "%lld ", static_cast<long long int>(2 * numvertices + numphases + curindex + i));
     }
-    fprintf(vtk, "%d\n", 2 * numvertices + numphases + curindex);           // return to 0
+    fprintf(vtk, "%lld\n", static_cast<long long int>(2 * numvertices + numphases + curindex));           // return to 0
     curindex += 2 * numdirections;
   }
 
   // Steiner compact for each phase
-  fprintf(vtk, "\nPOLYGONS %d %d\n", 2 * numvertices, 2 * 4 * numvertices);
+  fprintf(vtk, "\nPOLYGONS %lld %lld\n", static_cast<long long int>(2 * numvertices), static_cast<long long int>(2 * 4 * numvertices));
   curindex = 0;
-  int64_t origin = 2 * numvertices + numphases - 1;
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  size_t origin = 2 * numvertices + numphases - 1;
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
-    for (uint64_t i = 0; i < 2 * vertices_x[phase].size() - 1; i++)
+    for (size_t i = 0; i < 2 * vertices_x[phase].size() - 1; i++)
     {
-      fprintf(vtk, "%d %d %d %d\n", 3, curindex + i, curindex + i + 1, origin);
+      fprintf(vtk, "%d %lld %lld %lld\n", 3, static_cast<long long int>(curindex + i), static_cast<long long int>(curindex + i + 1), static_cast<long long int>(origin));
     }
-    fprintf(vtk, "%d %d %d %d\n", 3, curindex, curindex + 2 * vertices_x[phase].size() - 1, origin);  // last triangle
+    fprintf(vtk, "%d %lld %lld %lld\n", 3, static_cast<long long int>(curindex), static_cast<long long int>(curindex + 2 * vertices_x[phase].size() - 1), static_cast<long long int>(origin));  // last triangle
     curindex += 2 * vertices_x[phase].size();
   }
 
-  fprintf(vtk, "\nCELL_DATA %d\n", 2 * numvertices + numphases);
+  fprintf(vtk, "\nCELL_DATA %lld\n", static_cast<long long int>(2 * numvertices + numphases));
   fprintf(vtk, "SCALARS data float\n");
   fprintf(vtk, "LOOKUP_TABLE default\n");
 
   // data for reference Steiner compact (regular polygon)
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
     fprintf(vtk, "%f\n", 1.0f);
   }
 
   // data for Steiner compact for each phase
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
     for (int64_t sign = 0; sign <= 1; sign++)
     {
@@ -993,7 +993,8 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
     }
     fprintf(vtk, "\n");
   }
-  fclose(vtk);
+
+
 }
 
 void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& ROI)
@@ -1014,7 +1015,6 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   }
 
   txt = fopen(getTxtFileName().toLatin1().data(), "w");
-  ScopedFileMonitor fMon(txt);
   if (NULL == txt)
   {
     QString ss = QObject::tr("Error opening output txt file '%1'\n ").arg(m_TxtFileName);
@@ -1022,13 +1022,14 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
+  ScopedFileMonitor fMon(txt);
 
-  int64_t numphases = ROI.size() - 1;
-  int64_t numdirections = ROI[1].size();
+  size_t numphases = ROI.size() - 1;
+  size_t numdirections = ROI[1].size();
 
   fprintf(txt, "Distances_of_edges_from_origin\n");
   fprintf(txt, "Phase   Angle   Distance\n");
-  float stepangle = SIMPLib::Constants::k_Pi / numdirections;
+  float stepangle = SIMPLib::Constants::k_Pif / numdirections;
   float angle = 0;
   for (int64_t phase = 1; phase <= numphases; phase++)
   {
@@ -1036,10 +1037,10 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
     {
       for (int64_t site = 0; site < numdirections; site++)
       {
-        angle = (static_cast<float>(site + symmetry * numdirections) + 0.5f) * stepangle + 0.5f * SIMPLib::Constants::k_Pi;
+        angle = (static_cast<float>(site + symmetry * numdirections) + 0.5f) * stepangle + 0.5f * SIMPLib::Constants::k_Pif;
         angle *= 180.0f / SIMPLib::Constants::k_Pi;
         if (angle >= 360.0f) angle -= 360.0f;
-        fprintf(txt, "%d   %f   %f\n", phase, angle, ROI[phase][site]);
+        fprintf(txt, "%lld   %f   %f\n", static_cast<long long int>(phase), angle, ROI[phase][site]);
       }
     }
   }
@@ -1048,19 +1049,18 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   // Steiner compact for each phase
   fprintf(txt, "Coordinates_of_vertices\n");
   fprintf(txt, "Phase   Vertex   X   Y\n");
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  for (size_t phase = 1; phase <= numphases; phase++)
   {
-    for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
+    for (size_t i = 0; i < vertices_x[phase].size(); i++)
     {
-      fprintf(txt, "%d   %d   %f   %f\n", phase, i, vertices_x[phase][i], vertices_y[phase][i]);
+      fprintf(txt, "%lld   %lld   %f   %f\n", static_cast<long long int>(phase), static_cast<long long int>(i), vertices_x[phase][i], vertices_y[phase][i]);
     }
     for (uint64_t i = 0; i < vertices_x[phase].size(); i++)
     {
-      fprintf(txt, "%d   %d   %f   %f\n", phase, vertices_x[phase].size() + i, -vertices_x[phase][i], -vertices_y[phase][i]);
+      fprintf(txt, "%lld   %lld   %f   %f\n", static_cast<long long int>(phase), static_cast<long long int>(vertices_x[phase].size() + i), -vertices_x[phase][i], -vertices_y[phase][i]);
     }
   }
 
-  fclose(txt);
 }
 
 
