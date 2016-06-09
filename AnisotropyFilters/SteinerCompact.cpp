@@ -1143,7 +1143,9 @@ AbstractFilter::Pointer SteinerCompact::newFilterInstance(bool copyFilterParamet
 //
 // -----------------------------------------------------------------------------
 const QString SteinerCompact::getCompiledLibraryName()
-{ return AnisotropyConstants::AnisotropyBaseName; }
+{
+  return AnisotropyConstants::AnisotropyBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //

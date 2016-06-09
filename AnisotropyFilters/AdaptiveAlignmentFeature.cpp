@@ -45,8 +45,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "Plugins/Reconstruction/ReconstructionConstants.h"
-
 #include "moc_AdaptiveAlignmentFeature.cpp"
 
 
@@ -526,7 +524,7 @@ AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 const QString AdaptiveAlignmentFeature::getCompiledLibraryName()
 {
-  return ReconstructionConstants::ReconstructionBaseName;
+  return AnisotropyConstants::AnisotropyBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -534,7 +532,7 @@ const QString AdaptiveAlignmentFeature::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString AdaptiveAlignmentFeature::getBrandingString()
 {
-  return "Reconstruction";
+  return "Anisotropy";
 }
 
 // -----------------------------------------------------------------------------

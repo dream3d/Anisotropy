@@ -271,12 +271,9 @@ endif()
 
 add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_MODULE_SRCS})
 target_link_libraries(${PLUGIN_NAME}
-                    Qt5::Core
-                    SIMPLib
-                    OrientationLib
-                    Qt5::Gui 
                     SVWidgetsLib
 										SimpleITKExplicit
+                    OrientationLib
                     )
 SET_TARGET_PROPERTIES(${PLUGIN_NAME} PROPERTIES FOLDER ${PLUGIN_NAME}Plugin)
 qt5_use_modules(${PLUGIN_NAME} Core Gui Widgets)

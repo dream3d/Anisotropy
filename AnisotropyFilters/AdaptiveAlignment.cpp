@@ -46,6 +46,8 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
+#include "sitkExplicitITK.h"
+
 #include "Anisotropy/AnisotropyConstants.h"
 
 #include "ImageProcessing/ImageProcessingConstants.h"
