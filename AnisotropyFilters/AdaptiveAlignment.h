@@ -49,15 +49,15 @@
 */
 class AdaptiveAlignment : public AbstractFilter
 {
-  Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
-public:
-  SIMPL_SHARED_POINTERS(AdaptiveAlignment)
+    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+  public:
+    SIMPL_SHARED_POINTERS(AdaptiveAlignment)
     SIMPL_STATIC_NEW_MACRO(AdaptiveAlignment)
     SIMPL_TYPE_MACRO_SUPER(AdaptiveAlignment, AbstractFilter)
 
     virtual ~AdaptiveAlignment();
 
-  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+    SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
 
     SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
 
@@ -105,156 +105,156 @@ public:
     */
     virtual const QString getCompiledLibraryName();
 
-  /**
+    /**
   * @brief getBrandingString Returns the branding string for the filter, which is a tag
   * used to denote the filter's association with specific plugins
   * @return Branding string
   */
-  virtual const QString getBrandingString();
+    virtual const QString getBrandingString();
 
-  /**
+    /**
   * @brief getFilterVersion Returns a version string for this filter. Default
   * value is an empty string.
   * @return
   */
-  virtual const QString getFilterVersion();
+    virtual const QString getFilterVersion();
 
-  /**
+    /**
   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
   */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-  /**
+    /**
   * @brief getGroupName Reimplemented from @see AbstractFilter class
   */
-  virtual const QString getGroupName();
+    virtual const QString getGroupName();
 
-  /**
+    /**
   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
   */
-  virtual const QString getSubGroupName();
+    virtual const QString getSubGroupName();
 
-  /**
+    /**
   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
   */
-  virtual const QString getHumanLabel();
+    virtual const QString getHumanLabel();
 
-  /**
+    /**
   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
   */
-  virtual void setupFilterParameters();
+    virtual void setupFilterParameters();
 
-  /**
+    /**
   * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
   */
-  virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
+    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
 
-  /**
+    /**
   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-  /**
+    /**
   * @brief execute Reimplemented from @see AbstractFilter class
   */
-  virtual void execute();
+    virtual void execute();
 
-  /**
+    /**
   * @brief preflight Reimplemented from @see AbstractFilter class
   */
-  virtual void preflight();
+    virtual void preflight();
 
-signals:
-  /**
+  signals:
+    /**
   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
   * be pushed from a user-facing control (such as a widget)
   * @param filter Filter instance pointer
   */
-  void updateFilterParameters(AbstractFilter* filter);
+    void updateFilterParameters(AbstractFilter* filter);
 
-  /**
+    /**
   * @brief parametersChanged Emitted when any Filter parameter is changed internally
   */
-  void parametersChanged();
+    void parametersChanged();
 
-  /**
+    /**
   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
   */
-  void preflightAboutToExecute();
+    void preflightAboutToExecute();
 
-  /**
+    /**
   * @brief preflightExecuted Emitted just after calling dataCheck()
   */
-  void preflightExecuted();
+    void preflightExecuted();
 
-protected:
-  AdaptiveAlignment();
+  protected:
+    AdaptiveAlignment();
 
-  /**
+    /**
    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
    */
-  void dataCheck();
+    void dataCheck();
 
-  /**
+    /**
    * @brief Initializes all the private instance variables.
    */
-  void initialize();
+    void initialize();
 
-  /**
+    /**
   * @brief create_array_for_flattened_image creates a temporary array
   */
-  virtual void create_array_for_flattened_image();
+    virtual void create_array_for_flattened_image();
 
-  /**
+    /**
   * @brief delete_array_for_flattened_image deletes a temporary array
   */
-  virtual void delete_array_for_flattened_image();
+    virtual void delete_array_for_flattened_image();
 
-  /**
+    /**
   * @brief flatten_image for converting an RGB image to grayscale
   */
-  virtual void flatten_image();
+    virtual void flatten_image();
 
-  /**
+    /**
   * @brief find_circles for identification of two circles for alignment in SEM images by Hough transform
   */
-  virtual bool find_calibrating_circles();
+    virtual bool find_calibrating_circles();
 
-  /**
+    /**
   * @brief find_rectangles for identification of the green rectangle
   */
-  virtual bool find_rectangles();
+    virtual bool find_rectangles();
 
-  /**
+    /**
   * @brief find_rectangles for identification of the edge of the specimen
   */
-  virtual bool find_interface_edges();
+    virtual bool find_interface_edges();
 
-  /**
+    /**
   * @brief estimate_shifts for estimation of the shifts from SEM images
   */
-  virtual void estimate_shifts_from_images(std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
+    virtual void estimate_shifts_from_images(std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
 
-  /**
+    /**
   * @brief find_shifts Determines the x and y shifts to register a stacked 3D volume
   * @param xshifts Vector of integer shifts in x direction
   * @param yshifts Vector of integer shifts in y direction
   */
-  virtual void find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
+    virtual void find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
 
-private:
+  private:
 
-  DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, ImageData)
-  DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, FlatImageData)
+    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, ImageData)
+    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, FlatImageData)
 
-  DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, NewCellArray) // delete this
+    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, NewCellArray) // delete this
 
-  std::vector<std::vector<uint64_t>> m_RectangleCorners;
-  std::vector<std::vector<float>> m_CalibratingCircles;
-  std::vector<uint64_t> m_InterfaceEdges;
+    std::vector<std::vector<uint64_t>> m_RectangleCorners;
+    std::vector<std::vector<float>> m_CalibratingCircles;
+    std::vector<uint64_t> m_InterfaceEdges;
 
-  AdaptiveAlignment(const AdaptiveAlignment&); // Copy Constructor Not Implemented
-  void operator=(const AdaptiveAlignment&); // Operator '=' Not Implemented
+    AdaptiveAlignment(const AdaptiveAlignment&); // Copy Constructor Not Implemented
+    void operator=(const AdaptiveAlignment&); // Operator '=' Not Implemented
 };
 
 #endif /* AdaptiveAlignment_H_ */

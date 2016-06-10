@@ -156,6 +156,8 @@ int AdaptiveAlignmentMutualInformation::writeFilterParameters(AbstractFilterPara
 // -----------------------------------------------------------------------------
 void AdaptiveAlignmentMutualInformation::initialize()
 {
+  m_MIFeaturesPtr = Int32ArrayType::NullPointer();
+  m_Seed = QDateTime::currentMSecsSinceEpoch();
 
 }
 

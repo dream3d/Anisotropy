@@ -70,7 +70,7 @@ m_CellPhases(NULL),
 m_GoodVoxels(NULL),
 m_CrystalStructures(NULL)
 {
-  Seed = QDateTime::currentMSecsSinceEpoch();
+  m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
 
   m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
 
@@ -154,6 +154,7 @@ int AdaptiveAlignmentMisorientation::writeFilterParameters(AbstractFilterParamet
 // -----------------------------------------------------------------------------
 void AdaptiveAlignmentMisorientation::initialize()
 {
+  m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
 
 }
 
@@ -163,6 +164,7 @@ void AdaptiveAlignmentMisorientation::initialize()
 void AdaptiveAlignmentMisorientation::dataCheck()
 {
   setErrorCondition(0);
+  initialize();
 
   // Set the DataContainerName and AttributematrixName for the Parent Class (AlignSections) to Use.
   setDataContainerName(m_QuatsArrayPath.getDataContainerName());

@@ -166,7 +166,9 @@ int AdaptiveAlignment::writeFilterParameters(AbstractFilterParametersWriter* wri
 // -----------------------------------------------------------------------------
 void AdaptiveAlignment::initialize()
 {
-
+  m_RectangleCorners.clear();
+  m_CalibratingCircles.clear();
+  m_InterfaceEdges.clear();
 }
 
 // -----------------------------------------------------------------------------

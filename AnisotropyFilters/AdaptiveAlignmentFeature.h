@@ -95,7 +95,7 @@ class AdaptiveAlignmentFeature : public AdaptiveAlignment {
     */
     virtual const QString getSubGroupName();
 
-   /**
+    /**
     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
     */
     virtual const QString getHumanLabel();
