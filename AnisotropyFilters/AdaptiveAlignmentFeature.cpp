@@ -108,6 +108,14 @@ int AdaptiveAlignmentFeature::writeFilterParameters(AbstractFilterParametersWrit
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AdaptiveAlignmentFeature::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AdaptiveAlignmentFeature::dataCheck()
 {
   setErrorCondition(0);

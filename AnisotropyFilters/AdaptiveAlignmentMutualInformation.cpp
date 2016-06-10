@@ -154,6 +154,14 @@ int AdaptiveAlignmentMutualInformation::writeFilterParameters(AbstractFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AdaptiveAlignmentMutualInformation::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AdaptiveAlignmentMutualInformation::dataCheck()
 {
   setErrorCondition(0);

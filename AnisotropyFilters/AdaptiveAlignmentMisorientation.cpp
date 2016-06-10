@@ -152,6 +152,14 @@ int AdaptiveAlignmentMisorientation::writeFilterParameters(AbstractFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AdaptiveAlignmentMisorientation::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AdaptiveAlignmentMisorientation::dataCheck()
 {
   setErrorCondition(0);

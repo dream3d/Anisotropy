@@ -171,11 +171,16 @@ class SteinerCompact : public AbstractFilter
 
   protected:
     SteinerCompact();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   /**
   * @brief  rose_of_intersections Counts the numbers of intersections of randomly placed lines at fixed directions with grain boundaries

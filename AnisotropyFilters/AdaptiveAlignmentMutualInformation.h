@@ -145,10 +145,16 @@ public:
 protected:
 	AdaptiveAlignmentMutualInformation();
 
-	/**
-	* @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-	*/
-	void dataCheck();
+    /**
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
+    void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
 	/**
 	* @brief find_shifts Reimplemented from @see AdaptiveAlignment class

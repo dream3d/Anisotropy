@@ -191,9 +191,14 @@ protected:
   AdaptiveAlignment();
 
   /**
-  * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-  */
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
   void dataCheck();
+
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
   /**
   * @brief create_array_for_flattened_image creates a temporary array
