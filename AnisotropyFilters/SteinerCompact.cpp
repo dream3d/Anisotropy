@@ -941,7 +941,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   for (size_t phase = 1; phase <= numphases; phase++)
   {
     p = static_cast<float>(phase);
-    for (int64_t i = 0; i < 2 * numdirections; i++)
+    for (uint64_t i = 0; i < 2 * numdirections; i++)
     {
       s = sinf(static_cast<float>(i)* angle);
       c = cosf(static_cast<float>(i)* angle);
@@ -1039,11 +1039,11 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   fprintf(txt, "Phase   Angle   Distance\n");
   float stepangle = SIMPLib::Constants::k_Pif / numdirections;
   float angle = 0;
-  for (int64_t phase = 1; phase <= numphases; phase++)
+  for (uint64_t phase = 1; phase <= numphases; phase++)
   {
-    for (int64_t symmetry = 0; symmetry <= 1; symmetry++)
+    for (uint64_t symmetry = 0; symmetry <= 1; symmetry++)
     {
-      for (int64_t site = 0; site < numdirections; site++)
+      for (uint64_t site = 0; site < numdirections; site++)
       {
         angle = (static_cast<float>(site + symmetry * numdirections) + 0.5f) * stepangle + 0.5f * SIMPLib::Constants::k_Pif;
         angle *= 180.0f / SIMPLib::Constants::k_Pi;
