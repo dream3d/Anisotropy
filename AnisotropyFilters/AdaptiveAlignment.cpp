@@ -36,6 +36,7 @@
 #include "AdaptiveAlignment.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
@@ -643,6 +644,18 @@ void AdaptiveAlignment::find_shifts(std::vector<int64_t>& xshifts, std::vector<i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+template<typename T>
+void initializeArrayValues(IDataArray::Pointer p, size_t index)
+{
+
+	typename DataArray<T>::Pointer ptr = std::dynamic_pointer_cast<DataArray<T>>(p);
+	T var = static_cast<T>(0);
+	ptr->initializeTuple(index, &var);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AdaptiveAlignment::execute()
 {
   setErrorCondition(0);
@@ -800,7 +813,7 @@ void AdaptiveAlignment::execute()
           for (QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
           {
             IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(*iter);
-            p->initializeTuple(newPosition, 0);
+            EXECUTE_FUNCTION_TEMPLATE(this, initializeArrayValues, p, p, newPosition)
           }
         }
       }
