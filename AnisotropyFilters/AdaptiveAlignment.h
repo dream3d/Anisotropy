@@ -69,14 +69,11 @@ class AdaptiveAlignment : public AbstractFilter
 
     /////////////// new:
 
-    SIMPL_FILTER_PARAMETER(bool, UseImages)
-    Q_PROPERTY(bool UseImages READ getUseImages WRITE setUseImages)
+	SIMPL_FILTER_PARAMETER(int, GlobalCorrection)
+	Q_PROPERTY(int GlobalCorrection READ getGlobalCorrection WRITE setGlobalCorrection)
 
     SIMPL_FILTER_PARAMETER(QString, InputPath)
     Q_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
-
-    SIMPL_FILTER_PARAMETER(bool, UserDefinedShifts)
-    Q_PROPERTY(bool UserDefinedShifts READ getUserDefinedShifts WRITE setUserDefinedShifts)
 
     SIMPL_FILTER_PARAMETER(float, ShiftX)
     Q_PROPERTY(float ShiftX READ getShiftX WRITE setShiftX)
