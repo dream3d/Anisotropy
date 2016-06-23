@@ -356,9 +356,7 @@ void addAdaptiveAlignmentFeatureFilter(FilterPipeline::Pointer pipeline)
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
 
-  propWasSet = filter->setProperty("UseImages", false);
-  DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-  propWasSet = filter->setProperty("UserDefinedShifts", true);
+  propWasSet = filter->setProperty("GlobalCorrection", 2);
   DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   propWasSet = filter->setProperty("ShiftX", 0);
   DREAM3D_REQUIRE_EQUAL(propWasSet, true)
@@ -394,7 +392,7 @@ void addAdaptiveAlignmentMisorientationFilter(FilterPipeline::Pointer pipeline)
     QVariant var;
     bool propWasSet;
 
-    propWasSet = filter->setProperty("UseImages", true);
+    propWasSet = filter->setProperty("GlobalCorrection", 1);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     propWasSet = filter->setProperty("UserDefinedShifts", false);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
@@ -435,9 +433,7 @@ void addAdaptiveAlignmentMutualInformationFilter(FilterPipeline::Pointer pipelin
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
 
-    propWasSet = filter->setProperty("UseImages", false);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    propWasSet = filter->setProperty("UserDefinedShifts", false);
+    propWasSet = filter->setProperty("GlobalCorrection", 0);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     propWasSet = filter->setProperty("UseGoodVoxels", false);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
