@@ -41,6 +41,7 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
@@ -70,14 +71,12 @@ m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
 m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
 m_WriteAlignmentShifts(false),
 m_AlignmentShiftFileName(""),
-m_UseImages(true),
 m_InputPath(""),
-m_UserDefinedShifts(),
 m_ShiftX(0.0f),
 m_ShiftY(0.0f),
 m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData),
-m_FlatImageData(NULL)
-
+m_FlatImageData(NULL),
+m_GlobalCorrection(0)
 {
   setupFilterParameters();
 }
@@ -100,29 +99,41 @@ void AdaptiveAlignment::setupFilterParameters()
   parameters.push_back(LinkedBooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), linkedProps, FilterParameter::Parameter));
   parameters.push_back(OutputFileFilterParameter::New("Alignment File", "AlignmentShiftFileName", getAlignmentShiftFileName(), FilterParameter::Parameter, "", "*.txt"));
 
-  linkedProps.clear();
-  linkedProps << "ImageDataArrayPath";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Global Correction: SEM Images", "UseImages", getUseImages(), linkedProps, FilterParameter::Parameter));
-
-  linkedProps.clear();
-  linkedProps << "ShiftX" << "ShiftY";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Global Correction: Own Shifts", "UserDefinedShifts", getUserDefinedShifts(), linkedProps, FilterParameter::Parameter));
-  parameters.push_back(DoubleFilterParameter::New("Total Shift In X-Direction (Microns)", "ShiftX", getShiftX(), FilterParameter::Parameter));
-  parameters.push_back(DoubleFilterParameter::New("Total Shift In Y-Direction (Microns)", "ShiftY", getShiftY(), FilterParameter::Parameter));
-
-  parameters.push_back(SeparatorFilterParameter::New("Image Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
-    QVector< QVector<size_t> > cDims;
-    cDims.push_back(QVector<size_t>(1, 1));
-    cDims.push_back(QVector<size_t>(1, 3));
-    cDims.push_back(QVector<size_t>(1, 4));
-    req.componentDimensions = cDims;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Image Data", "ImageDataArrayPath", getImageDataArrayPath(), FilterParameter::RequiredArray, req));
+    LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
+    parameter->setHumanLabel("Global Correction");
+    parameter->setPropertyName("GlobalCorrection");
+
+    parameter->setDefaultValue(0); 
+
+    QVector<QString> choices;
+    choices.push_back("None");
+    choices.push_back("SEM Images");
+    choices.push_back("Own Shifts");
+
+    parameter->setChoices(choices);
+    QStringList linkedProps;
+    linkedProps << "ImageDataArrayPath" << "ShiftX" << "ShiftY";
+    parameter->setLinkedProperties(linkedProps);
+    parameter->setEditable(false);
+    parameter->setCategory(FilterParameter::Parameter);
+    parameters.push_back(parameter);
+
+    parameters.push_back(SeparatorFilterParameter::New("Image Data", FilterParameter::RequiredArray));
+    {
+	  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
+	  QVector< QVector<size_t> > cDims;
+	  cDims.push_back(QVector<size_t>(1, 1));
+	  cDims.push_back(QVector<size_t>(1, 3));
+	  cDims.push_back(QVector<size_t>(1, 4));
+	  req.componentDimensions = cDims;
+	  parameters.push_back(DataArraySelectionFilterParameter::New("Image Data", "ImageDataArrayPath", getImageDataArrayPath(), FilterParameter::RequiredArray, req, 1));
+    }
+
+    parameters.push_back(DoubleFilterParameter::New("Total Shift In X-Direction (Microns)", "ShiftX", getShiftX(), FilterParameter::Parameter, 2));
+    parameters.push_back(DoubleFilterParameter::New("Total Shift In Y-Direction (Microns)", "ShiftY", getShiftY(), FilterParameter::Parameter, 2));
   }
-
-  //parameters.push_back(StringFilterParameter::New("Output Attribute Array", "NewCellArrayName", getNewCellArrayName(), FilterParameter::CreatedArray));
-
+  
   setFilterParameters(parameters);
 }
 
@@ -134,13 +145,10 @@ void AdaptiveAlignment::readFilterParameters(AbstractFilterParametersReader* rea
   reader->openFilterGroup(this, index);
   setAlignmentShiftFileName(reader->readString("AlignmentShiftFileName", getAlignmentShiftFileName()));
   setWriteAlignmentShifts(reader->readValue("WriteAlignmentShifts", getWriteAlignmentShifts()));
-  setUseImages(reader->readValue("UseImages", getUseImages()));
+  setGlobalCorrection(reader->readValue("UseImages", getGlobalCorrection()));
   setImageDataArrayPath(reader->readDataArrayPath("ImageDataArrayPath", getImageDataArrayPath()));
-  setUserDefinedShifts(reader->readValue("UserDefinedShifts", getUserDefinedShifts()));
   setShiftX(reader->readValue("ShiftX", getShiftX()));
   setShiftY(reader->readValue("ShiftY", getShiftY()));
-
-  //setNewCellArrayName(reader->readString("NewCellArrayName", getNewCellArrayName())); // delete this
   reader->closeFilterGroup();
 }
 
@@ -151,14 +159,13 @@ int AdaptiveAlignment::writeFilterParameters(AbstractFilterParametersWriter* wri
 {
   writer->openFilterGroup(this, index);
   SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-    SIMPL_FILTER_WRITE_PARAMETER(AlignmentShiftFileName)
-    SIMPL_FILTER_WRITE_PARAMETER(WriteAlignmentShifts)
-    SIMPL_FILTER_WRITE_PARAMETER(UseImages)
-    SIMPL_FILTER_WRITE_PARAMETER(ImageDataArrayPath)
-    SIMPL_FILTER_WRITE_PARAMETER(UserDefinedShifts)
-    SIMPL_FILTER_WRITE_PARAMETER(ShiftX)
-    SIMPL_FILTER_WRITE_PARAMETER(ShiftY)
-    writer->closeFilterGroup();
+  SIMPL_FILTER_WRITE_PARAMETER(AlignmentShiftFileName)
+  SIMPL_FILTER_WRITE_PARAMETER(WriteAlignmentShifts)
+  SIMPL_FILTER_WRITE_PARAMETER(GlobalCorrection)
+  SIMPL_FILTER_WRITE_PARAMETER(ImageDataArrayPath)
+  SIMPL_FILTER_WRITE_PARAMETER(ShiftX)
+  SIMPL_FILTER_WRITE_PARAMETER(ShiftY)
+  writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
 
@@ -201,14 +208,7 @@ void AdaptiveAlignment::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (m_UseImages == true && m_UserDefinedShifts == true)
-  {
-    QString ss = QObject::tr("Only one type of global correction can be selected.");
-    setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-
-  if (m_UseImages == true)
+  if (m_GlobalCorrection == 1)
   {
     int32_t numImageComp = 1;
     QVector<DataArrayPath> imageDataArrayPaths;
@@ -694,7 +694,7 @@ void AdaptiveAlignment::execute()
   std::vector<float> xneedshifts;
   std::vector<float> yneedshifts;
 
-  if (m_UserDefinedShifts)
+  if (m_GlobalCorrection == 2)
   {
     // user-defined shifts related to one pair of consecutive sections and converted to voxels
     float xinitvalue = m_ShiftX / (float)dims[2] / res[2];
@@ -704,7 +704,7 @@ void AdaptiveAlignment::execute()
   }
 
   // estimate shifts between slices from SEM images
-  if (m_UseImages)
+  if (m_GlobalCorrection == 1)
   {
     xneedshifts.resize(dims[2] - 1);
     yneedshifts.resize(dims[2] - 1);
