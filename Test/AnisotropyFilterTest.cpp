@@ -394,8 +394,6 @@ void addAdaptiveAlignmentMisorientationFilter(FilterPipeline::Pointer pipeline)
 
     propWasSet = filter->setProperty("GlobalCorrection", 1);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    propWasSet = filter->setProperty("UserDefinedShifts", false);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     propWasSet = filter->setProperty("MisorientationTolerance", 5.0f);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     propWasSet = filter->setProperty("UseGoodVoxels", false);
