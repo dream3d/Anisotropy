@@ -50,6 +50,7 @@
         "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Adaptive Alignment (Misorientation)",
         "Filter_Name": "AdaptiveAlignmentMisorientation",
+        "GlobalCorrection": 2,
         "GoodVoxelsArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "",
@@ -69,8 +70,6 @@
         "ShiftX": 0,
         "ShiftY": 0,
         "UseGoodVoxels": 0,
-        "UseImages": 0,
-        "UserDefinedShifts": 1,
         "WriteAlignmentShifts": 1
     },
     "PipelineBuilder": {
