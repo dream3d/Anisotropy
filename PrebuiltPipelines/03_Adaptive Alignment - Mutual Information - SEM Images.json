@@ -80,6 +80,7 @@
         "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Adaptive Alignment (Mutual Information)",
         "Filter_Name": "AdaptiveAlignmentMutualInformation",
+        "GlobalCorrection": 1,
         "GoodVoxelsArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "",
@@ -98,8 +99,6 @@
         "ShiftX": 0,
         "ShiftY": 0,
         "UseGoodVoxels": 0,
-        "UseImages": 1,
-        "UserDefinedShifts": 0,
         "WriteAlignmentShifts": 1
     },
     "PipelineBuilder": {
