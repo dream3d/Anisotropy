@@ -75,8 +75,8 @@ m_InputPath(""),
 m_ShiftX(0.0f),
 m_ShiftY(0.0f),
 m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData),
-m_FlatImageData(NULL),
-m_GlobalCorrection(0)
+m_GlobalCorrection(0),
+m_FlatImageData(NULL)
 {
   setupFilterParameters();
 }
