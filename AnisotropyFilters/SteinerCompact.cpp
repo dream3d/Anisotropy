@@ -125,7 +125,7 @@ void SteinerCompact::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  //parameters.push_back(IntFilterParameter::New("Number Of Sites", "Sites", getSites(), FilterParameter::Parameter));
+  //parameters.push_back(IntFilterParameter::New("Number Of Sites", "Sites", getSites(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, Sites), SIMPL_BIND_GETTER(SteinerCompact, this, Sites)));
   linkedProps.clear();
   linkedProps << "VtkFileName";
   parameters.push_back(LinkedBooleanFilterParameter::New("Graphical Output As .vtk", "VtkOutput", getVtkOutput(), linkedProps, FilterParameter::Parameter));
