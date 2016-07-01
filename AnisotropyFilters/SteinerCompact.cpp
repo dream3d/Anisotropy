@@ -101,6 +101,8 @@ void SteinerCompact::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Section Plane");
     parameter->setPropertyName("Plane");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(SteinerCompact, this, Plane));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(SteinerCompact, this, Plane));
     QVector<QString> choices;
     choices.push_back("XY");
     choices.push_back("XZ");
@@ -114,6 +116,8 @@ void SteinerCompact::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Number Of Sites");
     parameter->setPropertyName("Sites");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(SteinerCompact, this, Sites));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(SteinerCompact, this, Sites));
     QVector<QString> choices;
     choices.push_back("8");
     choices.push_back("12");

@@ -103,6 +103,8 @@ void AdaptiveAlignment::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Global Correction");
     parameter->setPropertyName("GlobalCorrection");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(AdaptiveAlignment, this, GlobalCorrection));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(AdaptiveAlignment, this, GlobalCorrection));
 
     parameter->setDefaultValue(0); 
 
