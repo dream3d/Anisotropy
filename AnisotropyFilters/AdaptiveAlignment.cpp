@@ -157,23 +157,6 @@ void AdaptiveAlignment::readFilterParameters(AbstractFilterParametersReader* rea
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AdaptiveAlignment::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(AlignmentShiftFileName)
-  SIMPL_FILTER_WRITE_PARAMETER(WriteAlignmentShifts)
-  SIMPL_FILTER_WRITE_PARAMETER(GlobalCorrection)
-  SIMPL_FILTER_WRITE_PARAMETER(ImageDataArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(ShiftX)
-  SIMPL_FILTER_WRITE_PARAMETER(ShiftY)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AdaptiveAlignment::initialize()
 {
   m_RectangleCorners.clear();

@@ -96,18 +96,6 @@ void AdaptiveAlignmentFeature::readFilterParameters(AbstractFilterParametersRead
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AdaptiveAlignmentFeature::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AdaptiveAlignment::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(GoodVoxelsArrayPath)
-    writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AdaptiveAlignmentFeature::initialize()
 {
 

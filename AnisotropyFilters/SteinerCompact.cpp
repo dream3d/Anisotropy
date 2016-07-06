@@ -171,25 +171,6 @@ void SteinerCompact::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int SteinerCompact::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(Plane)
-  SIMPL_FILTER_WRITE_PARAMETER(Sites)
-  SIMPL_FILTER_WRITE_PARAMETER(VtkOutput)
-  SIMPL_FILTER_WRITE_PARAMETER(VtkFileName)
-  SIMPL_FILTER_WRITE_PARAMETER(TxtOutput)
-  SIMPL_FILTER_WRITE_PARAMETER(TxtFileName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SteinerCompact::initialize()
 {
 

@@ -135,23 +135,6 @@ void AdaptiveAlignmentMisorientation::readFilterParameters(AbstractFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AdaptiveAlignmentMisorientation::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AdaptiveAlignment::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(GoodVoxelsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(UseGoodVoxels)
-  SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(QuatsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(MisorientationTolerance)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AdaptiveAlignmentMisorientation::initialize()
 {
   m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
