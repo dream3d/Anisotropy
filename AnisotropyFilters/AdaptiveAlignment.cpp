@@ -66,17 +66,21 @@
 //
 // -----------------------------------------------------------------------------
 AdaptiveAlignment::AdaptiveAlignment() :
-AbstractFilter(),
-m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
-m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
-m_WriteAlignmentShifts(false),
-m_AlignmentShiftFileName(""),
-m_InputPath(""),
-m_ShiftX(0.0f),
-m_ShiftY(0.0f),
-m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData),
-m_GlobalCorrection(0),
-m_FlatImageData(NULL)
+  AbstractFilter(),
+  m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
+  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
+  m_WriteAlignmentShifts(false),
+  m_AlignmentShiftFileName(""),
+  m_GlobalCorrection(0),
+  m_InputPath(""),
+  m_ShiftX(0.0f),
+  m_ShiftY(0.0f),
+  m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData),
+  m_NewCellArrayName(""),
+  m_MinRadius(0.0f),
+  m_MaxRadius(0.0f),
+  m_NumberCircles(0),
+  m_FlatImageData(NULL)
 {
   setupFilterParameters();
 }
