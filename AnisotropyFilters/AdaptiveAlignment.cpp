@@ -100,13 +100,15 @@ void AdaptiveAlignment::setupFilterParameters()
   FilterParameterVector parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
-  parameters.push_back(LinkedBooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), linkedProps, FilterParameter::Parameter));
-  parameters.push_back(OutputFileFilterParameter::New("Alignment File", "AlignmentShiftFileName", getAlignmentShiftFileName(), FilterParameter::Parameter, "", "*.txt"));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(AdaptiveAlignment, this, WriteAlignmentShifts)));
+  parameters.push_back(OutputFileFilterParameter::New("Alignment File", "AlignmentShiftFileName", getAlignmentShiftFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, AlignmentShiftFileName), SIMPL_BIND_GETTER(AdaptiveAlignment, this, AlignmentShiftFileName), "", "*.txt"));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Global Correction");
     parameter->setPropertyName("GlobalCorrection");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(AdaptiveAlignment, this, GlobalCorrection));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(AdaptiveAlignment, this, GlobalCorrection));
 
     parameter->setDefaultValue(0); 
 
@@ -131,11 +133,11 @@ void AdaptiveAlignment::setupFilterParameters()
 	  cDims.push_back(QVector<size_t>(1, 3));
 	  cDims.push_back(QVector<size_t>(1, 4));
 	  req.componentDimensions = cDims;
-	  parameters.push_back(DataArraySelectionFilterParameter::New("Image Data", "ImageDataArrayPath", getImageDataArrayPath(), FilterParameter::RequiredArray, req, 1));
+	  parameters.push_back(DataArraySelectionFilterParameter::New("Image Data", "ImageDataArrayPath", getImageDataArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ImageDataArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ImageDataArrayPath), 1));
     }
 
-    parameters.push_back(DoubleFilterParameter::New("Total Shift In X-Direction (Microns)", "ShiftX", getShiftX(), FilterParameter::Parameter, 2));
-    parameters.push_back(DoubleFilterParameter::New("Total Shift In Y-Direction (Microns)", "ShiftY", getShiftY(), FilterParameter::Parameter, 2));
+    parameters.push_back(DoubleFilterParameter::New("Total Shift In X-Direction (Microns)", "ShiftX", getShiftX(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ShiftX), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ShiftX), 2));
+    parameters.push_back(DoubleFilterParameter::New("Total Shift In Y-Direction (Microns)", "ShiftY", getShiftY(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ShiftY), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ShiftY), 2));
   }
   
   setFilterParameters(parameters);
@@ -154,23 +156,6 @@ void AdaptiveAlignment::readFilterParameters(AbstractFilterParametersReader* rea
   setShiftX(reader->readValue("ShiftX", getShiftX()));
   setShiftY(reader->readValue("ShiftY", getShiftY()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int AdaptiveAlignment::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(AlignmentShiftFileName)
-  SIMPL_FILTER_WRITE_PARAMETER(WriteAlignmentShifts)
-  SIMPL_FILTER_WRITE_PARAMETER(GlobalCorrection)
-  SIMPL_FILTER_WRITE_PARAMETER(ImageDataArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(ShiftX)
-  SIMPL_FILTER_WRITE_PARAMETER(ShiftY)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

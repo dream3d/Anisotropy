@@ -92,26 +92,26 @@ void AdaptiveAlignmentMisorientation::setupFilterParameters()
 {
   // getting the current parameters that were set by the parent and adding to it before resetting it
   FilterParameterVector parameters = getFilterParameters();
-  parameters.push_front(DoubleFilterParameter::New("Misorientation Tolerance (Degrees)", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter));
+  parameters.push_front(DoubleFilterParameter::New("Misorientation Tolerance (Degrees)", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, MisorientationTolerance), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, MisorientationTolerance)));
   QStringList linkedProps("GoodVoxelsArrayPath");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use Mask Array", "UseGoodVoxels", getUseGoodVoxels(), linkedProps, FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Use Mask Array", "UseGoodVoxels", getUseGoodVoxels(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, UseGoodVoxels), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, UseGoodVoxels)));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Float, 4, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Quaternions", "QuatsArrayPath", getQuatsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Quaternions", "QuatsArrayPath", getQuatsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, QuatsArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, QuatsArrayPath)));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "CellPhasesArrayPath", getCellPhasesArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "CellPhasesArrayPath", getCellPhasesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, CellPhasesArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, CellPhasesArrayPath)));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "GoodVoxelsArrayPath", getGoodVoxelsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "GoodVoxelsArrayPath", getGoodVoxelsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, GoodVoxelsArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, GoodVoxelsArrayPath)));
   }
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt32, 1, SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Crystal Structures", "CrystalStructuresArrayPath", getCrystalStructuresArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, CrystalStructuresArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, CrystalStructuresArrayPath)));
   }
   setFilterParameters(parameters);
 }
@@ -130,23 +130,6 @@ void AdaptiveAlignmentMisorientation::readFilterParameters(AbstractFilterParamet
   setQuatsArrayPath(reader->readDataArrayPath("QuatsArrayPath", getQuatsArrayPath()));
   setMisorientationTolerance(reader->readValue("MisorientationTolerance", getMisorientationTolerance()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int AdaptiveAlignmentMisorientation::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AdaptiveAlignment::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(GoodVoxelsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(UseGoodVoxels)
-  SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(QuatsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(MisorientationTolerance)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

@@ -101,6 +101,8 @@ void SteinerCompact::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Section Plane");
     parameter->setPropertyName("Plane");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(SteinerCompact, this, Plane));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(SteinerCompact, this, Plane));
     QVector<QString> choices;
     choices.push_back("XY");
     choices.push_back("XZ");
@@ -114,6 +116,8 @@ void SteinerCompact::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Number Of Sites");
     parameter->setPropertyName("Sites");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(SteinerCompact, this, Sites));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(SteinerCompact, this, Sites));
     QVector<QString> choices;
     choices.push_back("8");
     choices.push_back("12");
@@ -125,23 +129,23 @@ void SteinerCompact::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  //parameters.push_back(IntFilterParameter::New("Number Of Sites", "Sites", getSites(), FilterParameter::Parameter));
+  //parameters.push_back(IntFilterParameter::New("Number Of Sites", "Sites", getSites(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, Sites), SIMPL_BIND_GETTER(SteinerCompact, this, Sites)));
   linkedProps.clear();
   linkedProps << "VtkFileName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Graphical Output As .vtk", "VtkOutput", getVtkOutput(), linkedProps, FilterParameter::Parameter));
-  parameters.push_back(OutputFileFilterParameter::New("Output Vtk File", "VtkFileName", getVtkFileName(), FilterParameter::Parameter, "*.vtk", "VTK Polydata"));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Graphical Output As .vtk", "VtkOutput", getVtkOutput(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, VtkOutput), SIMPL_BIND_GETTER(SteinerCompact, this, VtkOutput)));
+  parameters.push_back(OutputFileFilterParameter::New("Output Vtk File", "VtkFileName", getVtkFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, VtkFileName), SIMPL_BIND_GETTER(SteinerCompact, this, VtkFileName), "*.vtk", "VTK Polydata"));
   linkedProps.clear();
   linkedProps << "TxtFileName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Text Output As .txt", "TxtOutput", getTxtOutput(), linkedProps, FilterParameter::Parameter));
-  parameters.push_back(OutputFileFilterParameter::New("Output Text File", "TxtFileName", getTxtFileName(), FilterParameter::Parameter, "*.txt", "Text"));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Text Output As .txt", "TxtOutput", getTxtOutput(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, TxtOutput), SIMPL_BIND_GETTER(SteinerCompact, this, TxtOutput)));
+  parameters.push_back(OutputFileFilterParameter::New("Output Text File", "TxtFileName", getTxtFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, TxtFileName), SIMPL_BIND_GETTER(SteinerCompact, this, TxtFileName), "*.txt", "Text"));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(SteinerCompact, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(SteinerCompact, this, FeatureIdsArrayPath)));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "CellPhasesArrayPath", getCellPhasesArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Phases", "CellPhasesArrayPath", getCellPhasesArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(SteinerCompact, this, CellPhasesArrayPath), SIMPL_BIND_GETTER(SteinerCompact, this, CellPhasesArrayPath)));
   }
 
   setFilterParameters(parameters);
@@ -162,25 +166,6 @@ void SteinerCompact::readFilterParameters(AbstractFilterParametersReader* reader
   setTxtOutput(reader->readValue("TxtOutput", getTxtOutput()));
   setTxtFileName(reader->readString("TxtFileName", getTxtFileName()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int SteinerCompact::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(Plane)
-  SIMPL_FILTER_WRITE_PARAMETER(Sites)
-  SIMPL_FILTER_WRITE_PARAMETER(VtkOutput)
-  SIMPL_FILTER_WRITE_PARAMETER(VtkFileName)
-  SIMPL_FILTER_WRITE_PARAMETER(TxtOutput)
-  SIMPL_FILTER_WRITE_PARAMETER(TxtFileName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------
