@@ -93,7 +93,7 @@ void AdaptiveAlignmentMisorientation::setupFilterParameters()
   FilterParameterVector parameters = getFilterParameters();
   parameters.push_front(DoubleFilterParameter::New("Misorientation Tolerance (Degrees)", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, MisorientationTolerance), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, MisorientationTolerance)));
   QStringList linkedProps("GoodVoxelsArrayPath");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use Mask Array", "UseGoodVoxels", getUseGoodVoxels(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, UseGoodVoxels), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, UseGoodVoxels)));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Use Mask Array", "UseGoodVoxels", getUseGoodVoxels(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMisorientation, this, UseGoodVoxels), SIMPL_BIND_GETTER(AdaptiveAlignmentMisorientation, this, UseGoodVoxels), linkedProps));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Float, 4, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);

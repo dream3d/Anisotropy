@@ -99,7 +99,7 @@ void AdaptiveAlignment::setupFilterParameters()
   FilterParameterVector parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
-  parameters.push_back(LinkedBooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(AdaptiveAlignment, this, WriteAlignmentShifts)));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(AdaptiveAlignment, this, WriteAlignmentShifts), linkedProps));
   parameters.push_back(OutputFileFilterParameter::New("Alignment File", "AlignmentShiftFileName", getAlignmentShiftFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, AlignmentShiftFileName), SIMPL_BIND_GETTER(AdaptiveAlignment, this, AlignmentShiftFileName), "", "*.txt"));
 
   {
