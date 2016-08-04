@@ -92,7 +92,7 @@ void AdaptiveAlignmentMutualInformation::setupFilterParameters()
 {
   // getting the current parameters that were set by the parent and adding to it before resetting it
   FilterParameterVector parameters = getFilterParameters();
-  parameters.push_front(DoubleFilterParameter::New("Misorientation Tolerance", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMutualInformation, this, MisorientationTolerance), SIMPL_BIND_GETTER(AdaptiveAlignmentMutualInformation, this, MisorientationTolerance)));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, AdaptiveAlignmentMutualInformation));
   QStringList linkedProps("GoodVoxelsArrayPath");
   parameters.push_back(LinkedBooleanFilterParameter::New("Use Mask Array", "UseGoodVoxels", getUseGoodVoxels(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMutualInformation, this, UseGoodVoxels), SIMPL_BIND_GETTER(AdaptiveAlignmentMutualInformation, this, UseGoodVoxels), linkedProps));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
