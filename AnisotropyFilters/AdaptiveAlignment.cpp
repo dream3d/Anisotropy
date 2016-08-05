@@ -132,7 +132,7 @@ void AdaptiveAlignment::setupFilterParameters()
 	  cDims.push_back(QVector<size_t>(1, 3));
 	  cDims.push_back(QVector<size_t>(1, 4));
 	  req.componentDimensions = cDims;
-	  parameters.push_back(DataArraySelectionFilterParameter::New("Image Data", "ImageDataArrayPath", getImageDataArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ImageDataArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ImageDataArrayPath), req, 1));
+	  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Image Data", ImageDataArrayPath, FilterParameter::RequiredArray, AdaptiveAlignment, req, 1));
     }
 
     parameters.push_back(SIMPL_NEW_DOUBLE_FP("Total Shift In X-Direction (Microns)", ShiftX, FilterParameter::Parameter, AdaptiveAlignment, 2));
