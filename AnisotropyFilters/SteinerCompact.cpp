@@ -132,11 +132,11 @@ void SteinerCompact::setupFilterParameters()
   linkedProps.clear();
   linkedProps << "VtkFileName";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Graphical Output As .vtk", VtkOutput, FilterParameter::Parameter, SteinerCompact, linkedProps));
-  parameters.push_back(OutputFileFilterParameter::New("Output Vtk File", "VtkFileName", getVtkFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, VtkFileName), SIMPL_BIND_GETTER(SteinerCompact, this, VtkFileName), "*.vtk", "VTK Polydata"));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output Vtk File", VtkFileName, FilterParameter::Parameter, SteinerCompact, "*.vtk", "VTK Polydata"));
   linkedProps.clear();
   linkedProps << "TxtFileName";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Text Output As .txt", TxtOutput, FilterParameter::Parameter, SteinerCompact, linkedProps));
-  parameters.push_back(OutputFileFilterParameter::New("Output Text File", "TxtFileName", getTxtFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, TxtFileName), SIMPL_BIND_GETTER(SteinerCompact, this, TxtFileName), "*.txt", "Text"));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output Text File", TxtFileName, FilterParameter::Parameter, SteinerCompact, "*.txt", "Text"));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
