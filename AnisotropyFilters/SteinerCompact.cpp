@@ -131,11 +131,11 @@ void SteinerCompact::setupFilterParameters()
   //parameters.push_back(SIMPL_NEW_INTEGER_FP("Number Of Sites", Sites, FilterParameter::Parameter, SteinerCompact));
   linkedProps.clear();
   linkedProps << "VtkFileName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Graphical Output As .vtk", "VtkOutput", getVtkOutput(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, VtkOutput), SIMPL_BIND_GETTER(SteinerCompact, this, VtkOutput), linkedProps));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Graphical Output As .vtk", VtkOutput, FilterParameter::Parameter, SteinerCompact, linkedProps));
   parameters.push_back(OutputFileFilterParameter::New("Output Vtk File", "VtkFileName", getVtkFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, VtkFileName), SIMPL_BIND_GETTER(SteinerCompact, this, VtkFileName), "*.vtk", "VTK Polydata"));
   linkedProps.clear();
   linkedProps << "TxtFileName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Text Output As .txt", "TxtOutput", getTxtOutput(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, TxtOutput), SIMPL_BIND_GETTER(SteinerCompact, this, TxtOutput), linkedProps));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Text Output As .txt", TxtOutput, FilterParameter::Parameter, SteinerCompact, linkedProps));
   parameters.push_back(OutputFileFilterParameter::New("Output Text File", "TxtFileName", getTxtFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SteinerCompact, this, TxtFileName), SIMPL_BIND_GETTER(SteinerCompact, this, TxtFileName), "*.txt", "Text"));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {

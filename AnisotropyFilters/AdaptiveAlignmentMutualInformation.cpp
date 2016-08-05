@@ -94,7 +94,7 @@ void AdaptiveAlignmentMutualInformation::setupFilterParameters()
   FilterParameterVector parameters = getFilterParameters();
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, AdaptiveAlignmentMutualInformation));
   QStringList linkedProps("GoodVoxelsArrayPath");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Use Mask Array", "UseGoodVoxels", getUseGoodVoxels(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignmentMutualInformation, this, UseGoodVoxels), SIMPL_BIND_GETTER(AdaptiveAlignmentMutualInformation, this, UseGoodVoxels), linkedProps));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask Array", UseGoodVoxels, FilterParameter::Parameter, AdaptiveAlignmentMutualInformation, linkedProps));
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Float, 4, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
