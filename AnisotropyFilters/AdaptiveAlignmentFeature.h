@@ -49,7 +49,7 @@
 * @brief The AdaptiveAlignmentFeature class. See [Filter documentation](@ref AdaptiveAlignmentfeature) for details.
 */
 class AdaptiveAlignmentFeature : public AdaptiveAlignment {
-    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+    Q_OBJECT
   public : SIMPL_SHARED_POINTERS(AdaptiveAlignmentFeature)
     SIMPL_STATIC_NEW_MACRO(AdaptiveAlignmentFeature)
     SIMPL_TYPE_MACRO_SUPER(AdaptiveAlignmentFeature,

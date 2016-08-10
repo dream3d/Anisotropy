@@ -49,7 +49,7 @@
 */
 class AdaptiveAlignment : public AbstractFilter
 {
-    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+    Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(AdaptiveAlignment)
     SIMPL_STATIC_NEW_MACRO(AdaptiveAlignment)
