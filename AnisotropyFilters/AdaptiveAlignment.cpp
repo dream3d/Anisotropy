@@ -99,8 +99,8 @@ void AdaptiveAlignment::setupFilterParameters()
   FilterParameterVector parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
-  parameters.push_back(LinkedBooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(AdaptiveAlignment, this, WriteAlignmentShifts)));
-  parameters.push_back(OutputFileFilterParameter::New("Alignment File", "AlignmentShiftFileName", getAlignmentShiftFileName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, AlignmentShiftFileName), SIMPL_BIND_GETTER(AdaptiveAlignment, this, AlignmentShiftFileName), "", "*.txt"));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Alignment File", AlignmentShiftFileName, FilterParameter::Parameter, AdaptiveAlignment, "", "*.txt"));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
@@ -132,11 +132,11 @@ void AdaptiveAlignment::setupFilterParameters()
 	  cDims.push_back(QVector<size_t>(1, 3));
 	  cDims.push_back(QVector<size_t>(1, 4));
 	  req.componentDimensions = cDims;
-	  parameters.push_back(DataArraySelectionFilterParameter::New("Image Data", "ImageDataArrayPath", getImageDataArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ImageDataArrayPath), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ImageDataArrayPath), 1));
+	  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Image Data", ImageDataArrayPath, FilterParameter::RequiredArray, AdaptiveAlignment, req, 1));
     }
 
-    parameters.push_back(DoubleFilterParameter::New("Total Shift In X-Direction (Microns)", "ShiftX", getShiftX(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ShiftX), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ShiftX), 2));
-    parameters.push_back(DoubleFilterParameter::New("Total Shift In Y-Direction (Microns)", "ShiftY", getShiftY(), FilterParameter::Parameter, SIMPL_BIND_SETTER(AdaptiveAlignment, this, ShiftY), SIMPL_BIND_GETTER(AdaptiveAlignment, this, ShiftY), 2));
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Total Shift In X-Direction (Microns)", ShiftX, FilterParameter::Parameter, AdaptiveAlignment, 2));
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Total Shift In Y-Direction (Microns)", ShiftY, FilterParameter::Parameter, AdaptiveAlignment, 2));
   }
   
   setFilterParameters(parameters);
