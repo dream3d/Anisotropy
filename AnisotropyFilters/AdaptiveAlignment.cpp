@@ -79,7 +79,7 @@ AdaptiveAlignment::AdaptiveAlignment() :
   m_MinRadius(0.0f),
   m_MaxRadius(0.0f),
   m_NumberCircles(0),
-  m_FlatImageData(NULL)
+  m_FlatImageData(nullptr)
 {
   setupFilterParameters();
 }
@@ -202,13 +202,13 @@ void AdaptiveAlignment::dataCheck()
     QVector<DataArrayPath> imageDataArrayPaths;
     IDataArray::Pointer iDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getImageDataArrayPath());
     if (getErrorCondition() < 0) { return; }
-    if (NULL != iDataArray.get())
+    if (nullptr != iDataArray.get())
     {
       numImageComp = iDataArray->getNumberOfComponents();
     }
     QVector<size_t> cDims(1, numImageComp);
     m_ImageDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter>(this, getImageDataArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (NULL != m_ImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+    if (nullptr != m_ImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_ImageData = m_ImageDataPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -254,7 +254,7 @@ void AdaptiveAlignment::create_array_for_flattened_image()
   DataArrayPath tempPath;
   tempPath.update(getImageDataArrayPath().getDataContainerName(), getImageDataArrayPath().getAttributeMatrixName(), "tempFlatImageDataName");
   m_FlatImageDataPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<ImageProcessingConstants::DefaultPixelType>, AbstractFilter, ImageProcessingConstants::DefaultPixelType>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (NULL != m_FlatImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_FlatImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FlatImageData = m_FlatImageDataPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

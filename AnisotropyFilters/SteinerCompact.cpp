@@ -76,8 +76,8 @@ SteinerCompact::SteinerCompact() :
   m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases),
   m_Plane(0),
   m_Sites(1),
-  m_FeatureIds(NULL),
-  m_CellPhases(NULL)
+  m_FeatureIds(nullptr),
+  m_CellPhases(nullptr)
 {
   setupFilterParameters();
 }
@@ -241,14 +241,14 @@ void SteinerCompact::dataCheck()
   }
 
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (NULL != m_FeatureIdsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_FeatureIdsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
   if (getErrorCondition() >= 0) { dataArrayPaths.push_back(getFeatureIdsArrayPath()); }
 
   m_CellPhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getCellPhasesArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (NULL != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -842,7 +842,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   std::ofstream pom("pom.txt");
   pom << m_VtkOutput << std::endl;
 
-  FILE *vtk = NULL;
+  FILE *vtk = nullptr;
 
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
@@ -858,7 +858,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   }
 
   vtk = fopen(getVtkFileName().toLatin1().data(), "w");
-  if (NULL == vtk)
+  if (nullptr == vtk)
   {
     QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
     setErrorCondition(-2031001);
@@ -991,7 +991,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
 
 void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& ROI)
 {
-  FILE *txt = NULL;
+  FILE *txt = nullptr;
 
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
@@ -1007,7 +1007,7 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   }
 
   txt = fopen(getTxtFileName().toLatin1().data(), "w");
-  if (NULL == txt)
+  if (nullptr == txt)
   {
     QString ss = QObject::tr("Error opening output txt file '%1'\n ").arg(m_TxtFileName);
     setErrorCondition(-2031001);

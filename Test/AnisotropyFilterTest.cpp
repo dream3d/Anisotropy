@@ -101,7 +101,7 @@ int TestFilterAvailability()
     QString filtName = "AdaptiveAlignmentFeature";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-    if (NULL == filterFactory.get())
+    if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the AdaptiveAlignmentFeature while executing the AnisotropyTest.";
@@ -114,7 +114,7 @@ int TestFilterAvailability()
     QString filtName = "AdaptiveAlignmentMisorientation";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-    if (NULL == filterFactory.get())
+    if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the AdaptiveAlignmentMisorientation while executing the AnisotropyTest.";
@@ -127,7 +127,7 @@ int TestFilterAvailability()
     QString filtName = "AdaptiveAlignmentMutualInformation";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-    if (NULL == filterFactory.get())
+    if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the AdaptiveAlignmentMutualInformation while executing the AnisotropyTest.";
@@ -140,7 +140,7 @@ int TestFilterAvailability()
     QString filtName = "SteinerCompact";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-    if (NULL == filterFactory.get())
+    if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the SteinerCompact while executing the AnisotropyTest.";
@@ -163,7 +163,7 @@ void addReadH5EBSDFilter(FilterPipeline::Pointer pipeline)
 
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -204,7 +204,7 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -253,7 +253,7 @@ void addMultiThresholdObjectsFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     QVariant var;
@@ -287,7 +287,7 @@ void addConvertOrientationsFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -323,7 +323,7 @@ void addEBSDSegmentFeatures(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -351,7 +351,7 @@ void addAdaptiveAlignmentFeatureFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -385,7 +385,7 @@ void addAdaptiveAlignmentMisorientationFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
 
@@ -426,7 +426,7 @@ void addAdaptiveAlignmentMutualInformationFilter(FilterPipeline::Pointer pipelin
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -460,7 +460,7 @@ void addSteinerCompactFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
 
-  if (NULL != filterFactory.get())
+  if (nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
