@@ -215,7 +215,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
 
-  int64_t totalPoints = m->getAttributeMatrix(getCellAttributeMatrixName())->getNumTuples();
+  int64_t totalPoints = m->getAttributeMatrix(getCellAttributeMatrixName())->getNumberOfTuples();
   m_MIFeaturesPtr = Int32ArrayType::CreateArray((totalPoints * 1), "_INTERNAL_USE_ONLY_MIFeatureIds");
   m_MIFeaturesPtr->initializeWithZeros();
   int32_t* miFeatureIds = m_MIFeaturesPtr->getPointer(0);
