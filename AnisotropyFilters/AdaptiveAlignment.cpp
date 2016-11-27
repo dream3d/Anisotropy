@@ -126,7 +126,7 @@ void AdaptiveAlignment::setupFilterParameters()
 
     parameters.push_back(SeparatorFilterParameter::New("Image Data", FilterParameter::RequiredArray));
     {
-	  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixType::Cell, SIMPL::GeometryType::ImageGeometry);
+	  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, SIMPL::GeometryType::ImageGeometry);
 	  QVector< QVector<size_t> > cDims;
 	  cDims.push_back(QVector<size_t>(1, 1));
 	  cDims.push_back(QVector<size_t>(1, 3));
