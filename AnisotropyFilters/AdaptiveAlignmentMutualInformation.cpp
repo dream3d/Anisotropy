@@ -310,13 +310,18 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
         {
           disorientation = 0;
           count = 0;
-          if (llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+          if (  static_cast<uint64_t>(std::abs(k + oldxshift)) < halfDim0
+              && static_cast<uint64_t>(std::abs(j + oldyshift)) < halfDim1
+              && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
           {
             for (uint64_t l = 0; l < dims[1]; l = l + 4)
             {
               for (uint64_t n = 0; n < dims[0]; n = n + 4)
               {
-                if (int64_t((l + j + oldyshift)) >= 0 && (l + j + oldyshift) < dims[1] && int64_t((n + k + oldxshift)) >= 0 && (n + k + oldxshift) < dims[0])
+                if (int64_t((l + j + oldyshift)) >= 0
+                    && (l + j + oldyshift) < dims[1]
+                    && int64_t((n + k + oldxshift)) >= 0
+                    && (n + k + oldxshift) < dims[0])
                 {
                   refposition = ((slice + 1) * dims[0] * dims[1]) + (l * dims[0]) + n;
                   curposition = (slice * dims[0] * dims[1]) + ((l + j + oldyshift) * dims[0]) + (n + k + oldxshift);
@@ -344,22 +349,22 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
             for (int32_t b = 0; b < featurecount1; b++)
             {
               mutualinfo1[b] = mutualinfo1[b] / count;
-              if (mutualinfo1[b] != 0) { ha = ha + mutualinfo1[b] * logf(mutualinfo1[b]); }
+              if (mutualinfo1[b] != 0.0f) { ha = ha + mutualinfo1[b] * logf(mutualinfo1[b]); }
             }
             for (int32_t c = 0; c < featurecount2; c++)
             {
               mutualinfo2[c] = mutualinfo2[c] / float(count);
-              if (mutualinfo2[c] != 0) { hb = hb + mutualinfo2[c] * logf(mutualinfo2[c]); }
+              if (mutualinfo2[c] != 0.0f) { hb = hb + mutualinfo2[c] * logf(mutualinfo2[c]); }
             }
             for (int32_t b = 0; b < featurecount1; b++)
             {
               for (int32_t c = 0; c < featurecount2; c++)
               {
                 mutualinfo12[b][c] = mutualinfo12[b][c] / count;
-                if (mutualinfo12[b][c] != 0) { hab = hab + mutualinfo12[b][c] * logf(mutualinfo12[b][c]); }
+                if (mutualinfo12[b][c] != 0.0f) { hab = hab + mutualinfo12[b][c] * logf(mutualinfo12[b][c]); }
                 float value = 0.0f;
                 if (mutualinfo1[b] > 0 && mutualinfo2[c] > 0) { value = (mutualinfo12[b][c] / (mutualinfo1[b] * mutualinfo2[c])); }
-                if (value != 0) { disorientation = disorientation + (mutualinfo12[b][c] * logf(value)); }
+                if (value != 0.0f) { disorientation = disorientation + (mutualinfo12[b][c] * logf(value)); }
               }
             }
             for (int32_t b = 0; b < featurecount1; b++)
@@ -375,14 +380,14 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
             misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] = true;
 
             // compare the new shift with currently stored ones
-            int64_t s = maxstoredshifts;
+            int64_t s = static_cast<int64_t>(maxstoredshifts);
             while (s - 1 >= 0 && disorientation < mindisorientation[iter][s - 1])
             {
               s--;
             }
 
             // new shift is stored with index 's' in the arrays
-            if (s < maxstoredshifts)
+            if (s < static_cast<int64_t>(maxstoredshifts))
             {
               // lag the shifts already stored
               for (int64_t t = maxstoredshifts - 1; t > s; t--)
