@@ -47,7 +47,7 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "sitkExplicitITK.h"
+
 
 #include "Anisotropy/AnisotropyConstants.h"
 
@@ -109,7 +109,7 @@ void AdaptiveAlignment::setupFilterParameters()
     parameter->setSetterCallback(SIMPL_BIND_SETTER(AdaptiveAlignment, this, GlobalCorrection));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(AdaptiveAlignment, this, GlobalCorrection));
 
-    parameter->setDefaultValue(0); 
+    parameter->setDefaultValue(0);
 
     QVector<QString> choices;
     choices.push_back("None");
@@ -126,19 +126,19 @@ void AdaptiveAlignment::setupFilterParameters()
 
     parameters.push_back(SeparatorFilterParameter::New("Image Data", FilterParameter::RequiredArray));
     {
-	  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
-	  QVector< QVector<size_t> > cDims;
-	  cDims.push_back(QVector<size_t>(1, 1));
-	  cDims.push_back(QVector<size_t>(1, 3));
-	  cDims.push_back(QVector<size_t>(1, 4));
-	  req.componentDimensions = cDims;
-	  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Image Data", ImageDataArrayPath, FilterParameter::RequiredArray, AdaptiveAlignment, req, 1));
+      DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
+      QVector< QVector<size_t> > cDims;
+      cDims.push_back(QVector<size_t>(1, 1));
+      cDims.push_back(QVector<size_t>(1, 3));
+      cDims.push_back(QVector<size_t>(1, 4));
+      req.componentDimensions = cDims;
+      parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Image Data", ImageDataArrayPath, FilterParameter::RequiredArray, AdaptiveAlignment, req, 1));
     }
 
     parameters.push_back(SIMPL_NEW_FLOAT_FP("Total Shift In X-Direction (Microns)", ShiftX, FilterParameter::Parameter, AdaptiveAlignment, 2));
     parameters.push_back(SIMPL_NEW_FLOAT_FP("Total Shift In Y-Direction (Microns)", ShiftY, FilterParameter::Parameter, AdaptiveAlignment, 2));
   }
-  
+
   setFilterParameters(parameters);
 }
 
@@ -636,9 +636,9 @@ template<typename T>
 void initializeArrayValues(IDataArray::Pointer p, size_t index)
 {
 
-	typename DataArray<T>::Pointer ptr = std::dynamic_pointer_cast<DataArray<T>>(p);
-	T var = static_cast<T>(0);
-	ptr->initializeTuple(index, &var);
+    typename DataArray<T>::Pointer ptr = std::dynamic_pointer_cast<DataArray<T>>(p);
+    T var = static_cast<T>(0);
+    ptr->initializeTuple(index, &var);
 }
 
 // -----------------------------------------------------------------------------

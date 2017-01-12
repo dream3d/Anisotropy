@@ -12,8 +12,8 @@
 # list of conditions and the following disclaimer in the documentation and/or
 # other materials provided with the distribution.
 #
-# Neither the name of the Czech Academy of Sciences, nor the names of its 
-# contributors may be used to endorse or promote products derived from this 
+# Neither the name of the Czech Academy of Sciences, nor the names of its
+# contributors may be used to endorse or promote products derived from this
 # software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -31,7 +31,7 @@
 #    Czech Science Foundation (GA CR), project no. GBP108/12/G043
 #    Czech Ministry of Education, Youth and Sports (MSMT), project no. LM2015087
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 set(PLUGIN_NAME Anisotropy)
 set(${PLUGIN_NAME}_VERSION "1.0")
@@ -92,11 +92,7 @@ include(${${PLUGIN_NAME}_SOURCE_DIR}/Resources/SourceList.cmake)
 
 ## YOU MUST INCLUDE THIS FILE TO USE ITK !!!
 ## Then do not forget to add "${ITK_LIBRARIES}" to the target_link_libraries below
-if(DREAM3D_USE_ITK)
-  include( ${DREAM3D_SUPPORT_DIR}/ITKSupport/IncludeITK.cmake)
-  include_directories(${SimpleITKExplicit_BINARY_DIR}/Common/include)
-  include_directories(${SimpleITKExplicit_SOURCE_DIR}/Explicit/include)
-endif()
+include( ${DREAM3D_SUPPORT_DIR}/ITKSupport/IncludeITK.cmake)
 
 # --------------------------------------------------------------------
 # What image bit depth should be used
@@ -266,8 +262,8 @@ endif()
 add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_MODULE_SRCS})
 target_link_libraries(${PLUGIN_NAME}
                     SVWidgetsLib
-										SimpleITKExplicit
                     OrientationLib
+                    ${ITK_LIBRARIES}
                     )
 SET_TARGET_PROPERTIES(${PLUGIN_NAME} PROPERTIES FOLDER ${PLUGIN_NAME}Plugin)
 qt5_use_modules(${PLUGIN_NAME} Core Gui Widgets)
