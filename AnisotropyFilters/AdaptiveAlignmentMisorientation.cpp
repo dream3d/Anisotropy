@@ -260,6 +260,8 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
   const uint64_t halfDim0 = static_cast<uint64_t>(dims[0] * 0.5f);
   const uint64_t halfDim1 = static_cast<uint64_t>(dims[1] * 0.5f);
 
+  float misorientationTolerance = m_MisorientationTolerance * SIMPLib::Constants::k_Pif / 180.0f;
+
   // Loop over the Z Direction
   for (uint64_t iter = 1; iter < dims[2]; iter++)
   {
@@ -316,7 +318,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
                         w = m_OrientationOps[phase1]->getMisoQuat(q1, q2, n1, n2, n3);
                       }
                     }
-                    if (w > m_MisorientationTolerance) { disorientation++; }
+                    if (w > misorientationTolerance) { disorientation++; }
                   }
                   if (m_UseGoodVoxels == true)
                   {
@@ -596,9 +598,6 @@ void AdaptiveAlignmentMisorientation::execute()
 
   dataCheck();
   if (getErrorCondition() < 0) { return; }
-
-  // Converting the user defined tolerance to radians.
-  m_MisorientationTolerance = m_MisorientationTolerance * SIMPLib::Constants::k_Pi / 180.0f;
 
   AdaptiveAlignment::execute();
 
