@@ -70,7 +70,7 @@ m_CrystalStructures(nullptr)
 {
   m_Seed = QDateTime::currentMSecsSinceEpoch();
 
-  m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
+  m_OrientationOps = LaueOps::getOrientationOpsQVector();
 
   featurecounts = nullptr;
 

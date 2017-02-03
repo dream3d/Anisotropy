@@ -71,7 +71,7 @@ m_CrystalStructures(nullptr)
 {
   m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
 
-  m_OrientationOps = SpaceGroupOps::getOrientationOpsQVector();
+  m_OrientationOps = LaueOps::getOrientationOpsQVector();
 
   // only setting up the child parameters because the parent constructor has already been called
   setupFilterParameters();
