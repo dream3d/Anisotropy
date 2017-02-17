@@ -76,8 +76,17 @@ file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif" "${${PL
 configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
                ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
 			   
-AddSIMPLUnitTest(TESTNAME AnisotropyFilterTest
+AddSIMPLUnitTest(TESTNAME ${PLUGIN_NAME}UnitTest
     SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
     FOLDER "${PLUGIN_NAME}Plugin/Test"
 	LINK_LIBRARIES Qt5::Core H5Support SIMPLib Qt5::Widgets)
 
+target_include_directories(${PLUGIN_NAME}UnitTest
+                          PUBLIC ${PLUGINS_SOURCE_DIR}
+                          PUBLIC ${PLUGINS_BINARY_DIR}
+                          PUBLIC ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/Test
+)
+
+if(MSVC)
+  set_source_files_properties(${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+endif()
