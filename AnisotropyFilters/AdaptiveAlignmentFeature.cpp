@@ -161,7 +161,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   std::vector<std::vector<int64_t>>  newxshift(dims[2]);
   std::vector<std::vector<int64_t>>  newyshift(dims[2]);
   std::vector<std::vector<float>>  mindisorientation(dims[2]);
-  for (uint64_t a = 1; a < dims[2]; a++)
+  for (size_t a = 1; a < udims[2]; a++)
   {
     newxshift[a].resize(maxstoredshifts, 0);
     newyshift[a].resize(maxstoredshifts, 0);
@@ -192,7 +192,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     oldxshift = -1;
     oldyshift = -1;
 
-    for (uint64_t i = 0; i < dims[0]; i++)
+    for (size_t i = 0; i < udims[0]; i++)
     {
       misorients[i].assign(dims[1], false);
     }
@@ -208,7 +208,9 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
         {
           disorientation = 0.0f;
           count = 0.0f;
-          if (llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+          if ( (llabs(k + oldxshift) < static_cast<long long int>(halfDim0) )
+               && llabs(j + oldyshift) < static_cast<long long int>(halfDim1)
+               && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
           {
             for (int64_t l = 0; l < dims[1]; l = l + 4)
             {
@@ -238,7 +240,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
             }
 
             // new shift is stored with index 's' in the arrays
-            if (s < maxstoredshifts)
+            if (s < static_cast<int64_t>(maxstoredshifts))
             {
               // lag the shifts already stored
               for (int64_t t = maxstoredshifts - 1; t > s; t--)
@@ -289,7 +291,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
       tolerance = 1.0f;
       xshiftsest.resize(dims[2], 0);
       yshiftsest.resize(dims[2], 0);
-      for (uint64_t iter = 1; iter < dims[2]; iter++)
+      for (size_t iter = 1; iter < udims[2]; iter++)
       {
         xshiftsest[iter] = xshiftsest[iter - 1] + xneedshifts[iter - 1];
         yshiftsest[iter] = yshiftsest[iter - 1] + yneedshifts[iter - 1];
@@ -318,7 +320,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
         }
 
         olderror = curerror;
-        for (uint64_t iter = 1; iter < dims[2]; iter++)
+        for (size_t iter = 1; iter < udims[2]; iter++)
         {
           float newminerror = std::numeric_limits<float>::max();
           float newmindisorientation = std::numeric_limits<float>::max();
@@ -355,7 +357,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
         minchangeerror = std::numeric_limits<float>::max();
         minchangeindex = 0;
         minchangeiter = 0;
-        for (uint64_t iter = 1; iter < dims[2]; iter++)
+        for (size_t iter = 1; iter < udims[2]; iter++)
         {
           if (changeerror[iter] < curerror &&
             (changedisorientation[iter] < minchangedisorientation ||
@@ -386,7 +388,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   {
     std::ofstream outFile;
     outFile.open(getAlignmentShiftFileName().toLatin1().data());
-    for (uint64_t iter = 1; iter < dims[2]; iter++)
+    for (size_t iter = 1; iter < udims[2]; iter++)
     {
       slice = (dims[2] - 1) - iter;
       xshifts[iter] = xshifts[iter - 1] + newxshift[iter][curindex[iter]];
