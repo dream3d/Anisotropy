@@ -51,8 +51,9 @@ The user can choose to write the determined shift to an output file by enabling 
 Image 
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Image Data Array** | ImageData | uint8_t | any component size | Specifies image data containing the SEM images to be used for global correction of the shifts. |
 | **Cell Attribute Array** | Quats | float | (4) | Specifies the orientation of the **Cell** in quaternion representation. |
 | **Cell Attribute Array** | Phases | int32_t | (1) | Specifies to which **Ensemble** each **Cell** belongs. |
