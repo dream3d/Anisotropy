@@ -92,7 +92,11 @@ include(${${PLUGIN_NAME}_SOURCE_DIR}/Resources/SourceList.cmake)
 
 ## YOU MUST INCLUDE THIS FILE TO USE ITK !!!
 ## Then do not forget to add "${ITK_LIBRARIES}" to the target_link_libraries below
-include( ${DREAM3D_SUPPORT_DIR}/ITKSupport/IncludeITK.cmake)
+if(DREAM3D_USE_ITK)
+  include( ${DREAM3D_SUPPORT_DIR}/ITKSupport/IncludeITK.cmake)
+  include_directories(${SimpleITKExplicit_BINARY_DIR}/Common/include)
+  include_directories(${SimpleITKExplicit_SOURCE_DIR}/Explicit/include)
+endif()
 
 # --------------------------------------------------------------------
 # What image bit depth should be used
@@ -254,8 +258,8 @@ endif()
 add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_MODULE_SRCS})
 target_link_libraries(${PLUGIN_NAME}
                     SVWidgetsLib
+										SimpleITKExplicit
                     OrientationLib
-                    ${ITK_LIBRARIES}
                     )
 SET_TARGET_PROPERTIES(${PLUGIN_NAME} PROPERTIES FOLDER ${PLUGIN_NAME}Plugin)
 target_include_directories(${PLUGIN_NAME}
