@@ -255,9 +255,6 @@ void SteinerCompact::dataCheck()
   if (getErrorCondition() >= 0) { dataArrayPaths.push_back(getCellPhasesArrayPath()); }
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
-
-  setErrorCondition(0);
-
 }
 
 // -----------------------------------------------------------------------------
