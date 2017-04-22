@@ -258,8 +258,8 @@ endif()
 add_library(${PLUGIN_NAME} MODULE ${${PLUGIN_NAME}_MODULE_SRCS})
 target_link_libraries(${PLUGIN_NAME}
                     SVWidgetsLib
-										SimpleITKExplicit
                     OrientationLib
+                    ${ITK_LIBRARIES}
                     )
 SET_TARGET_PROPERTIES(${PLUGIN_NAME} PROPERTIES FOLDER ${PLUGIN_NAME}Plugin)
 target_include_directories(${PLUGIN_NAME}

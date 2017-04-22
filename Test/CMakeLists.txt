@@ -75,11 +75,19 @@ file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif" "${${PL
 
 configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
                ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
-			   
+
+list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib)
+
+if(APPLE)
+ list(APPEND ${PLUGIN_NAME}_LINK_LIBS SimpleITKExplicit)
+else()
+  list(APPEND ${PLUGIN_NAME}_LINK_LIBS ${ITK_LIBRARIES})
+endif()
+
 AddSIMPLUnitTest(TESTNAME ${PLUGIN_NAME}UnitTest
-    SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
-    FOLDER "${PLUGIN_NAME}Plugin/Test"
-	LINK_LIBRARIES Qt5::Core H5Support SIMPLib Qt5::Widgets)
+                  SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
+                  FOLDER "${PLUGIN_NAME}Plugin/Test"
+                  LINK_LIBRARIES ${${PLUGIN_NAME}_LINK_LIBS} )
 
 target_include_directories(${PLUGIN_NAME}UnitTest
                           PUBLIC ${PLUGINS_SOURCE_DIR}

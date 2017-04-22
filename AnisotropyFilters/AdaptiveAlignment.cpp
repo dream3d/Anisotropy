@@ -47,7 +47,9 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "sitkExplicitITK.h"
+#if defined (__APPLE__)
+//  #include "sitkExplicitITK.h"
+#endif
 
 #include "Anisotropy/AnisotropyConstants.h"
 
