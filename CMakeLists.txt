@@ -94,9 +94,12 @@ include(${${PLUGIN_NAME}_SOURCE_DIR}/Resources/SourceList.cmake)
 ## Then do not forget to add "${ITK_LIBRARIES}" to the target_link_libraries below
 if(SIMPL_USE_ITK)
   include( ${DREAM3D_SUPPORT_DIR}/ITKSupport/IncludeITK.cmake)
+endif()
+if(APPLE)
   include_directories(${SimpleITKExplicit_BINARY_DIR}/Common/include)
   include_directories(${SimpleITKExplicit_SOURCE_DIR}/Explicit/include)
 endif()
+
 
 # --------------------------------------------------------------------
 # What image bit depth should be used
