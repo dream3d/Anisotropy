@@ -1,4 +1,4 @@
-﻿AdaptiveAlignment (Mutual Information) {#adaptivealignmentmutualinformation}
+﻿Adaptive Alignment (Mutual Information) {#adaptivealignmentmutualinformation}
 ======
 
 ## Group (Subgroup) ##
