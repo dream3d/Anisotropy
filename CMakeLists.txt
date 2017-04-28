@@ -93,7 +93,7 @@ include(${${PLUGIN_NAME}_SOURCE_DIR}/Resources/SourceList.cmake)
 ## YOU MUST INCLUDE THIS FILE TO USE ITK !!!
 ## Then do not forget to add "${ITK_LIBRARIES}" to the target_link_libraries below
 if(SIMPL_USE_ITK)
-  include( ${DREAM3D_SUPPORT_DIR}/ITKSupport/IncludeITK.cmake)
+  include( ${CMP_SOURCE_DIR}/ITKSupport/IncludeITK.cmake)
 endif()
 if(APPLE)
   include_directories(${SimpleITKExplicit_BINARY_DIR}/Common/include)
