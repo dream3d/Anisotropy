@@ -12,8 +12,8 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of the Czech Academy of Sciences, nor the names of its 
-* contributors may be used to endorse or promote products derived from this 
+* Neither the name of the Czech Academy of Sciences, nor the names of its
+* contributors may be used to endorse or promote products derived from this
 * software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -42,7 +42,6 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "OrientationLib/LaueOps/LaueOps.h"
-#include "ImageProcessing/ImageProcessingConstants.h"
 #include "AdaptiveAlignment.h"
 
 /**
@@ -174,8 +173,8 @@ class AdaptiveAlignmentMisorientation : public AdaptiveAlignment
     DEFINE_DATAARRAY_VARIABLE(bool, GoodVoxels)
     DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
     DEFINE_DATAARRAY_VARIABLE(uint8_t, ImageData)
-    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, SelectedCellArray)
-    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, NewCellArray)
+    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, SelectedCellArray)
+    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, NewCellArray)
 
     QVector<LaueOps::Pointer> m_OrientationOps;
 

@@ -41,7 +41,7 @@
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-#include "ImageProcessing/ImageProcessingConstants.h"
+#include "Anisotropy/AnisotropyConstants.h"
 
 /**
 * @brief The AdaptiveAlignment class. This class serves as a superclass for other classes
@@ -69,8 +69,8 @@ class AdaptiveAlignment : public AbstractFilter
 
     /////////////// new:
 
-	SIMPL_FILTER_PARAMETER(int, GlobalCorrection)
-	Q_PROPERTY(int GlobalCorrection READ getGlobalCorrection WRITE setGlobalCorrection)
+  SIMPL_FILTER_PARAMETER(int, GlobalCorrection)
+  Q_PROPERTY(int GlobalCorrection READ getGlobalCorrection WRITE setGlobalCorrection)
 
     SIMPL_FILTER_PARAMETER(QString, InputPath)
     Q_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
@@ -236,10 +236,10 @@ class AdaptiveAlignment : public AbstractFilter
 
   private:
 
-    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, ImageData)
-    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, FlatImageData)
+    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, ImageData)
+    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, FlatImageData)
 
-    DEFINE_DATAARRAY_VARIABLE(ImageProcessingConstants::DefaultPixelType, NewCellArray) // delete this
+    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, NewCellArray) // delete this
 
     std::vector<std::vector<uint64_t>> m_RectangleCorners;
     std::vector<std::vector<float>> m_CalibratingCircles;

@@ -53,8 +53,7 @@
 
 #include "Anisotropy/AnisotropyConstants.h"
 
-#include "ImageProcessing/ImageProcessingConstants.h"
-#include "ImageProcessing/ImageProcessingFilters/ItkBridge.h"
+#include "Anisotropy/AnisotropyFilters/ItkBridge.h"
 
 #include "itkHoughTransform2DCirclesImageFilter.h"
 #include "itkHoughTransform2DLinesImageFilter.h"
@@ -255,7 +254,7 @@ void AdaptiveAlignment::create_array_for_flattened_image()
   QVector<size_t> cDims(1, 1);
   DataArrayPath tempPath;
   tempPath.update(getImageDataArrayPath().getDataContainerName(), getImageDataArrayPath().getAttributeMatrixName(), "tempFlatImageDataName");
-  m_FlatImageDataPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<ImageProcessingConstants::DefaultPixelType>, AbstractFilter, ImageProcessingConstants::DefaultPixelType>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_FlatImageDataPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<AnisotropyConstants::DefaultPixelType>, AbstractFilter, AnisotropyConstants::DefaultPixelType>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if (nullptr != m_FlatImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FlatImageData = m_FlatImageDataPtr.lock()->getPointer(0);
@@ -321,12 +320,12 @@ bool AdaptiveAlignment::find_calibrating_circles()
   };
 
   //wrap raw and processed image data as itk::images
-  ImageProcessingConstants::DefaultImageType::Pointer inputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_FlatImageData);
+  AnisotropyConstants::DefaultImageType::Pointer inputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_FlatImageData);
 
-  //ImageProcessingConstants::DefaultImageType::Pointer outputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_NewCellArray); // delete this
-  //ImageProcessingConstants::DefaultSliceType::IndexType localIndex; // delete this
+  //AnisotropyConstants::DefaultImageType::Pointer outputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_NewCellArray); // delete this
+  //AnisotropyConstants::DefaultSliceType::IndexType localIndex; // delete this
 
-  typedef itk::HoughTransform2DCirclesImageFilter<ImageProcessingConstants::DefaultPixelType, ImageProcessingConstants::FloatPixelType> HoughTransformFilterType;
+  typedef itk::HoughTransform2DCirclesImageFilter<AnisotropyConstants::DefaultPixelType, AnisotropyConstants::FloatPixelType> HoughTransformFilterType;
   HoughTransformFilterType::Pointer houghFilter = HoughTransformFilterType::New();
   houghFilter->SetNumberOfCircles(m_NumberCircles);
   houghFilter->SetMinimumRadius(m_MinRadius);
@@ -345,7 +344,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
   for (int i = 0; i < dims[2]; ++i)
   {
 
-    ImageProcessingConstants::DefaultSliceType::Pointer inputSlice = ITKUtilitiesType::ExtractSlice(inputImage, ImageProcessingConstants::ZSlice, i);
+    AnisotropyConstants::DefaultSliceType::Pointer inputSlice = ITKUtilitiesType::ExtractSlice(inputImage, AnisotropyConstants::ZSlice, i);
 
     // Hough transform is done for the first slice only
     // to roughly identify the area of calibrating circles
@@ -358,7 +357,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       // input slice here
       houghFilter->SetInput(inputSlice);
       houghFilter->Update();
-      ImageProcessingConstants::FloatSliceType::Pointer localAccumulator = houghFilter->GetOutput();
+      AnisotropyConstants::FloatSliceType::Pointer localAccumulator = houghFilter->GetOutput();
 
       //find circles
       HoughTransformFilterType::CirclesListType circles = houghFilter->GetCircles(m_NumberCircles);
