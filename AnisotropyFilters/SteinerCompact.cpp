@@ -1059,6 +1059,7 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
 void SteinerCompact::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 

@@ -106,6 +106,7 @@ void AdaptiveAlignmentFeature::initialize()
 void AdaptiveAlignmentFeature::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   // Set the DataContainerName and AttributematrixName for the Parent Class (AdaptiveAlignment) to Use.
   // These are checked for validity in the Parent Class dataCheck
@@ -494,6 +495,7 @@ float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, st
 void AdaptiveAlignmentFeature::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if (getErrorCondition() < 0) { return; }
 

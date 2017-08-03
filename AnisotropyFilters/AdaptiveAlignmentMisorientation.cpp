@@ -146,6 +146,7 @@ void AdaptiveAlignmentMisorientation::initialize()
 void AdaptiveAlignmentMisorientation::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   // Set the DataContainerName and AttributematrixName for the Parent Class (AlignSections) to Use.
@@ -595,6 +596,7 @@ float AdaptiveAlignmentMisorientation::compute_error2(uint64_t iter, uint64_t in
 void AdaptiveAlignmentMisorientation::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   dataCheck();
   if (getErrorCondition() < 0) { return; }

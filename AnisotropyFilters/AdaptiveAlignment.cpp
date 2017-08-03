@@ -174,6 +174,7 @@ void AdaptiveAlignment::initialize()
 void AdaptiveAlignment::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   DataArrayPath tempPath;
 
 
@@ -648,6 +649,7 @@ void initializeArrayValues(IDataArray::Pointer p, size_t index)
 void AdaptiveAlignment::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if (getErrorCondition() < 0) { return; }
 
