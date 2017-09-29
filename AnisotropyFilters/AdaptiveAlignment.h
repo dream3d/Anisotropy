@@ -37,9 +37,9 @@
 #ifndef _AdaptiveAlignment_H_
 #define _AdaptiveAlignment_H_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 #include "Anisotropy/AnisotropyConstants.h"
 
