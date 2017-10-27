@@ -38,10 +38,7 @@ set(${PLUGIN_NAME}Test_BINARY_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Test)
 
 #------------------------------------------------------------------------------
 # Include this file from the SIMPL Project
-include(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/Testing/SIMPLTestFunctions.cmake)
-
-include_directories(${${PLUGIN_NAME}_SOURCE_DIR}/Test)
-include_directories(${${PLUGIN_NAME}_BINARY_DIR}/Test)
+include(${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake)
 
 set(TEST_TEMP_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Temp)
 # Make sure the directory is created during CMake time
@@ -73,8 +70,12 @@ file(GLOB templateFiles RELATIVE "${${PLUGIN_NAME}_SOURCE_DIR}/Data/tif" "${${PL
 		endif(NOT IS_DIRECTORY ${srcTemplatePath})
     endforeach(templateFile)	
 
-configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
-               ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
+configure_file(${${PLUGIN_NAME}Test_SOURCE_DIR}/TestFileLocations.h.in
+               ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
+
+configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
+               ${${PLUGIN_NAME}Test_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
+
 
 list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib)
 
@@ -87,12 +88,11 @@ endif()
 AddSIMPLUnitTest(TESTNAME ${PLUGIN_NAME}UnitTest
                   SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
                   FOLDER "${PLUGIN_NAME}Plugin/Test"
-                  LINK_LIBRARIES ${${PLUGIN_NAME}_LINK_LIBS} )
-
-target_include_directories(${PLUGIN_NAME}UnitTest
-                          PUBLIC ${PLUGINS_SOURCE_DIR}
-                          PUBLIC ${PLUGINS_BINARY_DIR}
-                          PUBLIC ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/Test
+                  LINK_LIBRARIES ${${PLUGIN_NAME}_LINK_LIBS}
+                  INCLUDE_DIRS
+                          ${PLUGINS_SOURCE_DIR}
+                          ${PLUGINS_BINARY_DIR}
+                          ${PLUGINS_BINARY_DIR}/${PLUGIN_NAME}/Test
 )
 
 if(MSVC)
