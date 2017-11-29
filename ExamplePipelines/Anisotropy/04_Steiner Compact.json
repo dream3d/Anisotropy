@@ -1,0 +1,186 @@
+{
+    "0": {
+        "CellAttributeMatrixName": "CellData",
+        "CellEnsembleAttributeMatrixName": "CellEnsembleData",
+        "DataContainerName": "ImageDataContainer",
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Read H5EBSD File",
+        "Filter_Name": "ReadH5Ebsd",
+        "InputFile": "Data/AlMgSc.h5ebsd",
+        "RefFrameZDir": 2,
+        "SelectedArrayNames": [
+            "SEM Signal",
+            "Image Quality",
+            "Confidence Index",
+            "X Position",
+            "Y Position",
+            "Fit",
+            "Phases",
+            "EulerAngles"
+        ],
+        "UseTransformations": 1,
+        "ZEndIndex": 9,
+        "ZStartIndex": 0
+    },
+    "1": {
+        "DestinationArrayName": "Mask",
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Threshold Objects",
+        "Filter_Name": "MultiThresholdObjects",
+        "SelectedThresholds": [
+            {
+                "Attribute Array Name": "Confidence Index",
+                "Attribute Matrix Name": "CellData",
+                "Comparison Operator": 1,
+                "Comparison Value": 0.05,
+                "Data Container Name": "ImageDataContainer"
+            },
+            {
+                "Attribute Array Name": "Image Quality",
+                "Attribute Matrix Name": "CellData",
+                "Comparison Operator": 1,
+                "Comparison Value": 800,
+                "Data Container Name": "ImageDataContainer"
+            }
+        ]
+    },
+    "2": {
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Convert Orientation Representation",
+        "Filter_Name": "ConvertOrientations",
+        "InputOrientationArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "EulerAngles",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "InputType": 0,
+        "OutputOrientationArrayName": "Quats",
+        "OutputType": 2
+    },
+    "3": {
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Phases",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "CellEnsembleData",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Neighbor Orientation Comparison (Bad Data)",
+        "Filter_Name": "BadDataNeighborOrientationCheck",
+        "GoodVoxelsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Mask",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "MisorientationTolerance": 2,
+        "NumberOfNeighbors": 4,
+        "QuatsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Quats",
+            "Data Container Name": "ImageDataContainer"
+        }
+    },
+    "4": {
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Phases",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "ConfidenceIndexArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Confidence Index",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "CellEnsembleData",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Neighbor Orientation Correlation",
+        "Filter_Name": "NeighborOrientationCorrelation",
+        "Level": 2,
+        "MinConfidence": 0.05,
+        "MisorientationTolerance": 2,
+        "QuatsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Quats",
+            "Data Container Name": "ImageDataContainer"
+        }
+    },
+    "5": {
+        "ActiveArrayName": "Active",
+        "CellFeatureAttributeMatrixName": "CellFeatureData",
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Phases",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "CellEnsembleData",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FeatureIdsArrayName": "FeatureIds",
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Segment Features (Misorientation)",
+        "Filter_Name": "EBSDSegmentFeatures",
+        "GoodVoxelsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Mask",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "MisorientationTolerance": 2,
+        "QuatsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Quats",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "UseGoodVoxels": 1
+    },
+    "6": {
+        "Direction": 1,
+        "FeatureIdsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "FeatureIds",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Erode/Dilate Bad Data",
+        "Filter_Name": "ErodeDilateBadData",
+        "NumIterations": 3,
+        "XDirOn": 1,
+        "YDirOn": 1,
+        "ZDirOn": 1
+    },
+    "7": {
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Phases",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FeatureIdsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "FeatureIds",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Steiner Compact",
+        "Filter_Name": "SteinerCompact",
+        "Plane": 0,
+        "Sites": 1,
+        "TxtFileName": "SteinerCompactXY.txt",
+        "TxtOutput": 1,
+        "VtkFileName": "SteinerCompactXY.vtk",
+        "VtkOutput": 1
+    },
+    "PipelineBuilder": {
+        "Name": "04_Steiner Compact",
+        "Number_Filters": 8,
+        "Version": "6.2"
+    }
+}

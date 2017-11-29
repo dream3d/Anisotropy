@@ -1,0 +1,34 @@
+{
+    "0": {
+        "EulerTransformation": {
+            "angle": 90,
+            "h": 0,
+            "k": 0,
+            "l": 1
+        },
+        "FileExtension": "ang",
+        "FilePrefix": "AlMgSc-TD_",
+        "FileSuffix": "",
+        "FilterVersion": "6.2.327",
+        "Filter_Human_Label": "Import Orientation File(s) to H5EBSD",
+        "Filter_Name": "EbsdToH5Ebsd",
+        "InputPath": "Data/ang",
+        "OutputFile": "Data/AlMgSc.h5ebsd",
+        "PaddingDigits": 3,
+        "RefFrameZDir": 0,
+        "SampleTransformation": {
+            "angle": 180,
+            "h": 0,
+            "k": 1,
+            "l": 0
+        },
+        "ZEndIndex": "9",
+        "ZResolution": 0.1,
+        "ZStartIndex": "0"
+    },
+    "PipelineBuilder": {
+        "Name": "01_Import Data",
+        "Number_Filters": 1,
+        "Version": "6.2"
+    }
+}
