@@ -44,7 +44,7 @@ set(TEST_TEMP_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Temp)
 # Make sure the directory is created during CMake time
 file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
 
-set(TEST_DATA_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Data)
+set(TEST_DATA_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Data/${PLUGIN_NAME})
 # Make sure the directory is created during CMake time
 file(MAKE_DIRECTORY ${TEST_DATA_DIR})
 

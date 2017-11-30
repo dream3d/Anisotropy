@@ -211,7 +211,7 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     QVariant var;
 
     FileListInfo_t input;
-    input.InputPath = UnitTest::TestDataDir;
+    input.InputPath = UnitTest::TestDataDir  + "/" + UnitTest::AnisotropyTest::TestTifExtension;
     input.StartIndex = UnitTest::AnisotropyTest::TestTifStartIndex;
     input.EndIndex = UnitTest::AnisotropyTest::TestTifEndIndex;
     input.FilePrefix = UnitTest::AnisotropyTest::TestTifPrefix;
