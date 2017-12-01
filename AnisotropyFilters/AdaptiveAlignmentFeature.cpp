@@ -38,22 +38,19 @@
 #include <fstream>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-
-#include "moc_AdaptiveAlignmentFeature.cpp"
-
+#include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdaptiveAlignmentFeature::AdaptiveAlignmentFeature() :
-AdaptiveAlignment(),
-m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask),
-m_GoodVoxels(nullptr)
+AdaptiveAlignmentFeature::AdaptiveAlignmentFeature()
+: AdaptiveAlignment()
+, m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask)
+, m_GoodVoxels(nullptr)
 {
   // only setting up the child parameters because the parent constructor has already been called
   setupFilterParameters();
@@ -62,9 +59,7 @@ m_GoodVoxels(nullptr)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdaptiveAlignmentFeature::~AdaptiveAlignmentFeature()
-{
-}
+AdaptiveAlignmentFeature::~AdaptiveAlignmentFeature() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -97,7 +92,6 @@ void AdaptiveAlignmentFeature::readFilterParameters(AbstractFilterParametersRead
 // -----------------------------------------------------------------------------
 void AdaptiveAlignmentFeature::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -114,11 +108,15 @@ void AdaptiveAlignmentFeature::dataCheck()
   setCellAttributeMatrixName(m_GoodVoxelsArrayPath.getAttributeMatrixName());
 
   AdaptiveAlignment::dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QVector<size_t> cDims(1, 1);
-  m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_GoodVoxelsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(),
+                                                                                                     cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_GoodVoxelsPtr.lock().get())                                                                /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_GoodVoxels = m_GoodVoxelsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -144,25 +142,23 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  int64_t dims[3] =
-  {
-    static_cast<int64_t>(udims[0]),
-    static_cast<int64_t>(udims[1]),
-    static_cast<int64_t>(udims[2]),
+  int64_t dims[3] = {
+      static_cast<int64_t>(udims[0]), static_cast<int64_t>(udims[1]), static_cast<int64_t>(udims[2]),
   };
 
   uint64_t maxstoredshifts = 1;
-  if (xneedshifts.size() > 0) maxstoredshifts = 20;
+  if(xneedshifts.size() > 0)
+    maxstoredshifts = 20;
 
   float disorientation = 0.0f;
 
-  std::vector<std::vector<int64_t>>  newxshift(dims[2]);
-  std::vector<std::vector<int64_t>>  newyshift(dims[2]);
-  std::vector<std::vector<float>>  mindisorientation(dims[2]);
-  for (size_t a = 1; a < udims[2]; a++)
+  std::vector<std::vector<int64_t>> newxshift(dims[2]);
+  std::vector<std::vector<int64_t>> newyshift(dims[2]);
+  std::vector<std::vector<float>> mindisorientation(dims[2]);
+  for(size_t a = 1; a < udims[2]; a++)
   {
     newxshift[a].resize(maxstoredshifts, 0);
     newyshift[a].resize(maxstoredshifts, 0);
@@ -171,7 +167,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
 
   // Allocate a 2D Array which will be reused from slice to slice
   // second dimension is assigned in each cycle separately
-  std::vector<std::vector<bool> >  misorients(dims[0]);
+  std::vector<std::vector<bool>> misorients(dims[0]);
 
   const uint64_t halfDim0 = static_cast<uint64_t>(dims[0] * 0.5f);
   const uint64_t halfDim1 = static_cast<uint64_t>(dims[1] * 0.5f);
@@ -184,7 +180,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   int64_t curposition = 0;
   uint64_t progInt = 0;
 
-  for (int64_t iter = 1; iter < dims[2]; iter++)
+  for(int64_t iter = 1; iter < dims[2]; iter++)
   {
     progInt = static_cast<uint64_t>(iter * 100 / static_cast<float>(dims[2]));
     QString ss = QObject::tr("Aligning Anisotropic Sections || Determining Shifts || %1% Complete").arg(progInt);
@@ -193,40 +189,41 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     oldxshift = -1;
     oldyshift = -1;
 
-    for (size_t i = 0; i < udims[0]; i++)
+    for(size_t i = 0; i < udims[0]; i++)
     {
       misorients[i].assign(dims[1], false);
     }
 
-    while (newxshift[iter][0] != oldxshift || newyshift[iter][0] != oldyshift)
+    while(newxshift[iter][0] != oldxshift || newyshift[iter][0] != oldyshift)
     {
       oldxshift = newxshift[iter][0];
       oldyshift = newyshift[iter][0];
 
-      for (int32_t j = -3; j < 4; j++)
+      for(int32_t j = -3; j < 4; j++)
       {
-        for (int32_t k = -3; k < 4; k++)
+        for(int32_t k = -3; k < 4; k++)
         {
           disorientation = 0.0f;
           count = 0.0f;
-          if ( (llabs(k + oldxshift) < static_cast<long long int>(halfDim0) )
-               && llabs(j + oldyshift) < static_cast<long long int>(halfDim1)
-               && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+          if((llabs(k + oldxshift) < static_cast<long long int>(halfDim0)) && llabs(j + oldyshift) < static_cast<long long int>(halfDim1) &&
+             misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
           {
-            for (int64_t l = 0; l < dims[1]; l = l + 4)
+            for(int64_t l = 0; l < dims[1]; l = l + 4)
             {
-              for (int64_t n = 0; n < dims[0]; n = n + 4)
+              for(int64_t n = 0; n < dims[0]; n = n + 4)
               {
-                if ((l + j + oldyshift) >= 0 && (l + j + oldyshift) < dims[1] && (n + k + oldxshift) >= 0 && (n + k + oldxshift) < dims[0])
+                if((l + j + oldyshift) >= 0 && (l + j + oldyshift) < dims[1] && (n + k + oldxshift) >= 0 && (n + k + oldxshift) < dims[0])
                 {
                   refposition = ((slice + 1) * dims[0] * dims[1]) + (l * dims[0]) + n;
                   curposition = (slice * dims[0] * dims[1]) + ((l + j + oldyshift) * dims[0]) + (n + k + oldxshift);
-                  if (m_GoodVoxels[refposition] != m_GoodVoxels[curposition]) { disorientation++; }
+                  if(m_GoodVoxels[refposition] != m_GoodVoxels[curposition])
+                  {
+                    disorientation++;
+                  }
                   count++;
                 }
                 else
                 {
-
                 }
               }
             }
@@ -235,16 +232,16 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
 
             // compare the new shift with currently stored ones
             int64_t s = maxstoredshifts;
-            while (s - 1 >= 0 && disorientation < mindisorientation[iter][s - 1])
+            while(s - 1 >= 0 && disorientation < mindisorientation[iter][s - 1])
             {
               s--;
             }
 
             // new shift is stored with index 's' in the arrays
-            if (s < static_cast<int64_t>(maxstoredshifts))
+            if(s < static_cast<int64_t>(maxstoredshifts))
             {
               // lag the shifts already stored
-              for (int64_t t = maxstoredshifts - 1; t > s; t--)
+              for(int64_t t = maxstoredshifts - 1; t > s; t--)
               {
                 newxshift[iter][t] = newxshift[iter][t - 1];
                 newyshift[iter][t] = newyshift[iter][t - 1];
@@ -266,7 +263,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   std::vector<uint64_t> curindex(dims[2], 0);
 
   // find corrected shifts
-  if (xneedshifts.size() > 0)
+  if(xneedshifts.size() > 0)
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
@@ -275,24 +272,24 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     std::vector<uint64_t> changeindex(dims[2], 0);
     std::vector<float> changeerror(dims[2], 0);
 
-    std::vector<float> xshiftsest;	// cumulative x-shifts estimated from SEM images
-    std::vector<float> yshiftsest;	// cumulative y-shifts estimated from SEM images
+    std::vector<float> xshiftsest; // cumulative x-shifts estimated from SEM images
+    std::vector<float> yshiftsest; // cumulative y-shifts estimated from SEM images
 
     float curerror = 0.0f;
     float tolerance = 0.0f;
 
     // evaluate error between current shifts and desired shifts
-    if (xneedshifts.size() == 1)      // error is computed as misagreement between slopes
+    if(xneedshifts.size() == 1) // error is computed as misagreement between slopes
     {
       tolerance = 1.0f / static_cast<float>(dims[2] - 1);
       curerror = compute_error1(dims[2], 0, xneedshifts[0], yneedshifts[0], newxshift, newyshift, curindex);
     }
-    else if (xneedshifts.size() > 1)  // error is computed as misagreement with shifts estimated from SEM images
+    else if(xneedshifts.size() > 1) // error is computed as misagreement with shifts estimated from SEM images
     {
       tolerance = 1.0f;
       xshiftsest.resize(dims[2], 0);
       yshiftsest.resize(dims[2], 0);
-      for (size_t iter = 1; iter < udims[2]; iter++)
+      for(size_t iter = 1; iter < udims[2]; iter++)
       {
         xshiftsest[iter] = xshiftsest[iter - 1] + xneedshifts[iter - 1];
         yshiftsest[iter] = yshiftsest[iter - 1] + yneedshifts[iter - 1];
@@ -301,7 +298,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     }
 
     // iterative selection of a candidate shift, recomputing of current candidates, evaluation of error
-    if (curerror > tolerance)
+    if(curerror > tolerance)
     {
       float minchangedisorientation = 0;
       float minchangeerror = 0;
@@ -313,34 +310,34 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
 
       do
       {
-        QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);;
+        QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);
+        ;
         notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-        if (getCancel() == true)
+        if(getCancel() == true)
         {
           return;
         }
 
         olderror = curerror;
-        for (size_t iter = 1; iter < udims[2]; iter++)
+        for(size_t iter = 1; iter < udims[2]; iter++)
         {
           float newminerror = std::numeric_limits<float>::max();
           float newmindisorientation = std::numeric_limits<float>::max();
           uint64_t newminindex = 0;
-          for (uint64_t index = curindex[iter] + 1; index < maxstoredshifts; index++)
+          for(uint64_t index = curindex[iter] + 1; index < maxstoredshifts; index++)
           {
             // recompute error for the configuration with this candidate changed
-            if (xneedshifts.size() == 1)
+            if(xneedshifts.size() == 1)
             {
               newerror = compute_error1(iter, index, xneedshifts[0], yneedshifts[0], newxshift, newyshift, curindex);
             }
-            else if (xneedshifts.size() > 1)
+            else if(xneedshifts.size() > 1)
             {
               newerror = compute_error2(iter, index, xshiftsest, yshiftsest, newxshift, newyshift, curindex);
             }
 
             // compare the new error with the best current error
-            if (newerror < curerror &&
-              mindisorientation[iter][index] - mindisorientation[iter][0] < newmindisorientation)
+            if(newerror < curerror && mindisorientation[iter][index] - mindisorientation[iter][0] < newmindisorientation)
             {
               newminerror = newerror;
               newminindex = index;
@@ -358,12 +355,11 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
         minchangeerror = std::numeric_limits<float>::max();
         minchangeindex = 0;
         minchangeiter = 0;
-        for (size_t iter = 1; iter < udims[2]; iter++)
+        for(size_t iter = 1; iter < udims[2]; iter++)
         {
-          if (changeerror[iter] < curerror &&
-            (changedisorientation[iter] < minchangedisorientation ||
-            (changedisorientation[iter] == minchangedisorientation &&
-            llabs(newxshift[iter][changeindex[iter]]) + llabs(newyshift[iter][changeindex[iter]]) < llabs(newxshift[iter][minchangeindex]) + llabs(newyshift[iter][minchangeindex]))))
+          if(changeerror[iter] < curerror && (changedisorientation[iter] < minchangedisorientation || (changedisorientation[iter] == minchangedisorientation &&
+                                                                                                       llabs(newxshift[iter][changeindex[iter]]) + llabs(newyshift[iter][changeindex[iter]]) <
+                                                                                                           llabs(newxshift[iter][minchangeindex]) + llabs(newyshift[iter][minchangeindex]))))
           {
             minchangeiter = iter;
             minchangeindex = changeindex[iter];
@@ -372,7 +368,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
           }
         }
 
-        if (minchangeerror < curerror && minchangeerror >= tolerance)
+        if(minchangeerror < curerror && minchangeerror >= tolerance)
         {
           // assign the best candidate
           changedisorientation[minchangeiter] = minchangedisorientation;
@@ -381,15 +377,15 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
           curerror = minchangeerror;
         }
 
-      } while (minchangedisorientation < std::numeric_limits<float>::max() - 1 && curerror < olderror && curerror > tolerance);
+      } while(minchangedisorientation < std::numeric_limits<float>::max() - 1 && curerror < olderror && curerror > tolerance);
     }
   }
 
-  if (getWriteAlignmentShifts() == true)
+  if(getWriteAlignmentShifts() == true)
   {
     std::ofstream outFile;
     outFile.open(getAlignmentShiftFileName().toLatin1().data());
-    for (size_t iter = 1; iter < udims[2]; iter++)
+    for(size_t iter = 1; iter < udims[2]; iter++)
     {
       slice = (dims[2] - 1) - iter;
       xshifts[iter] = xshifts[iter - 1] + newxshift[iter][curindex[iter]];
@@ -398,17 +394,15 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     }
     outFile.close();
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 // find the error if the current shifts are changed by modification provided on slice 'iter'
 // where currently selected shift is substituted by the shift stored in position 'index'
-float AdaptiveAlignmentFeature::compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend,
-  std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
+float AdaptiveAlignmentFeature::compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend, std::vector<std::vector<int64_t>>& newxshift,
+                                               std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
 {
   int64_t n = curindex.size() - 1;
 
@@ -422,14 +416,14 @@ float AdaptiveAlignmentFeature::compute_error1(uint64_t iter, uint64_t index, fl
   double y_sumY = 0.0f;
   double y_sumXY = 0.0f;
 
-  for (int64_t i = 1; i <= n; i++)
+  for(int64_t i = 1; i <= n; i++)
   {
-    if (i != iter) // shifts without modification
+    if(i != iter) // shifts without modification
     {
       xshifts += newxshift[i][curindex[i]];
       yshifts += newyshift[i][curindex[i]];
     }
-    else           // modified shift
+    else // modified shift
     {
       xshifts += newxshift[i][index];
       yshifts += newyshift[i][index];
@@ -454,8 +448,8 @@ float AdaptiveAlignmentFeature::compute_error1(uint64_t iter, uint64_t index, fl
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest,
-  std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
+float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest, std::vector<std::vector<int64_t>>& newxshift,
+                                               std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
 {
   uint64_t n = curindex.size() - 1;
 
@@ -465,11 +459,11 @@ float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, st
   float error = 0;
   float xdif = 0;
   float ydif = 0;
-  float divide = static_cast<float> (2 * n);
+  float divide = static_cast<float>(2 * n);
 
-  for (uint64_t i = 1; i <= n; i++)
+  for(uint64_t i = 1; i <= n; i++)
   {
-    if (i != iter)
+    if(i != iter)
     {
       xshifts += newxshift[i][curindex[i]];
       yshifts += newyshift[i][curindex[i]];
@@ -480,14 +474,12 @@ float AdaptiveAlignmentFeature::compute_error2(uint64_t iter, uint64_t index, st
       yshifts += newyshift[i][index];
     }
 
-    xdif = static_cast<float>(xshifts)-xshiftsest[i];
-    ydif = static_cast<float>(yshifts)-yshiftsest[i];
+    xdif = static_cast<float>(xshifts) - xshiftsest[i];
+    ydif = static_cast<float>(yshifts) - yshiftsest[i];
     error += (xdif * xdif + ydif * ydif) / divide;
   }
   return error;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -497,7 +489,10 @@ void AdaptiveAlignmentFeature::execute()
   setErrorCondition(0);
   setWarningCondition(0);
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AdaptiveAlignment::execute();
 
@@ -511,7 +506,7 @@ void AdaptiveAlignmentFeature::execute()
 AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFilterParameters)
 {
   AdaptiveAlignmentFeature::Pointer filter = AdaptiveAlignmentFeature::New();
-  if (true == copyFilterParameters)
+  if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
@@ -557,7 +552,8 @@ const QString AdaptiveAlignmentFeature::getGroupName()
 // -----------------------------------------------------------------------------
 const QString AdaptiveAlignmentFeature::getSubGroupName()
 {
-  return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;;
+  return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;
+  ;
 }
 
 // -----------------------------------------------------------------------------

@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #ifndef _AdaptiveAlignmentMisorientation_H_
 #define _AdaptiveAlignmentMisorientation_H_
 
@@ -41,147 +40,144 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "OrientationLib/LaueOps/LaueOps.h"
 #include "AdaptiveAlignment.h"
+#include "OrientationLib/LaueOps/LaueOps.h"
 
 /**
 * @brief The AdaptiveAlignmentMisorientation class. See [Filter documentation](@ref AdaptiveAlignmentmisorientation) for details.
 */
 class AdaptiveAlignmentMisorientation : public AdaptiveAlignment
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(AdaptiveAlignmentMisorientation)
-    SIMPL_STATIC_NEW_MACRO(AdaptiveAlignmentMisorientation)
-    SIMPL_TYPE_MACRO_SUPER(AdaptiveAlignmentMisorientation, AdaptiveAlignment)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(AdaptiveAlignmentMisorientation)
+  SIMPL_STATIC_NEW_MACRO(AdaptiveAlignmentMisorientation)
+  SIMPL_TYPE_MACRO_SUPER(AdaptiveAlignmentMisorientation, AdaptiveAlignment)
 
-    virtual ~AdaptiveAlignmentMisorientation();
+  virtual ~AdaptiveAlignmentMisorientation();
 
-    SIMPL_FILTER_PARAMETER(float, MisorientationTolerance)
-    Q_PROPERTY(float MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
+  SIMPL_FILTER_PARAMETER(float, MisorientationTolerance)
+  Q_PROPERTY(float MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
 
-    SIMPL_FILTER_PARAMETER(bool, UseGoodVoxels)
-    Q_PROPERTY(bool UseGoodVoxels READ getUseGoodVoxels WRITE setUseGoodVoxels)
+  SIMPL_FILTER_PARAMETER(bool, UseGoodVoxels)
+  Q_PROPERTY(bool UseGoodVoxels READ getUseGoodVoxels WRITE setUseGoodVoxels)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, QuatsArrayPath)
-    Q_PROPERTY(DataArrayPath QuatsArrayPath READ getQuatsArrayPath WRITE setQuatsArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, QuatsArrayPath)
+  Q_PROPERTY(DataArrayPath QuatsArrayPath READ getQuatsArrayPath WRITE setQuatsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CellPhasesArrayPath)
-    Q_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, CellPhasesArrayPath)
+  Q_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, GoodVoxelsArrayPath)
-    Q_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, GoodVoxelsArrayPath)
+  Q_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
-    Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+  Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
-
-    /**
-    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-    */
-    virtual const QString getCompiledLibraryName();
-
-    /**
-  * @brief getBrandingString Returns the branding string for the filter, which is a tag
-  * used to denote the filter's association with specific plugins
-  * @return Branding string
+  /**
+  * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
   */
-    virtual const QString getBrandingString();
+  virtual const QString getCompiledLibraryName();
 
-    /**
-  * @brief getFilterVersion Returns a version string for this filter. Default
-  * value is an empty string.
-  * @return
-  */
-    virtual const QString getFilterVersion();
+  /**
+* @brief getBrandingString Returns the branding string for the filter, which is a tag
+* used to denote the filter's association with specific plugins
+* @return Branding string
+*/
+  virtual const QString getBrandingString();
 
-    /**
-  * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-  */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+* @brief getFilterVersion Returns a version string for this filter. Default
+* value is an empty string.
+* @return
+*/
+  virtual const QString getFilterVersion();
 
-    /**
-  * @brief getGroupName Reimplemented from @see AbstractFilter class
-  */
-    virtual const QString getGroupName();
+  /**
+* @brief newFilterInstance Reimplemented from @see AbstractFilter class
+*/
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-  * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-  */
-    virtual const QString getSubGroupName();
+  /**
+* @brief getGroupName Reimplemented from @see AbstractFilter class
+*/
+  virtual const QString getGroupName();
 
-    /**
-  * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-  */
-    virtual const QString getHumanLabel();
+  /**
+* @brief getSubGroupName Reimplemented from @see AbstractFilter class
+*/
+  virtual const QString getSubGroupName();
 
-    /**
-  * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-  */
-    virtual void setupFilterParameters();
+  /**
+* @brief getHumanLabel Reimplemented from @see AbstractFilter class
+*/
+  virtual const QString getHumanLabel();
 
-    /**
-  * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-  */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+* @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+*/
+  virtual void setupFilterParameters();
 
-    /**
-  * @brief execute Reimplemented from @see AbstractFilter class
-  */
-    virtual void execute();
+  /**
+* @brief readFilterParameters Reimplemented from @see AbstractFilter class
+*/
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-  * @brief preflight Reimplemented from @see AbstractFilter class
-  */
-    virtual void preflight();
+  /**
+* @brief execute Reimplemented from @see AbstractFilter class
+*/
+  virtual void execute();
 
-  protected:
-    AdaptiveAlignmentMisorientation();
+  /**
+* @brief preflight Reimplemented from @see AbstractFilter class
+*/
+  virtual void preflight();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+protected:
+  AdaptiveAlignmentMisorientation();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    /**
-  * @brief find_shifts Reimplemented from @see AdaptiveAlignment class
-  */
-    virtual void find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
+  /**
+* @brief find_shifts Reimplemented from @see AdaptiveAlignment class
+*/
+  virtual void find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
 
-    /**
-  * @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy of slopes)
-  */
-    virtual float compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend,
-                                 std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex);
+  /**
+* @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy of slopes)
+*/
+  virtual float compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend, std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift,
+                               std::vector<uint64_t>& curindex);
 
-    /**
-  * @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy from the estimates obtained from SEM images)
-  */
-    virtual float compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest,
-                                 std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex);
+  /**
+* @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy from the estimates obtained from SEM images)
+*/
+  virtual float compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest, std::vector<std::vector<int64_t>>& newxshift,
+                               std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex);
 
+private:
+  DEFINE_DATAARRAY_VARIABLE(float, Quats)
+  DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
+  DEFINE_DATAARRAY_VARIABLE(bool, GoodVoxels)
+  DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+  DataArray<uint8_t>::WeakPointer m_ImageDataPtr;
+  DataArray<AnisotropyConstants::DefaultPixelType>::WeakPointer SelectedCellArrayPtr;
+  DataArray<AnisotropyConstants::DefaultPixelType>::WeakPointer NewCellArrayPtr;
 
-  private:
-    DEFINE_DATAARRAY_VARIABLE(float, Quats)
-    DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
-    DEFINE_DATAARRAY_VARIABLE(bool, GoodVoxels)
-    DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
-    DEFINE_DATAARRAY_VARIABLE(uint8_t, ImageData)
-    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, SelectedCellArray)
-    DEFINE_DATAARRAY_VARIABLE(AnisotropyConstants::DefaultPixelType, NewCellArray)
+  QVector<LaueOps::Pointer> m_OrientationOps;
 
-    QVector<LaueOps::Pointer> m_OrientationOps;
+  uint64_t m_RandomSeed;
 
-    uint64_t m_RandomSeed;
-
-    AdaptiveAlignmentMisorientation(const AdaptiveAlignmentMisorientation&); // Copy Constructor Not Implemented
-    void operator=(const AdaptiveAlignmentMisorientation&); // Operator '=' Not Implemented
+  AdaptiveAlignmentMisorientation(const AdaptiveAlignmentMisorientation&) = delete; // Copy Constructor Not Implemented
+  void operator=(const AdaptiveAlignmentMisorientation&) = delete;                  // Operator '=' Not Implemented
 };
 
 #endif /* AdaptiveAlignmentMisorientation_H_ */

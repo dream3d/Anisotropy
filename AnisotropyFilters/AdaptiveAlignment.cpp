@@ -37,17 +37,17 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
-#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
-#if defined (__APPLE__)
+#if defined(__APPLE__)
 //  #include "sitkExplicitITK.h"
 #endif
 
@@ -58,29 +58,25 @@
 #include "itkHoughTransform2DCirclesImageFilter.h"
 #include "itkHoughTransform2DLinesImageFilter.h"
 
-// Include the MOC generated file for this class
-#include "moc_AdaptiveAlignment.cpp"
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdaptiveAlignment::AdaptiveAlignment() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::ImageDataContainerName),
-  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
-  m_WriteAlignmentShifts(false),
-  m_AlignmentShiftFileName(""),
-  m_GlobalCorrection(0),
-  m_InputPath(""),
-  m_ShiftX(0.0f),
-  m_ShiftY(0.0f),
-  m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData),
-  m_NewCellArrayName(""),
-  m_MinRadius(0.0f),
-  m_MaxRadius(0.0f),
-  m_NumberCircles(0),
-  m_FlatImageData(nullptr)
+AdaptiveAlignment::AdaptiveAlignment()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::ImageDataContainerName)
+, m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_WriteAlignmentShifts(false)
+, m_AlignmentShiftFileName("")
+, m_GlobalCorrection(0)
+, m_InputPath("")
+, m_ShiftX(0.0f)
+, m_ShiftY(0.0f)
+, m_ImageDataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ImageData)
+, m_NewCellArrayName("")
+, m_MinRadius(0.0f)
+, m_MaxRadius(0.0f)
+, m_NumberCircles(0)
+, m_FlatImageData(nullptr)
 {
   setupFilterParameters();
 }
@@ -88,9 +84,7 @@ AdaptiveAlignment::AdaptiveAlignment() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdaptiveAlignment::~AdaptiveAlignment()
-{
-}
+AdaptiveAlignment::~AdaptiveAlignment() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -119,7 +113,9 @@ void AdaptiveAlignment::setupFilterParameters()
 
     parameter->setChoices(choices);
     QStringList linkedProps;
-    linkedProps << "ImageDataArrayPath" << "ShiftX" << "ShiftY";
+    linkedProps << "ImageDataArrayPath"
+                << "ShiftX"
+                << "ShiftY";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
@@ -127,8 +123,9 @@ void AdaptiveAlignment::setupFilterParameters()
 
     parameters.push_back(SeparatorFilterParameter::New("Image Data", FilterParameter::RequiredArray));
     {
-      DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
-      QVector< QVector<size_t> > cDims;
+      DataArraySelectionFilterParameter::RequirementType req =
+          DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt8, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
+      QVector<QVector<size_t>> cDims;
       cDims.push_back(QVector<size_t>(1, 1));
       cDims.push_back(QVector<size_t>(1, 3));
       cDims.push_back(QVector<size_t>(1, 4));
@@ -177,13 +174,16 @@ void AdaptiveAlignment::dataCheck()
   setWarningCondition(0);
   DataArrayPath tempPath;
 
-
   ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
-  if (getErrorCondition() < 0) { return; }
-
-  if (image->getXPoints() <= 1 || image->getYPoints() <= 1 || image->getZPoints() <= 1)
+  if(getErrorCondition() < 0)
   {
-    QString ss = QObject::tr("The Image Geometry is not 3D and cannot be run through this filter. The dimensions are (%1,%2,%3)").arg(image->getXPoints()).arg(image->getYPoints()).arg(image->getZPoints());
+    return;
+  }
+
+  if(image->getXPoints() <= 1 || image->getYPoints() <= 1 || image->getZPoints() <= 1)
+  {
+    QString ss =
+        QObject::tr("The Image Geometry is not 3D and cannot be run through this filter. The dimensions are (%1,%2,%3)").arg(image->getXPoints()).arg(image->getYPoints()).arg(image->getZPoints());
     setErrorCondition(-3010);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
@@ -191,51 +191,56 @@ void AdaptiveAlignment::dataCheck()
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  if (m_WriteAlignmentShifts == true && m_AlignmentShiftFileName.isEmpty() == true)
+  if(m_WriteAlignmentShifts == true && m_AlignmentShiftFileName.isEmpty() == true)
   {
     QString ss = QObject::tr("The alignment shift file name is empty");
     setErrorCondition(-1);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (m_GlobalCorrection == 1)
+  if(m_GlobalCorrection == 1)
   {
     int32_t numImageComp = 1;
     QVector<DataArrayPath> imageDataArrayPaths;
     IDataArray::Pointer iDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getImageDataArrayPath());
-    if (getErrorCondition() < 0) { return; }
-    if (nullptr != iDataArray.get())
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+    if(nullptr != iDataArray.get())
     {
       numImageComp = iDataArray->getNumberOfComponents();
     }
     QVector<size_t> cDims(1, numImageComp);
-    m_ImageDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter>(this, getImageDataArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (nullptr != m_ImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    m_ImageDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter>(this, getImageDataArrayPath(),
+                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_ImageDataPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_ImageData = m_ImageDataPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
-    if (getErrorCondition() >= 0) { imageDataArrayPaths.push_back(getImageDataArrayPath()); }
+    if(getErrorCondition() >= 0)
+    {
+      imageDataArrayPaths.push_back(getImageDataArrayPath());
+    }
 
     getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, imageDataArrayPaths);
 
-    size_t udims1[3] = { 0, 0, 0 };
+    size_t udims1[3] = {0, 0, 0};
     DataContainer::Pointer m1 = getDataContainerArray()->getDataContainer(getDataContainerName());
     m1->getGeometryAs<ImageGeom>()->getDimensions(udims1);
 
-    size_t udims2[3] = { 0, 0, 0 };
+    size_t udims2[3] = {0, 0, 0};
     DataContainer::Pointer m2 = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
     m2->getGeometryAs<ImageGeom>()->getDimensions(udims2);
 
-    if (static_cast<uint64_t>(udims1[2]) != static_cast<uint64_t>(udims2[2]))
+    if(static_cast<uint64_t>(udims1[2]) != static_cast<uint64_t>(udims2[2]))
     {
       QString ss = QObject::tr("Image Data and Cell Data must have the same Z-dimension.");
       setErrorCondition(-1);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -255,8 +260,9 @@ void AdaptiveAlignment::create_array_for_flattened_image()
   QVector<size_t> cDims(1, 1);
   DataArrayPath tempPath;
   tempPath.update(getImageDataArrayPath().getDataContainerName(), getImageDataArrayPath().getAttributeMatrixName(), "tempFlatImageDataName");
-  m_FlatImageDataPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<AnisotropyConstants::DefaultPixelType>, AbstractFilter, AnisotropyConstants::DefaultPixelType>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_FlatImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_FlatImageDataPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<AnisotropyConstants::DefaultPixelType>, AbstractFilter, AnisotropyConstants::DefaultPixelType>(
+      this, tempPath, 0, cDims);                 /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_FlatImageDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FlatImageData = m_FlatImageDataPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -276,20 +282,20 @@ void AdaptiveAlignment::flatten_image()
   size_t totalPoints = m_ImageDataPtr.lock()->getNumberOfTuples();
 
   notifyStatusMessage(getHumanLabel(), "Flatten image");
-  if (comp > 1)
+  if(comp > 1)
   {
     float Rfactor = 0.21f;
     float Gfactor = 0.72f;
     float Bfactor = 0.07f;
 
-    for (uint32_t i = 0; i < totalPoints; i++)
+    for(uint32_t i = 0; i < totalPoints; i++)
     {
       m_FlatImageData[i] = int32_t((m_ImageData[comp * i] * Rfactor) + (m_ImageData[comp * i + 1] * Gfactor) + (m_ImageData[comp * i + 2] * Bfactor));
     }
   }
-  else if (comp == 1)
+  else if(comp == 1)
   {
-    for (uint32_t i = 0; i < totalPoints; i++)
+    for(uint32_t i = 0; i < totalPoints; i++)
     {
       m_FlatImageData[i] = m_ImageData[i];
     }
@@ -302,7 +308,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
   bool found = true;
 
   notifyStatusMessage(getHumanLabel(), "Find circles");
-  //DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataContainerName());
+  // DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataContainerName());
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
   QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
 
@@ -310,21 +316,18 @@ bool AdaptiveAlignment::find_calibrating_circles()
   m_MinRadius = 10;
   m_MaxRadius = 60;
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  uint64_t dims[3] =
-  {
-    static_cast<uint64_t>(udims[0]),
-    static_cast<uint64_t>(udims[1]),
-    static_cast<uint64_t>(udims[2]),
+  uint64_t dims[3] = {
+      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
   };
 
-  //wrap raw and processed image data as itk::images
+  // wrap raw and processed image data as itk::images
   AnisotropyConstants::DefaultImageType::Pointer inputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_FlatImageData);
 
-  //AnisotropyConstants::DefaultImageType::Pointer outputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_NewCellArray); // delete this
-  //AnisotropyConstants::DefaultSliceType::IndexType localIndex; // delete this
+  // AnisotropyConstants::DefaultImageType::Pointer outputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_NewCellArray); // delete this
+  // AnisotropyConstants::DefaultSliceType::IndexType localIndex; // delete this
 
   typedef itk::HoughTransform2DCirclesImageFilter<AnisotropyConstants::DefaultPixelType, AnisotropyConstants::FloatPixelType> HoughTransformFilterType;
   HoughTransformFilterType::Pointer houghFilter = HoughTransformFilterType::New();
@@ -341,17 +344,17 @@ bool AdaptiveAlignment::find_calibrating_circles()
   std::vector<uint64_t> icenter(4);
   std::vector<float> fcenter(4);
   std::vector<float> radius(2);
-  //loop over slices
-  for (int i = 0; i < dims[2]; ++i)
+  // loop over slices
+  for(int i = 0; i < dims[2]; ++i)
   {
 
     AnisotropyConstants::DefaultSliceType::Pointer inputSlice = ITKUtilitiesType::ExtractSlice(inputImage, AnisotropyConstants::ZSlice, i);
 
     // Hough transform is done for the first slice only
     // to roughly identify the area of calibrating circles
-    if (i == 0)
+    if(i == 0)
     {
-      //extract slice and transform
+      // extract slice and transform
       ss = QObject::tr("Finding Calibrating Circles");
       notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
@@ -360,7 +363,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       houghFilter->Update();
       AnisotropyConstants::FloatSliceType::Pointer localAccumulator = houghFilter->GetOutput();
 
-      //find circles
+      // find circles
       HoughTransformFilterType::CirclesListType circles = houghFilter->GetCircles(m_NumberCircles);
       HoughTransformFilterType::CirclesListType::const_iterator itCircles;
 
@@ -376,14 +379,17 @@ bool AdaptiveAlignment::find_calibrating_circles()
 
       // check that the circles were found correctly:
       // midpoint of the centres is not far from the centre of the image
-      if (std::fabs(0.5f * static_cast<float>(icenter[0] + icenter[2]) - 0.5f * static_cast<float>(dims[0])) > 100.0f) found = false;
+      if(std::fabs(0.5f * static_cast<float>(icenter[0] + icenter[2]) - 0.5f * static_cast<float>(dims[0])) > 100.0f)
+        found = false;
       // circles are in lower part of the image
-      if (icenter[1] < dims[1] / 2 || icenter[3] < dims[1] / 2) found = false;
+      if(icenter[1] < dims[1] / 2 || icenter[3] < dims[1] / 2)
+        found = false;
       // y-coordinates of the circles do not differ much
-      if ((icenter[1] - icenter[3]) > 20) found = false;
+      if((icenter[1] - icenter[3]) > 20)
+        found = false;
     }
 
-    if (found)
+    if(found)
     {
       // exponential smoothing in encapsulating square for finer (float) center
       // this is done for each slice to identify the circles
@@ -394,27 +400,31 @@ bool AdaptiveAlignment::find_calibrating_circles()
       float range_factor = 1.5f;
       float weight, totalweight;
       uint64_t xmin, xmax, ymin, ymax;
-      for (uint8_t circle = 0; circle <= 1; circle++)
+      for(uint8_t circle = 0; circle <= 1; circle++)
       {
         xmin = icenter[2 * circle] - range_factor * radius[circle];
         xmax = icenter[2 * circle] + range_factor * radius[circle];
         ymin = icenter[2 * circle + 1] - range_factor * radius[circle];
         ymax = icenter[2 * circle + 1] + range_factor * radius[circle];
-        if (int64_t(xmin) < 0) xmin = 0;
-        if (xmax > dims[0] - 1) xmax = dims[0] - 1;
-        if (int64_t(ymin) < 0) ymin = 0;
-        if (ymax > dims[1] - 1) ymax = dims[1] - 1;
+        if(int64_t(xmin) < 0)
+          xmin = 0;
+        if(xmax > dims[0] - 1)
+          xmax = dims[0] - 1;
+        if(int64_t(ymin) < 0)
+          ymin = 0;
+        if(ymax > dims[1] - 1)
+          ymax = dims[1] - 1;
 
         totalweight = 0.0f;
-        for (uint64_t x = xmin; x <= xmax; x++)
-          for (uint64_t y = ymin; y <= ymax; y++)
+        for(uint64_t x = xmin; x <= xmax; x++)
+          for(uint64_t y = ymin; y <= ymax; y++)
           {
             weight = exp(weighting_factor * m_FlatImageData[i * dims[0] * dims[1] + y * dims[0] + x]);
-            fcenter[2 * circle] += static_cast<float>(x)* weight;
-            fcenter[2 * circle + 1] += static_cast<float>(y)* weight;
+            fcenter[2 * circle] += static_cast<float>(x) * weight;
+            fcenter[2 * circle + 1] += static_cast<float>(y) * weight;
             totalweight += weight;
           }
-        if (totalweight > 0)
+        if(totalweight > 0)
         {
           fcenter[2 * circle] /= totalweight;
           fcenter[2 * circle + 1] /= totalweight;
@@ -425,7 +435,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       m_CalibratingCircles[i][0] = 0.5f * (fcenter[0] + fcenter[2]);
       m_CalibratingCircles[i][1] = 0.5f * (fcenter[1] + fcenter[3]);
 
-      //outFile << m_CalibratingCircles[i][0] << " " << m_CalibratingCircles[i][1] << std::endl;
+      // outFile << m_CalibratingCircles[i][0] << " " << m_CalibratingCircles[i][1] << std::endl;
     }
   }
 
@@ -441,38 +451,39 @@ bool AdaptiveAlignment::find_rectangles()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  uint64_t dims[3] =
-  {
-    static_cast<uint64_t>(udims[0]),
-    static_cast<uint64_t>(udims[1]),
-    static_cast<uint64_t>(udims[2]),
+  uint64_t dims[3] = {
+      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
   };
 
   uint64_t comp = m_ImageDataPtr.lock()->getNumberOfComponents();
   uint64_t index;
 
-  for (uint64_t i = 0; i < dims[2]; i++)
+  for(uint64_t i = 0; i < dims[2]; i++)
   {
     m_RectangleCorners[i][0] = dims[0] - 1;
     m_RectangleCorners[i][1] = dims[1] - 1;
     m_RectangleCorners[i][2] = 0;
     m_RectangleCorners[i][3] = 0;
-    for (uint64_t j = 0; j < dims[1]; j++)
-      for (uint64_t k = 0; k < dims[0]; k++)
+    for(uint64_t j = 0; j < dims[1]; j++)
+      for(uint64_t k = 0; k < dims[0]; k++)
       {
         index = (i * dims[0] * dims[1]) + (j * dims[0]) + k;
-        if (m_ImageData[comp * index] == 0 && m_ImageData[comp * index + 1] == 255 && m_ImageData[comp * index + 2] == 0)  // green pixel
+        if(m_ImageData[comp * index] == 0 && m_ImageData[comp * index + 1] == 255 && m_ImageData[comp * index + 2] == 0) // green pixel
         {
-          if (k < m_RectangleCorners[i][0]) m_RectangleCorners[i][0] = k;  // x-coordinate of upper left corner
-          if (j < m_RectangleCorners[i][1]) m_RectangleCorners[i][1] = j;  // y-coordinate of upper left corner
-          if (k > m_RectangleCorners[i][2]) m_RectangleCorners[i][2] = k;  // x-coordinate of bottom right corner
-          if (j > m_RectangleCorners[i][3]) m_RectangleCorners[i][3] = j;  // y-coordinate of bottom right corner
+          if(k < m_RectangleCorners[i][0])
+            m_RectangleCorners[i][0] = k; // x-coordinate of upper left corner
+          if(j < m_RectangleCorners[i][1])
+            m_RectangleCorners[i][1] = j; // y-coordinate of upper left corner
+          if(k > m_RectangleCorners[i][2])
+            m_RectangleCorners[i][2] = k; // x-coordinate of bottom right corner
+          if(j > m_RectangleCorners[i][3])
+            m_RectangleCorners[i][3] = j; // y-coordinate of bottom right corner
         }
       }
-    if (m_RectangleCorners[i][0] == dims[0] - 1 || m_RectangleCorners[i][1] == dims[1] - 1 || m_RectangleCorners[i][2] == 0 || m_RectangleCorners[i][3] == 0)
+    if(m_RectangleCorners[i][0] == dims[0] - 1 || m_RectangleCorners[i][1] == dims[1] - 1 || m_RectangleCorners[i][2] == 0 || m_RectangleCorners[i][3] == 0)
     {
       found = false;
     }
@@ -490,18 +501,15 @@ bool AdaptiveAlignment::find_interface_edges()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
   QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  uint64_t dims[3] =
-  {
-    static_cast<uint64_t>(udims[0]),
-    static_cast<uint64_t>(udims[1]),
-    static_cast<uint64_t>(udims[2]),
+  uint64_t dims[3] = {
+      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
   };
 
-  //loop over slices
-  for (int i = 0; i < dims[2]; i++)
+  // loop over slices
+  for(int i = 0; i < dims[2]; i++)
   {
     // mean value of each row of pixels between bottom edge of the green rectangle and center of the circle is found
     uint64_t xrange1 = m_RectangleCorners[i][0];
@@ -509,11 +517,12 @@ bool AdaptiveAlignment::find_interface_edges()
     uint64_t yrange1 = m_RectangleCorners[i][3] + 1;
     uint64_t yrange2 = static_cast<uint64_t>(floor(m_CalibratingCircles[i][1]));
 
-    if (yrange1 >= yrange2) return false;
+    if(yrange1 >= yrange2)
+      return false;
 
     std::vector<float> mean(yrange2 - yrange1 + 1, 0);
-    for (uint64_t y = yrange1; y <= yrange2; y++)
-      for (uint64_t x = xrange1; x <= xrange2; x++)
+    for(uint64_t y = yrange1; y <= yrange2; y++)
+      for(uint64_t x = xrange1; x <= xrange2; x++)
       {
         mean[y - yrange1] += m_FlatImageData[i * dims[0] * dims[1] + y * dims[0] + x] / static_cast<float>(mean.size());
       }
@@ -521,8 +530,8 @@ bool AdaptiveAlignment::find_interface_edges()
     // maximum difference between two rows of vertical distance 2 is found
     float maxdif = 0.0f;
     uint64_t argmaxdif;
-    for (uint64_t y = yrange1; y <= yrange2 - 2; y++)
-      if (std::fabs(mean[y - yrange1 + 2] - mean[y - yrange1]) > maxdif)
+    for(uint64_t y = yrange1; y <= yrange2 - 2; y++)
+      if(std::fabs(mean[y - yrange1 + 2] - mean[y - yrange1]) > maxdif)
       {
         maxdif = std::fabs(mean[y - yrange1 + 2] - mean[y - yrange1]);
         argmaxdif = y;
@@ -540,14 +549,11 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 
   notifyStatusMessage(getHumanLabel(), "Estimate shifts from images");
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  uint64_t dims[3] =
-  {
-    static_cast<uint64_t>(udims[0]),
-    static_cast<uint64_t>(udims[1]),
-    static_cast<uint64_t>(udims[2]),
+  uint64_t dims[3] = {
+      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
   };
 
   std::vector<float> RectangleTop(2);
@@ -572,7 +578,7 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
   float sumE = 0.0f;  // sum(z_i)
   float sumXE = 0.0f; // sum(x_i * z_i)
 
-  for (uint64_t i = 0; i < dims[2]; i++)
+  for(uint64_t i = 0; i < dims[2]; i++)
   {
     sumX += static_cast<float>(i);
     sumX2 += static_cast<float>(i * i);
@@ -600,7 +606,7 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
   // width should be constant, height is obtained as average of the smoothed values
   float rectangle_width = static_cast<float>(m_RectangleCorners[0][2] - m_RectangleCorners[0][0]);
   float rectangle_height = 0;
-  for (uint64_t i = 0; i < dims[2]; i++)
+  for(uint64_t i = 0; i < dims[2]; i++)
   {
     rectangle_height += (i * (RectangleBottom[0] - RectangleTop[0]) + RectangleBottom[1] - RectangleTop[1]) / dims[2];
   }
@@ -610,18 +616,16 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
   // xneedshifts: how the calibrating circles moved horizontally
   // yneedshifts: how the vertical distance of the rectangle and the interface edge changed
   // this goes with minus sign because that's how we need to correct the current position of the slices
-  for (uint32_t i = 0; i < dims[2] - 1; i++)
+  for(uint32_t i = 0; i < dims[2] - 1; i++)
   {
     xneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][0] - m_CalibratingCircles[i][0]);
     yneedshifts[dims[2] - 2 - i] = -(m_CalibratingCircles[i + 1][1] - m_CalibratingCircles[i][1] + Slope - Edge[0]);
 
-    //convert to EBSD-voxel units
+    // convert to EBSD-voxel units
     xneedshifts[dims[2] - 2 - i] *= dims[0] / rectangle_width;
     yneedshifts[dims[2] - 2 - i] *= dims[1] / rectangle_height;
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -634,13 +638,12 @@ void AdaptiveAlignment::find_shifts(std::vector<int64_t>& xshifts, std::vector<i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void initializeArrayValues(IDataArray::Pointer p, size_t index)
+template <typename T> void initializeArrayValues(IDataArray::Pointer p, size_t index)
 {
 
-    typename DataArray<T>::Pointer ptr = std::dynamic_pointer_cast<DataArray<T>>(p);
-    T var = static_cast<T>(0);
-    ptr->initializeTuple(index, &var);
+  typename DataArray<T>::Pointer ptr = std::dynamic_pointer_cast<DataArray<T>>(p);
+  T var = static_cast<T>(0);
+  ptr->initializeTuple(index, &var);
 }
 
 // -----------------------------------------------------------------------------
@@ -651,31 +654,31 @@ void AdaptiveAlignment::execute()
   setErrorCondition(0);
   setWarningCondition(0);
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  uint64_t dims[3] =
-  {
-    static_cast<uint64_t>(udims[0]),
-    static_cast<uint64_t>(udims[1]),
-    static_cast<uint64_t>(udims[2]),
+  uint64_t dims[3] = {
+      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
   };
 
-  if (dims[0] == 0.0f || dims[1] == 0.0f || dims[2] == 0.0f)
+  if(dims[0] == 0.0f || dims[1] == 0.0f || dims[2] == 0.0f)
   {
     QString ss = QObject::tr("Dimensions were not recognized correctly.");
     setErrorCondition(-99999999);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  float res[3] = { 0.0f, 0.0f, 0.0f };
+  float res[3] = {0.0f, 0.0f, 0.0f};
   m->getGeometryAs<ImageGeom>()->getResolution(res);
 
-  if (res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
+  if(res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
   {
     QString ss = QObject::tr("Resolution was not recognized correctly.");
     setErrorCondition(-99999999);
@@ -685,7 +688,7 @@ void AdaptiveAlignment::execute()
   std::vector<float> xneedshifts;
   std::vector<float> yneedshifts;
 
-  if (m_GlobalCorrection == 2)
+  if(m_GlobalCorrection == 2)
   {
     // user-defined shifts related to one pair of consecutive sections and converted to voxels
     float xinitvalue = m_ShiftX / (float)dims[2] / res[2];
@@ -695,7 +698,7 @@ void AdaptiveAlignment::execute()
   }
 
   // estimate shifts between slices from SEM images
-  if (m_GlobalCorrection == 1)
+  if(m_GlobalCorrection == 1)
   {
     xneedshifts.resize(dims[2] - 1);
     yneedshifts.resize(dims[2] - 1);
@@ -703,14 +706,14 @@ void AdaptiveAlignment::execute()
     m_CalibratingCircles.resize(dims[2]);
     m_RectangleCorners.resize(dims[2]);
     m_InterfaceEdges.resize(dims[2]);
-    for (uint64_t i = 0; i < dims[2]; i++)
+    for(uint64_t i = 0; i < dims[2]; i++)
     {
       m_CalibratingCircles[i].resize(2);
       m_RectangleCorners[i].resize(4);
     }
 
     // find corners of green rectangles bounding the EBSD scanned area
-    if (!find_rectangles())
+    if(!find_rectangles())
     {
       QString ss = QObject::tr("Area of EBSD mapping could not be identified from the input images.");
       setErrorCondition(-1);
@@ -723,7 +726,7 @@ void AdaptiveAlignment::execute()
     flatten_image();
 
     // find calibrating circles in each 2D image
-    if (!find_calibrating_circles())
+    if(!find_calibrating_circles())
     {
       QString ss = QObject::tr("Calibrating circles could not be identified from the input images.");
       setErrorCondition(-1);
@@ -732,7 +735,7 @@ void AdaptiveAlignment::execute()
     }
 
     // find interface edge (edge of the specimen between the scanning plane and milling plane)
-    if (!find_interface_edges())
+    if(!find_interface_edges())
     {
       QString ss = QObject::tr("Edge of the sample could not be identified from the input images.");
       setErrorCondition(-1);
@@ -764,9 +767,9 @@ void AdaptiveAlignment::execute()
   uint64_t slice = 0;
 
   // transfer cell data
-  for (uint64_t i = 1; i < dims[2]; i++)
+  for(uint64_t i = 1; i < dims[2]; i++)
   {
-    if (i > prog)
+    if(i > prog)
     {
 
       progressInt = ((float)i / dims[2]) * 100.0f;
@@ -774,34 +777,44 @@ void AdaptiveAlignment::execute()
       notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       prog = prog + progIncrement;
     }
-    if (getCancel() == true)
+    if(getCancel() == true)
     {
       return;
     }
     slice = (dims[2] - 1) - i;
-    for (uint64_t l = 0; l < dims[1]; l++)
+    for(uint64_t l = 0; l < dims[1]; l++)
     {
-      for (uint64_t n = 0; n < dims[0]; n++)
+      for(uint64_t n = 0; n < dims[0]; n++)
       {
-        if (yshifts[i] >= 0) { yspot = l; }
-        else if (yshifts[i] < 0) { yspot = dims[1] - 1 - l; }
-        if (xshifts[i] >= 0) { xspot = n; }
-        else if (xshifts[i] < 0) { xspot = dims[0] - 1 - n; }
+        if(yshifts[i] >= 0)
+        {
+          yspot = l;
+        }
+        else if(yshifts[i] < 0)
+        {
+          yspot = dims[1] - 1 - l;
+        }
+        if(xshifts[i] >= 0)
+        {
+          xspot = n;
+        }
+        else if(xshifts[i] < 0)
+        {
+          xspot = dims[0] - 1 - n;
+        }
         newPosition = (slice * dims[0] * dims[1]) + (yspot * dims[0]) + xspot;
         currentPosition = (slice * dims[0] * dims[1]) + ((yspot + yshifts[i]) * dims[0]) + (xspot + xshifts[i]);
-        if (int64_t((yspot + yshifts[i])) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && int64_t((xspot + xshifts[i])) >= 0
-          && (xspot + xshifts[i]) <= dims[0] - 1)
+        if(int64_t((yspot + yshifts[i])) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && int64_t((xspot + xshifts[i])) >= 0 && (xspot + xshifts[i]) <= dims[0] - 1)
         {
-          for (QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
+          for(QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
           {
             IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(*iter);
             p->copyTuple(currentPosition, newPosition);
           }
         }
-        if (int64_t((yspot + yshifts[i])) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || int64_t((xspot + xshifts[i])) < 0
-          || (xspot + xshifts[i]) > dims[0] - 1)
+        if(int64_t((yspot + yshifts[i])) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || int64_t((xspot + xshifts[i])) < 0 || (xspot + xshifts[i]) > dims[0] - 1)
         {
-          for (QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
+          for(QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
           {
             IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(*iter);
             EXECUTE_FUNCTION_TEMPLATE(this, initializeArrayValues, p, p, newPosition)
@@ -810,7 +823,6 @@ void AdaptiveAlignment::execute()
       }
     }
   }
-
 
   // If there is an error set this to something negative and also set a message
   notifyStatusMessage(getHumanLabel(), "Complete");
@@ -822,7 +834,7 @@ void AdaptiveAlignment::execute()
 AbstractFilter::Pointer AdaptiveAlignment::newFilterInstance(bool copyFilterParameters)
 {
   AdaptiveAlignment::Pointer filter = AdaptiveAlignment::New();
-  if (true == copyFilterParameters)
+  if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

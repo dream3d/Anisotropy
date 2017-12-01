@@ -12,8 +12,8 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of the Czech Academy of Sciences, nor the names of its 
-* contributors may be used to endorse or promote products derived from this 
+* Neither the name of the Czech Academy of Sciences, nor the names of its
+* contributors may be used to endorse or promote products derived from this
 * software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #ifndef _AdaptiveAlignmentMutualInformation_H_
 #define _AdaptiveAlignmentMutualInformation_H_
 
@@ -50,144 +49,142 @@
 */
 class AdaptiveAlignmentMutualInformation : public AdaptiveAlignment
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(AdaptiveAlignmentMutualInformation)
-    SIMPL_STATIC_NEW_MACRO(AdaptiveAlignmentMutualInformation)
-    SIMPL_TYPE_MACRO_SUPER(AdaptiveAlignmentMutualInformation, AdaptiveAlignment)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(AdaptiveAlignmentMutualInformation)
+  SIMPL_STATIC_NEW_MACRO(AdaptiveAlignmentMutualInformation)
+  SIMPL_TYPE_MACRO_SUPER(AdaptiveAlignmentMutualInformation, AdaptiveAlignment)
 
-    virtual ~AdaptiveAlignmentMutualInformation();
+  virtual ~AdaptiveAlignmentMutualInformation();
 
-    SIMPL_FILTER_PARAMETER(float, MisorientationTolerance)
-    Q_PROPERTY(float MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
+  SIMPL_FILTER_PARAMETER(float, MisorientationTolerance)
+  Q_PROPERTY(float MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
 
-    SIMPL_DECLARE_ARRAY(int32_t, featurecounts, FeatureCounts)
+  SIMPL_DECLARE_ARRAY(int32_t, featurecounts, FeatureCounts)
 
-    SIMPL_FILTER_PARAMETER(bool, UseGoodVoxels)
-    Q_PROPERTY(bool UseGoodVoxels READ getUseGoodVoxels WRITE setUseGoodVoxels)
+  SIMPL_FILTER_PARAMETER(bool, UseGoodVoxels)
+  Q_PROPERTY(bool UseGoodVoxels READ getUseGoodVoxels WRITE setUseGoodVoxels)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, QuatsArrayPath)
-    Q_PROPERTY(DataArrayPath QuatsArrayPath READ getQuatsArrayPath WRITE setQuatsArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, QuatsArrayPath)
+  Q_PROPERTY(DataArrayPath QuatsArrayPath READ getQuatsArrayPath WRITE setQuatsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CellPhasesArrayPath)
-    Q_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, CellPhasesArrayPath)
+  Q_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, GoodVoxelsArrayPath)
-    Q_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, GoodVoxelsArrayPath)
+  Q_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
-    Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, CrystalStructuresArrayPath)
+  Q_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 
-    /**
-    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-    */
-    virtual const QString getCompiledLibraryName();
-
-    /**
-  * @brief getBrandingString Returns the branding string for the filter, which is a tag
-  * used to denote the filter's association with specific plugins
-  * @return Branding string
+  /**
+  * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
   */
-    virtual const QString getBrandingString();
+  virtual const QString getCompiledLibraryName();
 
-    /**
-  * @brief getFilterVersion Returns a version string for this filter. Default
-  * value is an empty string.
-  * @return
-  */
-    virtual const QString getFilterVersion();
+  /**
+* @brief getBrandingString Returns the branding string for the filter, which is a tag
+* used to denote the filter's association with specific plugins
+* @return Branding string
+*/
+  virtual const QString getBrandingString();
 
-    /**
-  * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-  */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+* @brief getFilterVersion Returns a version string for this filter. Default
+* value is an empty string.
+* @return
+*/
+  virtual const QString getFilterVersion();
 
-    /**
-  * @brief getGroupName Reimplemented from @see AbstractFilter class
-  */
-    virtual const QString getGroupName();
+  /**
+* @brief newFilterInstance Reimplemented from @see AbstractFilter class
+*/
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
-    /**
-  * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-  */
-    virtual const QString getSubGroupName();
+  /**
+* @brief getGroupName Reimplemented from @see AbstractFilter class
+*/
+  virtual const QString getGroupName();
 
-    /**
-  * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-  */
-    virtual const QString getHumanLabel();
+  /**
+* @brief getSubGroupName Reimplemented from @see AbstractFilter class
+*/
+  virtual const QString getSubGroupName();
 
-    /**
-  * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-  */
-    virtual void setupFilterParameters();
+  /**
+* @brief getHumanLabel Reimplemented from @see AbstractFilter class
+*/
+  virtual const QString getHumanLabel();
 
-    /**
-  * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-  */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+* @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+*/
+  virtual void setupFilterParameters();
 
-    /**
-  * @brief execute Reimplemented from @see AbstractFilter class
-  */
-    virtual void execute();
+  /**
+* @brief readFilterParameters Reimplemented from @see AbstractFilter class
+*/
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-  * @brief preflight Reimplemented from @see AbstractFilter class
-  */
-    virtual void preflight();
+  /**
+* @brief execute Reimplemented from @see AbstractFilter class
+*/
+  virtual void execute();
 
-  protected:
-    AdaptiveAlignmentMutualInformation();
+  /**
+* @brief preflight Reimplemented from @see AbstractFilter class
+*/
+  virtual void preflight();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+protected:
+  AdaptiveAlignmentMutualInformation();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    /**
-  * @brief find_shifts Reimplemented from @see AdaptiveAlignment class
-  */
-    virtual void find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
+  /**
+* @brief find_shifts Reimplemented from @see AdaptiveAlignment class
+*/
+  virtual void find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts);
 
-    /**
-  * @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy of slopes)
-  */
-    virtual float compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend,
-                                 std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex);
+  /**
+* @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy of slopes)
+*/
+  virtual float compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend, std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift,
+                               std::vector<uint64_t>& curindex);
 
-    /**
-  * @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy from the estimates obtained from SEM images)
-  */
-    virtual float compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest,
-                                 std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex);
+  /**
+* @brief compute_error1 Determines error between the current and desired shifts (based on discrepancy from the estimates obtained from SEM images)
+*/
+  virtual float compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest, std::vector<std::vector<int64_t>>& newxshift,
+                               std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex);
 
-    /**
-  * @brief form_features_sections Determines the existing features in a give slice
-  */
-    void form_features_sections();
+  /**
+* @brief form_features_sections Determines the existing features in a give slice
+*/
+  void form_features_sections();
 
-  private:
-    //DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_DATAARRAY_VARIABLE(float, Quats)
-    DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
-    DEFINE_DATAARRAY_VARIABLE(bool, GoodVoxels)
-    DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+private:
+  // DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+  DEFINE_DATAARRAY_VARIABLE(float, Quats)
+  DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
+  DEFINE_DATAARRAY_VARIABLE(bool, GoodVoxels)
+  DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
 
+  QVector<LaueOps::Pointer> m_OrientationOps;
 
-    QVector<LaueOps::Pointer> m_OrientationOps;
+  Int32ArrayType::Pointer m_MIFeaturesPtr;
+  uint64_t m_Seed;
 
-    Int32ArrayType::Pointer m_MIFeaturesPtr;
-    uint64_t m_Seed;
-
-    AdaptiveAlignmentMutualInformation(const AdaptiveAlignmentMutualInformation&); // Copy Constructor Not Implemented
-    void operator=(const AdaptiveAlignmentMutualInformation&); // Operator '=' Not Implemented
+  AdaptiveAlignmentMutualInformation(const AdaptiveAlignmentMutualInformation&) = delete; // Copy Constructor Not Implemented
+  void operator=(const AdaptiveAlignmentMutualInformation&) = delete;                     // Operator '=' Not Implemented
 };
 
 #endif /* AdaptiveAlignmentMutualInformation_H_ */

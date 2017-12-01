@@ -166,8 +166,8 @@ class AnisotropyPlugin : public QObject, public ISIMPLibPlugin
     QList<QString>      m_Filters;
     bool                m_DidLoad;
 
-    AnisotropyPlugin(const AnisotropyPlugin&); // Copy Constructor Not Implemented
-    void operator=(const AnisotropyPlugin&); // Operator '=' Not Implemented
+    AnisotropyPlugin(const AnisotropyPlugin&) = delete; // Copy Constructor Not Implemented
+    void operator=(const AnisotropyPlugin&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _Anisotropy_H_ */

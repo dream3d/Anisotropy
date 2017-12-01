@@ -40,34 +40,31 @@
 #include <QtCore/QDateTime>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "Anisotropy/AnisotropyConstants.h"
-
-#include "moc_AdaptiveAlignmentMisorientation.cpp"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdaptiveAlignmentMisorientation::AdaptiveAlignmentMisorientation() :
-AdaptiveAlignment(),
-m_MisorientationTolerance(5.0f),
-m_UseGoodVoxels(true),
-m_QuatsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Quats),
-m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases),
-m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask),
-m_CrystalStructuresArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures),
-m_Quats(nullptr),
-m_CellPhases(nullptr),
-m_GoodVoxels(nullptr),
-m_CrystalStructures(nullptr)
+AdaptiveAlignmentMisorientation::AdaptiveAlignmentMisorientation()
+: AdaptiveAlignment()
+, m_MisorientationTolerance(5.0f)
+, m_UseGoodVoxels(true)
+, m_QuatsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Quats)
+, m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases)
+, m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask)
+, m_CrystalStructuresArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
+, m_Quats(nullptr)
+, m_CellPhases(nullptr)
+, m_GoodVoxels(nullptr)
+, m_CrystalStructures(nullptr)
 {
   m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
 
@@ -80,9 +77,7 @@ m_CrystalStructures(nullptr)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdaptiveAlignmentMisorientation::~AdaptiveAlignmentMisorientation()
-{
-}
+AdaptiveAlignmentMisorientation::~AdaptiveAlignmentMisorientation() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -109,7 +104,8 @@ void AdaptiveAlignmentMisorientation::setupFilterParameters()
   }
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt32, 1, AttributeMatrix::Type::CellEnsemble, IGeometry::Type::Image);
+    DataArraySelectionFilterParameter::RequirementType req =
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::UInt32, 1, AttributeMatrix::Type::CellEnsemble, IGeometry::Type::Image);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Crystal Structures", CrystalStructuresArrayPath, FilterParameter::RequiredArray, AdaptiveAlignmentMisorientation, req));
   }
   setFilterParameters(parameters);
@@ -137,7 +133,6 @@ void AdaptiveAlignmentMisorientation::readFilterParameters(AbstractFilterParamet
 void AdaptiveAlignmentMisorientation::initialize()
 {
   m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -154,45 +149,60 @@ void AdaptiveAlignmentMisorientation::dataCheck()
   setCellAttributeMatrixName(m_QuatsArrayPath.getAttributeMatrixName());
 
   AdaptiveAlignment::dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   QVector<DataArrayPath> dataArrayPaths;
 
   QVector<size_t> cDims(1, 4);
-  m_QuatsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getQuatsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_QuatsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_QuatsPtr =
+      getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getQuatsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_QuatsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_Quats = m_QuatsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if (getErrorCondition() >= 0) { dataArrayPaths.push_back(getQuatsArrayPath()); }
+  if(getErrorCondition() >= 0)
+  {
+    dataArrayPaths.push_back(getQuatsArrayPath());
+  }
 
   cDims[0] = 1;
-  m_CellPhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray< int32_t>, AbstractFilter>(this, getCellPhasesArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_CellPhasesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_CellPhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getCellPhasesArrayPath(),
+                                                                                                        cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_CellPhasesPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if (getErrorCondition() >= 0) { dataArrayPaths.push_back(getCellPhasesArrayPath()); }
-
-  if (m_UseGoodVoxels == true)
+  if(getErrorCondition() >= 0)
   {
-    m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if (nullptr != m_GoodVoxelsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    dataArrayPaths.push_back(getCellPhasesArrayPath());
+  }
+
+  if(m_UseGoodVoxels == true)
+  {
+    m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(),
+                                                                                                       cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_GoodVoxelsPtr.lock().get())                                                                /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_GoodVoxels = m_GoodVoxelsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
-    if (getErrorCondition() >= 0) { dataArrayPaths.push_back(getGoodVoxelsArrayPath()); }
+    if(getErrorCondition() >= 0)
+    {
+      dataArrayPaths.push_back(getGoodVoxelsArrayPath());
+    }
   }
 
-  m_CrystalStructuresPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter>(this, getCrystalStructuresArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_CrystalStructuresPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter>(this, getCrystalStructuresArrayPath(),
+                                                                                                                cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_CrystalStructuresPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -214,25 +224,23 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
 
-  size_t udims[3] = { 0, 0, 0 };
+  size_t udims[3] = {0, 0, 0};
   m->getGeometryAs<ImageGeom>()->getDimensions(udims);
 
-  uint64_t dims[3] =
-  {
-    static_cast<uint64_t>(udims[0]),
-    static_cast<uint64_t>(udims[1]),
-    static_cast<uint64_t>(udims[2]),
+  uint64_t dims[3] = {
+      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
   };
 
   uint64_t maxstoredshifts = 1;
-  if (xneedshifts.size() > 0) maxstoredshifts = 20;
+  if(xneedshifts.size() > 0)
+    maxstoredshifts = 20;
 
   float disorientation = 0.0f;
 
-  std::vector<std::vector<int64_t>>  newxshift(dims[2]);
-  std::vector<std::vector<int64_t>>  newyshift(dims[2]);
-  std::vector<std::vector<float>>  mindisorientation(dims[2]);
-  for (uint64_t a = 1; a < dims[2]; a++)
+  std::vector<std::vector<int64_t>> newxshift(dims[2]);
+  std::vector<std::vector<int64_t>> newyshift(dims[2]);
+  std::vector<std::vector<float>> mindisorientation(dims[2]);
+  for(uint64_t a = 1; a < dims[2]; a++)
   {
     newxshift[a].resize(maxstoredshifts, 0);
     newyshift[a].resize(maxstoredshifts, 0);
@@ -256,7 +264,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
 
   // Allocate a 2D Array which will be reused from slice to slice
   // second dimension is assigned in each cycle separately
-  std::vector<std::vector<bool> >  misorients(dims[0]);
+  std::vector<std::vector<bool>> misorients(dims[0]);
 
   const uint64_t halfDim0 = static_cast<uint64_t>(dims[0] * 0.5f);
   const uint64_t halfDim1 = static_cast<uint64_t>(dims[1] * 0.5f);
@@ -264,12 +272,12 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
   float misorientationTolerance = m_MisorientationTolerance * SIMPLib::Constants::k_Pif / 180.0f;
 
   // Loop over the Z Direction
-  for (uint64_t iter = 1; iter < dims[2]; iter++)
+  for(uint64_t iter = 1; iter < dims[2]; iter++)
   {
     progInt = static_cast<uint64_t>(iter * 100 / static_cast<float>(dims[2]));
     QString ss = QObject::tr("Aligning Anisotropic Sections || Determining Shifts || %1% Complete").arg(progInt);
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-    if (getCancel() == true)
+    if(getCancel() == true)
     {
       return;
     }
@@ -278,58 +286,66 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
     oldxshift = -1;
     oldyshift = -1;
 
-    for (uint64_t i = 0; i < dims[0]; i++)
+    for(uint64_t i = 0; i < dims[0]; i++)
     {
       misorients[i].assign(dims[1], false);
     }
 
-    while (newxshift[iter][0] != oldxshift || newyshift[iter][0] != oldyshift)
+    while(newxshift[iter][0] != oldxshift || newyshift[iter][0] != oldyshift)
     {
       oldxshift = newxshift[iter][0];
       oldyshift = newyshift[iter][0];
 
-      for (int32_t j = -3; j <= 3; j++)
+      for(int32_t j = -3; j <= 3; j++)
       {
-        for (int32_t k = -3; k <= 3; k++)
+        for(int32_t k = -3; k <= 3; k++)
         {
           disorientation = 0.0f;
           count = 0.0f;
-          if (llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+          if(llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
           {
-            for (uint64_t l = 0; l < dims[1]; l = l + 4)
+            for(uint64_t l = 0; l < dims[1]; l = l + 4)
             {
-              for (uint64_t n = 0; n < dims[0]; n = n + 4)
+              for(uint64_t n = 0; n < dims[0]; n = n + 4)
               {
-                if (int64_t((l + j + oldyshift)) >= 0 && (l + j + oldyshift) < dims[1] && int64_t((n + k + oldxshift)) >= 0 && (n + k + oldxshift) < dims[0])
+                if(int64_t((l + j + oldyshift)) >= 0 && (l + j + oldyshift) < dims[1] && int64_t((n + k + oldxshift)) >= 0 && (n + k + oldxshift) < dims[0])
                 {
                   count++;
                   refposition = ((slice + 1) * dims[0] * dims[1]) + (l * dims[0]) + n;
                   curposition = (slice * dims[0] * dims[1]) + ((l + j + oldyshift) * dims[0]) + (n + k + oldxshift);
-                  if (m_UseGoodVoxels == false || (m_GoodVoxels[refposition] == true && m_GoodVoxels[curposition] == true))
+                  if(m_UseGoodVoxels == false || (m_GoodVoxels[refposition] == true && m_GoodVoxels[curposition] == true))
                   {
                     w = std::numeric_limits<float>::max();
-                    if (m_CellPhases[refposition] > 0 && m_CellPhases[curposition] > 0)
+                    if(m_CellPhases[refposition] > 0 && m_CellPhases[curposition] > 0)
                     {
                       QuaternionMathF::Copy(quats[refposition], q1);
                       phase1 = m_CrystalStructures[m_CellPhases[refposition]];
                       QuaternionMathF::Copy(quats[curposition], q2);
                       phase2 = m_CrystalStructures[m_CellPhases[curposition]];
-                      if (phase1 == phase2 && phase1 < static_cast<uint32_t>(m_OrientationOps.size()))
+                      if(phase1 == phase2 && phase1 < static_cast<uint32_t>(m_OrientationOps.size()))
                       {
                         w = m_OrientationOps[phase1]->getMisoQuat(q1, q2, n1, n2, n3);
                       }
                     }
-                    if (w > misorientationTolerance) { disorientation++; }
+                    if(w > misorientationTolerance)
+                    {
+                      disorientation++;
+                    }
                   }
-                  if (m_UseGoodVoxels == true)
+                  if(m_UseGoodVoxels == true)
                   {
-                    if (m_GoodVoxels[refposition] == true && m_GoodVoxels[curposition] == false) { disorientation++; }
-                    if (m_GoodVoxels[refposition] == false && m_GoodVoxels[curposition] == true) { disorientation++; }
+                    if(m_GoodVoxels[refposition] == true && m_GoodVoxels[curposition] == false)
+                    {
+                      disorientation++;
+                    }
+                    if(m_GoodVoxels[refposition] == false && m_GoodVoxels[curposition] == true)
+                    {
+                      disorientation++;
+                    }
                   }
                 }
                 else
                 {
-
                 }
               }
             }
@@ -339,16 +355,16 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
 
             // compare the new shift with currently stored ones
             int64_t s = maxstoredshifts;
-            while (s - 1 >= 0 && disorientation < mindisorientation[iter][s - 1])
+            while(s - 1 >= 0 && disorientation < mindisorientation[iter][s - 1])
             {
               s--;
             }
 
             // new shift is stored with index 's' in the arrays
-            if (s < maxstoredshifts)
+            if(s < maxstoredshifts)
             {
               // lag the shifts already stored
-              for (int64_t t = maxstoredshifts - 1; t > s; t--)
+              for(int64_t t = maxstoredshifts - 1; t > s; t--)
               {
                 newxshift[iter][t] = newxshift[iter][t - 1];
                 newyshift[iter][t] = newyshift[iter][t - 1];
@@ -370,7 +386,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
   std::vector<uint64_t> curindex(dims[2], 0);
 
   // find corrected shifts
-  if (xneedshifts.size() > 0)
+  if(xneedshifts.size() > 0)
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
@@ -379,24 +395,24 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
     std::vector<uint64_t> changeindex(dims[2], 0);
     std::vector<float> changeerror(dims[2], 0);
 
-    std::vector<float> xshiftsest;	// cumulative x-shifts estimated from SEM images
-    std::vector<float> yshiftsest;	// cumulative y-shifts estimated from SEM images
+    std::vector<float> xshiftsest; // cumulative x-shifts estimated from SEM images
+    std::vector<float> yshiftsest; // cumulative y-shifts estimated from SEM images
 
     float curerror = 0.0f;
     float tolerance = 0.0f;
 
     // evaluate error between current shifts and desired shifts
-    if (xneedshifts.size() == 1)      // error is computed as misagreement between slopes
+    if(xneedshifts.size() == 1) // error is computed as misagreement between slopes
     {
       tolerance = 1.0f / static_cast<float>(dims[2] - 1);
       curerror = compute_error1(dims[2], 0, xneedshifts[0], yneedshifts[0], newxshift, newyshift, curindex);
     }
-    else if (xneedshifts.size() > 1)  // error is computed as misagreement with shifts estimated from SEM images
+    else if(xneedshifts.size() > 1) // error is computed as misagreement with shifts estimated from SEM images
     {
       tolerance = 1.0f;
       xshiftsest.resize(dims[2], 0);
       yshiftsest.resize(dims[2], 0);
-      for (uint64_t iter = 1; iter < dims[2]; iter++)
+      for(uint64_t iter = 1; iter < dims[2]; iter++)
       {
         xshiftsest[iter] = xshiftsest[iter - 1] + xneedshifts[iter - 1];
         yshiftsest[iter] = yshiftsest[iter - 1] + yneedshifts[iter - 1];
@@ -405,7 +421,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
     }
 
     // iterative selection of a candidate shift, recomputing of current candidates, evaluation of error
-    if (curerror > tolerance)
+    if(curerror > tolerance)
     {
       float minchangedisorientation = 0;
       float minchangeerror = 0;
@@ -417,34 +433,34 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
 
       do
       {
-        QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);;
+        QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);
+        ;
         notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-        if (getCancel() == true)
+        if(getCancel() == true)
         {
           return;
         }
 
         olderror = curerror;
-        for (uint64_t iter = 1; iter < dims[2]; iter++)
+        for(uint64_t iter = 1; iter < dims[2]; iter++)
         {
           float newminerror = std::numeric_limits<float>::max();
           float newmindisorientation = std::numeric_limits<float>::max();
           uint64_t newminindex = 0;
-          for (uint64_t index = curindex[iter] + 1; index < maxstoredshifts; index++)
+          for(uint64_t index = curindex[iter] + 1; index < maxstoredshifts; index++)
           {
             // recompute error for the configuration with this candidate changed
-            if (xneedshifts.size() == 1)
+            if(xneedshifts.size() == 1)
             {
               newerror = compute_error1(iter, index, xneedshifts[0], yneedshifts[0], newxshift, newyshift, curindex);
             }
-            else if (xneedshifts.size() > 1)
+            else if(xneedshifts.size() > 1)
             {
               newerror = compute_error2(iter, index, xshiftsest, yshiftsest, newxshift, newyshift, curindex);
             }
 
             // compare the new error with the best current error
-            if (newerror < curerror &&
-              mindisorientation[iter][index] - mindisorientation[iter][0] < newmindisorientation)
+            if(newerror < curerror && mindisorientation[iter][index] - mindisorientation[iter][0] < newmindisorientation)
             {
               newminerror = newerror;
               newminindex = index;
@@ -462,12 +478,11 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
         minchangeerror = std::numeric_limits<float>::max();
         minchangeindex = 0;
         minchangeiter = 0;
-        for (uint64_t iter = 1; iter < dims[2]; iter++)
+        for(uint64_t iter = 1; iter < dims[2]; iter++)
         {
-          if (changeerror[iter] < curerror &&
-            (changedisorientation[iter] < minchangedisorientation ||
-            (changedisorientation[iter] == minchangedisorientation &&
-            llabs(newxshift[iter][changeindex[iter]]) + llabs(newyshift[iter][changeindex[iter]]) < llabs(newxshift[iter][minchangeindex]) + llabs(newyshift[iter][minchangeindex]))))
+          if(changeerror[iter] < curerror && (changedisorientation[iter] < minchangedisorientation || (changedisorientation[iter] == minchangedisorientation &&
+                                                                                                       llabs(newxshift[iter][changeindex[iter]]) + llabs(newyshift[iter][changeindex[iter]]) <
+                                                                                                           llabs(newxshift[iter][minchangeindex]) + llabs(newyshift[iter][minchangeindex]))))
           {
             minchangeiter = iter;
             minchangeindex = changeindex[iter];
@@ -476,7 +491,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
           }
         }
 
-        if (minchangeerror < curerror && minchangeerror >= tolerance)
+        if(minchangeerror < curerror && minchangeerror >= tolerance)
         {
           // assign the best candidate
           changedisorientation[minchangeiter] = minchangedisorientation;
@@ -485,15 +500,15 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
           curerror = minchangeerror;
         }
 
-      } while (minchangedisorientation < std::numeric_limits<float>::max() - 1 && curerror < olderror && curerror > tolerance);
+      } while(minchangedisorientation < std::numeric_limits<float>::max() - 1 && curerror < olderror && curerror > tolerance);
     }
   }
 
-  if (getWriteAlignmentShifts() == true)
+  if(getWriteAlignmentShifts() == true)
   {
     std::ofstream outFile;
     outFile.open(getAlignmentShiftFileName().toLatin1().data());
-    for (uint64_t iter = 1; iter < dims[2]; iter++)
+    for(uint64_t iter = 1; iter < dims[2]; iter++)
     {
       slice = (dims[2] - 1) - iter;
       xshifts[iter] = xshifts[iter - 1] + newxshift[iter][curindex[iter]];
@@ -509,8 +524,8 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
 // -----------------------------------------------------------------------------
 // find the error if the current shifts are changed by modification provided on slice 'iter'
 // where currently selected shift is substituted by the shift stored in position 'index'
-float AdaptiveAlignmentMisorientation::compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend,
-  std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
+float AdaptiveAlignmentMisorientation::compute_error1(uint64_t iter, uint64_t index, float xneedtrend, float yneedtrend, std::vector<std::vector<int64_t>>& newxshift,
+                                                      std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
 {
   int64_t n = curindex.size() - 1;
 
@@ -524,14 +539,14 @@ float AdaptiveAlignmentMisorientation::compute_error1(uint64_t iter, uint64_t in
   double y_sumY = 0.0f;
   double y_sumXY = 0.0f;
 
-  for (int64_t i = 1; i <= n; i++)
+  for(int64_t i = 1; i <= n; i++)
   {
-    if (i != iter) // shifts without modification
+    if(i != iter) // shifts without modification
     {
       xshifts += newxshift[i][curindex[i]];
       yshifts += newyshift[i][curindex[i]];
     }
-    else           // modified shift
+    else // modified shift
     {
       xshifts += newxshift[i][index];
       yshifts += newyshift[i][index];
@@ -556,8 +571,8 @@ float AdaptiveAlignmentMisorientation::compute_error1(uint64_t iter, uint64_t in
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-float AdaptiveAlignmentMisorientation::compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest,
-  std::vector<std::vector<int64_t>>& newxshift, std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
+float AdaptiveAlignmentMisorientation::compute_error2(uint64_t iter, uint64_t index, std::vector<float>& xshiftsest, std::vector<float>& yshiftsest, std::vector<std::vector<int64_t>>& newxshift,
+                                                      std::vector<std::vector<int64_t>>& newyshift, std::vector<uint64_t>& curindex)
 {
   uint64_t n = curindex.size() - 1;
 
@@ -567,11 +582,11 @@ float AdaptiveAlignmentMisorientation::compute_error2(uint64_t iter, uint64_t in
   float error = 0;
   float xdif = 0;
   float ydif = 0;
-  float divide = static_cast<float> (2 * n);
+  float divide = static_cast<float>(2 * n);
 
-  for (uint64_t i = 1; i <= n; i++)
+  for(uint64_t i = 1; i <= n; i++)
   {
-    if (i != iter)
+    if(i != iter)
     {
       xshifts += newxshift[i][curindex[i]];
       yshifts += newyshift[i][curindex[i]];
@@ -582,13 +597,12 @@ float AdaptiveAlignmentMisorientation::compute_error2(uint64_t iter, uint64_t in
       yshifts += newyshift[i][index];
     }
 
-    xdif = static_cast<float>(xshifts)-xshiftsest[i];
-    ydif = static_cast<float>(yshifts)-yshiftsest[i];
+    xdif = static_cast<float>(xshifts) - xshiftsest[i];
+    ydif = static_cast<float>(yshifts) - yshiftsest[i];
     error += (xdif * xdif + ydif * ydif) / divide;
   }
   return error;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -599,7 +613,10 @@ void AdaptiveAlignmentMisorientation::execute()
   setWarningCondition(0);
 
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   AdaptiveAlignment::execute();
 
@@ -613,7 +630,7 @@ void AdaptiveAlignmentMisorientation::execute()
 AbstractFilter::Pointer AdaptiveAlignmentMisorientation::newFilterInstance(bool copyFilterParameters)
 {
   AdaptiveAlignmentMisorientation::Pointer filter = AdaptiveAlignmentMisorientation::New();
-  if (true == copyFilterParameters)
+  if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
@@ -659,7 +676,8 @@ const QString AdaptiveAlignmentMisorientation::getGroupName()
 // -----------------------------------------------------------------------------
 const QString AdaptiveAlignmentMisorientation::getSubGroupName()
 {
-  return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;;
+  return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;
+  ;
 }
 
 // -----------------------------------------------------------------------------
