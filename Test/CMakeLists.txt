@@ -96,5 +96,5 @@ AddSIMPLUnitTest(TESTNAME ${PLUGIN_NAME}UnitTest
 )
 
 if(MSVC)
-  set_source_files_properties(${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+  #set_source_files_properties(${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
 endif()
