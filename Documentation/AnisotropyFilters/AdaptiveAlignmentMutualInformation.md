@@ -1,10 +1,12 @@
-﻿Adaptive Alignment (Mutual Information) {#adaptivealignmentmutualinformation}
+Adaptive Alignment (Mutual Information) {#adaptivealignmentmutualinformation}
 ======
 
 ## Group (Subgroup) ##
+
 Unsupported (Anisotropy)
 
 ## Description ##
+
 This **Filter** segments each 2D slice, creating *Feature Ids* that are used when determining the _mutual information_ between neighboring slices. The slices are shifted relative to one another until the position of maximum _mutual information_  is determined for each section.  The *Feature Ids* are temporary, they apply to this **Filter** only and are not related to the *Feature Ids* generated in other **Filters**.  
 
 This initial alignment is followed by a correction algorithm which adapts the shifts to a complementary criterion having one of the following forms:
@@ -42,6 +44,7 @@ The user can choose to write the determined shift to an output file by enabling 
 
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | Misorientation Tolerance | float | Tolerance used to decide if **Cells** above/below one another should be considered to be _the same_. The value selected should be similar to the tolerance one would use to define **Features** (i.e., 2-10 degrees). |
@@ -54,6 +57,7 @@ The user can choose to write the determined shift to an output file by enabling 
 | Use Mask Array | bool | Whether to remove some **Cells** from consideration in the alignment process. |
 
 ## Required Geometry ##
+
 Image
 
 ## Required Objects ##
@@ -67,6 +71,7 @@ Image
 | **Ensemble Attribute Array** | CrystalStructures | uint32_t | (1) | Enumeration representing the crystal structure for each **Ensemble**. |
 
 ## Created Objects ##
+
 None
 
 ## References ##

@@ -2,9 +2,11 @@ Steiner Compact {#steinercompact}
 ======
 
 ## Group (Subgroup) ##
+
 Unsupported (Anisotropy)
 
 ## Description ##
+
 This **Filter** estimates the morphological anisotropy of the grains on the basis of their profiles in the section planes. Normal to the section planes is selected to be perpendicular to one of the sample sites. Typically, anisotropy is analysed in the plane of mapping (with normal parallel to Z-direction). 
 
 Steiner compact is estimated by counting number of intersections of random test lines in specified directions with the grain boundaries (rose of intersections). This **Filter** creates a .vtk file which can be visualized in Paraview. Steiner compacts for different phases are distinguished by different Z-coordinate in the output file.
@@ -13,6 +15,7 @@ The user can set the (maximum) number of sites of the Steiner compact. This corr
 
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | Section Plane | int | Section plane where the Steiner compact is found. |
@@ -20,6 +23,7 @@ The user can set the (maximum) number of sites of the Steiner compact. This corr
 | Output File | File Path | The output .vtk file path where the Steiner compact is drawn. |
 
 ## Required Geometry ##
+
 Image 
 
 ## Required Objects ##
@@ -30,6 +34,7 @@ Image
 | **Cell Attribute Array** | Phases | int32_t | (1) | Specifies to which **Ensemble** each **Cell** belongs. |
 
 ## Created Objects ##
+
 None
 
 ## References ##

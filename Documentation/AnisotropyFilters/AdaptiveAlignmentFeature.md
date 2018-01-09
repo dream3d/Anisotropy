@@ -2,9 +2,11 @@ Adaptive Alignment (Feature) {#adaptivealignmentfeature}
 ======
 
 ## Group (Subgroup) ##
+
 Unsupported (Anisotropy)
 
 ## Description ##
+
 This **Filter** attempts to align 'sections' of the sample perpendicular to the Z-direction by determining the position that results in the most overlap of previously defined "regions".  The "regions" are defined by a boolean array where the **Cells** have been flagged by another **Filter**.  Typically, during reading/processing of the data, each **Cell** is subject to a "quality metric" (or threshold) that defines if the **Cell** is *good*.  This threshold can be used to define areas of each slice that are bad, either due to actual **Features** in the microstructure or external references inserted by the user/experimentalist.  If these "regions" of *bad* **Cells** are believed to be consistent through sections, then this **Filter** will preserve that by aligning those "regions" on top of one another on consecutive sections. 
 
 This initial alignment is followed by a correction algorithm which adapts the shifts to a complementary criterion having one of the following forms:
@@ -34,6 +36,7 @@ The user can choose to write the determined shift to an output file by enabling 
 
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | Write Alignment Shift File | bool | Whether to write the shifts applied to each section to a file |
@@ -44,6 +47,7 @@ The user can choose to write the determined shift to an output file by enabling 
 | Total Shift In Y-Direction (Microns) | float | Shift in Y-direction between the first and the last slice of the stack in microns. Only needed if *Global Correction: Own Shifts* is checked. |
 
 ## Required Geometry ##
+
 Image 
 
 ## Required Objects ##
@@ -54,6 +58,7 @@ Image
 | **Cell Attribute Array** | Mask | bool | (1) | Specifies if the **Cell** is to be counted as part of the *sample* or not. |
 
 ## Created Objects ##
+
 None
 
 ## License & Copyright ##
