@@ -100,7 +100,7 @@ int TestFilterAvailability()
     // Now instantiate the AdaptiveAlignmentFeature Filter from the FilterManager
     QString filtName = "AdaptiveAlignmentFeature";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -113,7 +113,7 @@ int TestFilterAvailability()
     // Now instantiate the AdaptiveAlignmentMisorientation Filter from the FilterManager
     QString filtName = "AdaptiveAlignmentMisorientation";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -126,7 +126,7 @@ int TestFilterAvailability()
     // Now instantiate the AdaptiveAlignmentMutualInformation Filter from the FilterManager
     QString filtName = "AdaptiveAlignmentMutualInformation";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -139,7 +139,7 @@ int TestFilterAvailability()
     // Now instantiate the SteinerCompact Filter from the FilterManager
     QString filtName = "SteinerCompact";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -159,7 +159,7 @@ void addReadH5EBSDFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "ReadH5Ebsd";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -202,7 +202,7 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "ImportImageStack";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -251,7 +251,7 @@ void addMultiThresholdObjectsFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "MultiThresholdObjects";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -285,7 +285,7 @@ void addConvertOrientationsFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "ConvertOrientations";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -321,7 +321,7 @@ void addEBSDSegmentFeatures(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "EBSDSegmentFeatures";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -349,7 +349,7 @@ void addAdaptiveAlignmentFeatureFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "AdaptiveAlignmentFeature";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -383,7 +383,7 @@ void addAdaptiveAlignmentMisorientationFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "AdaptiveAlignmentMisorientation";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -424,7 +424,7 @@ void addAdaptiveAlignmentMutualInformationFilter(FilterPipeline::Pointer pipelin
 {
   QString filtName = "AdaptiveAlignmentMutualInformation";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
@@ -458,7 +458,7 @@ void addSteinerCompactFilter(FilterPipeline::Pointer pipeline)
 {
   QString filtName = "SteinerCompact";
   FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+  IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
   if (nullptr != filterFactory.get())
   {
