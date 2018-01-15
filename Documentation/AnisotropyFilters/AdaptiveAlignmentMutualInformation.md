@@ -88,7 +88,7 @@ Journal articles on _Mutual Information_ that are useful:
 
 ## Example Pipelines ##
 
-
++ 03_Adaptive Alignment - Mutual Information - SEM Images
 
 ## License & Copyright ##
 

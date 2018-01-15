@@ -47,7 +47,7 @@ Journal articles on _Steiner Compact_ that are useful:
 
 ## Example Pipelines ##
 
-
++ 04_Steiner Compact
 
 ## License & Copyright ##
 
