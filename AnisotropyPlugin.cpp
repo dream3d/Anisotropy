@@ -70,10 +70,27 @@ AnisotropyPlugin::~AnisotropyPlugin() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AnisotropyPlugin::getPluginName()
+QString AnisotropyPlugin::getPluginFileName()
 {
-  return (AnisotropyConstants::AnisotropyPluginDisplayName);
+  return AnisotropyConstants::AnisotropyPluginFile;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AnisotropyPlugin::getPluginDisplayName()
+{
+  return AnisotropyConstants::AnisotropyPluginDisplayName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AnisotropyPlugin::getPluginBaseName()
+{
+  return AnisotropyConstants::AnisotropyBaseName;
+}
+
 
 // -----------------------------------------------------------------------------
 //
