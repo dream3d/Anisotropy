@@ -45,6 +45,10 @@ Journal articles on _Steiner Compact_ that are useful:
 + _Planar anisotropy revisited_. Kybernetika 36(2): 149-164. Benes, V. and Gokhale, A.M. (2000). 
 + _Non-parametric estimation of the directional distribution of stationary line and fibre processes_. Adv. in Appl. Prob. 33(1): 6-24. Kiderlen, M. (2001).
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**
