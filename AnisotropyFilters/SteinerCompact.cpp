@@ -1193,6 +1193,14 @@ const QString SteinerCompact::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid SteinerCompact::getUuid()
+{
+  return QUuid("{07b1048e-d6d4-56d0-8cc5-132ac79bdf60}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString SteinerCompact::getSubGroupName()
 {
   return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;

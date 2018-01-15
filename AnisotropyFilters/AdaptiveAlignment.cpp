@@ -878,6 +878,14 @@ const QString AdaptiveAlignment::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid AdaptiveAlignment::getUuid()
+{
+  return QUuid("{b7394157-f142-59af-902d-7a29ff4f3ccd}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString AdaptiveAlignment::getSubGroupName()
 {
   return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;
