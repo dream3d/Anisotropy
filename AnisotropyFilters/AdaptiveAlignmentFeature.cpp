@@ -503,7 +503,7 @@ void AdaptiveAlignmentFeature::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFilterParameters) const
 {
   AdaptiveAlignmentFeature::Pointer filter = AdaptiveAlignmentFeature::New();
   if(true == copyFilterParameters)
@@ -516,7 +516,7 @@ AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getCompiledLibraryName()
+const QString AdaptiveAlignmentFeature::getCompiledLibraryName() const
 {
   return AnisotropyConstants::AnisotropyBaseName;
 }
@@ -524,7 +524,7 @@ const QString AdaptiveAlignmentFeature::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getBrandingString()
+const QString AdaptiveAlignmentFeature::getBrandingString() const
 {
   return "Anisotropy";
 }
@@ -532,7 +532,7 @@ const QString AdaptiveAlignmentFeature::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getFilterVersion()
+const QString AdaptiveAlignmentFeature::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -542,7 +542,7 @@ const QString AdaptiveAlignmentFeature::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getGroupName()
+const QString AdaptiveAlignmentFeature::getGroupName() const
 {
   return SIMPL::FilterGroups::ReconstructionFilters;
 }
@@ -558,7 +558,7 @@ const QUuid AdaptiveAlignmentFeature::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getSubGroupName()
+const QString AdaptiveAlignmentFeature::getSubGroupName() const
 {
   return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;
   ;
@@ -567,7 +567,7 @@ const QString AdaptiveAlignmentFeature::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AdaptiveAlignmentFeature::getHumanLabel()
+const QString AdaptiveAlignmentFeature::getHumanLabel() const
 {
   return "Adaptive Alignment (Feature)";
 }

@@ -1145,7 +1145,7 @@ void SteinerCompact::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer SteinerCompact::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer SteinerCompact::newFilterInstance(bool copyFilterParameters) const
 {
   SteinerCompact::Pointer filter = SteinerCompact::New();
   if(true == copyFilterParameters)
@@ -1158,7 +1158,7 @@ AbstractFilter::Pointer SteinerCompact::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SteinerCompact::getCompiledLibraryName()
+const QString SteinerCompact::getCompiledLibraryName() const
 {
   return AnisotropyConstants::AnisotropyBaseName;
 }
@@ -1166,7 +1166,7 @@ const QString SteinerCompact::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SteinerCompact::getBrandingString()
+const QString SteinerCompact::getBrandingString() const
 {
   return "Anisotropy";
 }
@@ -1174,7 +1174,7 @@ const QString SteinerCompact::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SteinerCompact::getFilterVersion()
+const QString SteinerCompact::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1185,7 +1185,7 @@ const QString SteinerCompact::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SteinerCompact::getGroupName()
+const QString SteinerCompact::getGroupName() const
 {
   return SIMPL::FilterGroups::ReconstructionFilters;
 }
@@ -1201,7 +1201,7 @@ const QUuid SteinerCompact::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SteinerCompact::getSubGroupName()
+const QString SteinerCompact::getSubGroupName() const
 {
   return AnisotropyConstants::FilterSubGroups::AnisotropicAlignment;
 }
@@ -1209,7 +1209,7 @@ const QString SteinerCompact::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SteinerCompact::getHumanLabel()
+const QString SteinerCompact::getHumanLabel() const
 {
   return "Steiner Compact";
 }
