@@ -1,4 +1,4 @@
-Adaptive Alignment (Feature) {#adaptivealignmentfeature}
+Adaptive Alignment (Feature) 
 ======
 
 ## Group (Subgroup) ##

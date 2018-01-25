@@ -1,4 +1,4 @@
-Steiner Compact {#steinercompact}
+Steiner Compact 
 ======
 
 ## Group (Subgroup) ##

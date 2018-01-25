@@ -1,4 +1,4 @@
-Adaptive Alignment (Misorientation) {#adaptivealignmentmisorientation}
+Adaptive Alignment (Misorientation) 
 ======
 
 ## Group (Subgroup) ##
