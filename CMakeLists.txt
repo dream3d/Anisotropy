@@ -259,13 +259,6 @@ target_include_directories(${PLUGIN_NAME}
                               ${${PLUGIN_NAME}_BINARY_DIR}/${PLUGIN_NAME}Filters
 )
 
-if(APPLE)
-  target_include_directories(${PLUGIN_NAME}
-                      			PUBLIC 
-                      				${SimpleITKExplicit_BINARY_DIR}/Common/include
-															${SimpleITKExplicit_SOURCE_DIR}/Explicit/include
-  )
-endif()
 #-------------------------------
 #
 target_include_directories(${PLUGIN_NAME}

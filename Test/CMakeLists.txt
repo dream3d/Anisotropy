@@ -78,13 +78,7 @@ configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
                ${${PLUGIN_NAME}Test_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
 
 
-list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib)
-
-if(APPLE)
- list(APPEND ${PLUGIN_NAME}_LINK_LIBS SimpleITKExplicit)
-else()
-  list(APPEND ${PLUGIN_NAME}_LINK_LIBS ${ITK_LIBRARIES})
-endif()
+list(APPEND ${PLUGIN_NAME}_LINK_LIBS Qt5::Core H5Support SIMPLib ${ITK_LIBRARIES})
 
 AddSIMPLUnitTest(TESTNAME ${PLUGIN_NAME}UnitTest
                   SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/AnisotropyFilterTest.cpp
