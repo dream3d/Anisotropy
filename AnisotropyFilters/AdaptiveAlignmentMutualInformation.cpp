@@ -83,6 +83,7 @@ AdaptiveAlignmentMutualInformation::~AdaptiveAlignmentMutualInformation() = defa
 // -----------------------------------------------------------------------------
 void AdaptiveAlignmentMutualInformation::setupFilterParameters()
 {
+  AdaptiveAlignment::setupFilterParameters();
   // getting the current parameters that were set by the parent and adding to it before resetting it
   FilterParameterVector parameters = getFilterParameters();
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, AdaptiveAlignmentMutualInformation));
