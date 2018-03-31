@@ -75,7 +75,6 @@ SteinerCompact::SteinerCompact()
 , m_FeatureIds(nullptr)
 , m_CellPhases(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

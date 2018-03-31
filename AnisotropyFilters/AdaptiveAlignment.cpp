@@ -77,7 +77,6 @@ AdaptiveAlignment::AdaptiveAlignment()
 , m_NumberCircles(0)
 , m_FlatImageData(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
