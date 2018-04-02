@@ -190,7 +190,7 @@ private:
   uint64_t m_Seed;
 
   AdaptiveAlignmentMutualInformation(const AdaptiveAlignmentMutualInformation&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AdaptiveAlignmentMutualInformation&) = delete;                     // Operator '=' Not Implemented
+  void operator=(const AdaptiveAlignmentMutualInformation&) = delete;                     // Move assignment Not Implemented
 };
 
 #endif /* AdaptiveAlignmentMutualInformation_H_ */

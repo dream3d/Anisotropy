@@ -185,7 +185,7 @@ class AnisotropyPlugin : public QObject, public ISIMPLibPlugin
     bool                m_DidLoad;
 
     AnisotropyPlugin(const AnisotropyPlugin&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AnisotropyPlugin&) = delete;   // Operator '=' Not Implemented
+    void operator=(const AnisotropyPlugin&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _Anisotropy_H_ */

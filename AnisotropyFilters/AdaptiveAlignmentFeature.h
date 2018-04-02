@@ -184,7 +184,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(bool, GoodVoxels)
 
   AdaptiveAlignmentFeature(const AdaptiveAlignmentFeature&); // Copy Constructor Not Implemented
-  void operator=(const AdaptiveAlignmentFeature&);           // Operator '=' Not Implemented
+  void operator=(const AdaptiveAlignmentFeature&);           // Move assignment Not Implemented
 };
 
 #endif /* AdaptiveAlignmentFeature_H_ */
