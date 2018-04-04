@@ -143,7 +143,7 @@ class Dream3DToItkImageConversion
 
   private:
     Dream3DToItkImageConversion(const Dream3DToItkImageConversion&) = delete; // Copy Constructor Not Implemented
-    void operator=(const Dream3DToItkImageConversion&) = delete;              // Operator '=' Not Implemented
+    void operator=(const Dream3DToItkImageConversion&) = delete;              // Move assignment Not Implemented
 };
 
 #if 0
@@ -207,7 +207,7 @@ class ItkBridge2
     ItkBridge2() {}
 
     ItkBridge2(const ItkBridge2&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ItkBridge2&) = delete; // Operator '=' Not Implemented
+    void operator=(const ItkBridge2&) = delete; // Move assignment Not Implemented
 };
 #endif
 
@@ -284,7 +284,7 @@ class CreateItkWrapperForDataPointer
 
   private:
     CreateItkWrapperForDataPointer(const CreateItkWrapperForDataPointer&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateItkWrapperForDataPointer&) = delete;                 // Operator '=' Not Implemented
+    void operator=(const CreateItkWrapperForDataPointer&) = delete;                 // Move assignment Not Implemented
 };
 
 
@@ -570,7 +570,7 @@ class ItkBridge
 
   private:
     ItkBridge(const ItkBridge&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const ItkBridge&) = delete; // Operator '=' Not Implemented
+    void operator=(const ItkBridge&) = delete; // Move assignment Not Implemented
 };
 
 

@@ -63,8 +63,7 @@
 //
 // -----------------------------------------------------------------------------
 SteinerCompact::SteinerCompact()
-: AbstractFilter()
-, m_DataContainerName(SIMPL::Defaults::ImageDataContainerName)
+: m_DataContainerName(SIMPL::Defaults::ImageDataContainerName)
 , m_VtkOutput(true)
 , m_VtkFileName("")
 , m_TxtOutput(false)
@@ -76,7 +75,6 @@ SteinerCompact::SteinerCompact()
 , m_FeatureIds(nullptr)
 , m_CellPhases(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -236,7 +234,7 @@ void SteinerCompact::dataCheck()
 
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -247,7 +245,7 @@ void SteinerCompact::dataCheck()
 
   m_CellPhasesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getCellPhasesArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_CellPhasesPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_CellPhasesPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

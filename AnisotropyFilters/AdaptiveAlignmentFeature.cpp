@@ -48,12 +48,10 @@
 //
 // -----------------------------------------------------------------------------
 AdaptiveAlignmentFeature::AdaptiveAlignmentFeature()
-: AdaptiveAlignment()
-, m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask)
+: m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask)
 , m_GoodVoxels(nullptr)
 {
   // only setting up the child parameters because the parent constructor has already been called
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -67,6 +65,8 @@ AdaptiveAlignmentFeature::~AdaptiveAlignmentFeature() = default;
 void AdaptiveAlignmentFeature::setupFilterParameters()
 {
   // getting the current parameters that were set by the parent and adding to it before resetting it
+  AdaptiveAlignment::setupFilterParameters();
+
   FilterParameterVector parameters = getFilterParameters();
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {
@@ -116,7 +116,7 @@ void AdaptiveAlignmentFeature::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(),
                                                                                                      cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_GoodVoxelsPtr.lock().get())                                                                /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_GoodVoxelsPtr.lock())                                                                      /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_GoodVoxels = m_GoodVoxelsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
