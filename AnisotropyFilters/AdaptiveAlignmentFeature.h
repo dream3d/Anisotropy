@@ -51,6 +51,8 @@
 class AdaptiveAlignmentFeature : public AdaptiveAlignment
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(AdaptiveAlignmentFeature SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
 public:
   SIMPL_SHARED_POINTERS(AdaptiveAlignmentFeature)
   SIMPL_FILTER_NEW_MACRO(AdaptiveAlignmentFeature)

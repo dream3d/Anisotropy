@@ -46,6 +46,15 @@
 class SteinerCompact : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(SteinerCompact SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(bool VtkOutput READ getVtkOutput WRITE setVtkOutput)
+  PYB11_PROPERTY(QString VtkFileName READ getVtkFileName WRITE setVtkFileName)
+  PYB11_PROPERTY(bool TxtOutput READ getTxtOutput WRITE setTxtOutput)
+  PYB11_PROPERTY(QString TxtFileName READ getTxtFileName WRITE setTxtFileName)
+  PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+  PYB11_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
+  PYB11_PROPERTY(int Plane READ getPlane WRITE setPlane)
+  PYB11_PROPERTY(int Sites READ getSites WRITE setSites)
 
 public:
   SIMPL_SHARED_POINTERS(SteinerCompact)

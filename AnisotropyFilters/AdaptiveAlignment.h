@@ -49,6 +49,16 @@
 class AdaptiveAlignment : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(AdaptiveAlignment SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(int GlobalCorrection READ getGlobalCorrection WRITE setGlobalCorrection)
+  PYB11_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
+  PYB11_PROPERTY(float ShiftX READ getShiftX WRITE setShiftX)
+  PYB11_PROPERTY(float ShiftY READ getShiftY WRITE setShiftY)
+  PYB11_PROPERTY(DataArrayPath ImageDataArrayPath READ getImageDataArrayPath WRITE setImageDataArrayPath)
+  PYB11_PROPERTY(QString NewCellArrayName READ getNewCellArrayName WRITE setNewCellArrayName)
+  PYB11_PROPERTY(float MinRadius READ getMinRadius WRITE setMinRadius)
+  PYB11_PROPERTY(float MaxRadius READ getMaxRadius WRITE setMaxRadius)
+  PYB11_PROPERTY(int NumberCircles READ getNumberCircles WRITE setNumberCircles)
 public:
   SIMPL_SHARED_POINTERS(AdaptiveAlignment)
   SIMPL_FILTER_NEW_MACRO(AdaptiveAlignment)

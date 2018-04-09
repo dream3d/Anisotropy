@@ -50,6 +50,13 @@
 class AdaptiveAlignmentMutualInformation : public AdaptiveAlignment
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(AdaptiveAlignmentMutualInformation SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(float MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
+  PYB11_PROPERTY(bool UseGoodVoxels READ getUseGoodVoxels WRITE setUseGoodVoxels)
+  PYB11_PROPERTY(DataArrayPath QuatsArrayPath READ getQuatsArrayPath WRITE setQuatsArrayPath)
+  PYB11_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
+  PYB11_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
+  PYB11_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
 public:
   SIMPL_SHARED_POINTERS(AdaptiveAlignmentMutualInformation)
   SIMPL_FILTER_NEW_MACRO(AdaptiveAlignmentMutualInformation)
