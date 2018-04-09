@@ -216,6 +216,7 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     input.EndIndex = UnitTest::AnisotropyTest::TestTifEndIndex;
     input.FilePrefix = UnitTest::AnisotropyTest::TestTifPrefix;
     input.FileSuffix = UnitTest::AnisotropyTest::TestTifSuffix;
+    input.IncrementIndex = 1;
     input.FileExtension = UnitTest::AnisotropyTest::TestTifExtension;
     input.PaddingDigits = UnitTest::AnisotropyTest::TestTifPaddingDigits;
     input.Ordering = 0;
