@@ -250,6 +250,12 @@ void AnisotropyPlugin::readSettings(QSettings& prefs)
 
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AnisotropyPlugin::registerFilterWidgets(FilterWidgetManager* fwm)
+{
+}
+
 #include "AnisotropyFilters/RegisterKnownFilters.cpp"
-#include "Anisotropy/FilterParameterWidgets/RegisterKnownFilterParameterWidgets.cpp"
 

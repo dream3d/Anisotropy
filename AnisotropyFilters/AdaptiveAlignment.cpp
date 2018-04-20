@@ -192,7 +192,7 @@ void AdaptiveAlignment::dataCheck()
   if(m_WriteAlignmentShifts == true && m_AlignmentShiftFileName.isEmpty() == true)
   {
     QString ss = QObject::tr("The alignment shift file name is empty");
-    setErrorCondition(-1);
+    setErrorCondition(-3011);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
@@ -234,7 +234,7 @@ void AdaptiveAlignment::dataCheck()
     if(static_cast<uint64_t>(udims1[2]) != static_cast<uint64_t>(udims2[2]))
     {
       QString ss = QObject::tr("Image Data and Cell Data must have the same Z-dimension.");
-      setErrorCondition(-1);
+      setErrorCondition(-3012);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }

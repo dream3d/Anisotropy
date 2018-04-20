@@ -1,40 +1,41 @@
 /* ============================================================================
-* Copyright (c) 2016 Czech Academy of Sciences, Institute of Physics,
-* Group of Bulk Nanomaterials and Interfaces, http://ams.fzu.cz
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of the Czech Academy of Sciences, nor the names of its
-* contributors may be used to endorse or promote products derived from this
-* software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig grants:
-*    Czech Science Foundation (GA CR), project no. GBP108/12/G043
-*    Czech Ministry of Education, Youth and Sports (MSMT), project no. LM2015087
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2016 Czech Academy of Sciences, Institute of Physics,
+ * Group of Bulk Nanomaterials and Interfaces, http://ams.fzu.cz
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of the Czech Academy of Sciences, nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig grants:
+ *    Czech Science Foundation (GA CR), project no. GBP108/12/G043
+ *    Czech Ministry of Education, Youth and Sports (MSMT), project no. LM2015087
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
+#include <QtCore/QJsonDocument>
 
 #include <QtGui/QImage>
 
@@ -54,7 +55,6 @@
 #include "UnitTestSupport.hpp"
 
 #include "AnisotropyTestFileLocations.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -101,7 +101,7 @@ int TestFilterAvailability()
     QString filtName = "AdaptiveAlignmentFeature";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
-    if (nullptr == filterFactory.get())
+    if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the AdaptiveAlignmentFeature while executing the AnisotropyTest.";
@@ -114,7 +114,7 @@ int TestFilterAvailability()
     QString filtName = "AdaptiveAlignmentMisorientation";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
-    if (nullptr == filterFactory.get())
+    if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the AdaptiveAlignmentMisorientation while executing the AnisotropyTest.";
@@ -127,7 +127,7 @@ int TestFilterAvailability()
     QString filtName = "AdaptiveAlignmentMutualInformation";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
-    if (nullptr == filterFactory.get())
+    if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the AdaptiveAlignmentMutualInformation while executing the AnisotropyTest.";
@@ -140,7 +140,7 @@ int TestFilterAvailability()
     QString filtName = "SteinerCompact";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
-    if (nullptr == filterFactory.get())
+    if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "Unable to initialize the SteinerCompact while executing the AnisotropyTest.";
@@ -150,7 +150,6 @@ int TestFilterAvailability()
 
   return 0;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -163,7 +162,7 @@ void addReadH5EBSDFilter(FilterPipeline::Pointer pipeline)
 
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -175,7 +174,7 @@ void addReadH5EBSDFilter(FilterPipeline::Pointer pipeline)
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     propWasSet = filter->setProperty("ZEndIndex", UnitTest::AnisotropyTest::TestTifEndIndex);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    QSet<QString> SelectedArrays = { "Phases", "EulerAngles", "Image Quality" };
+    QSet<QString> SelectedArrays = {"Phases", "EulerAngles", "Image Quality"};
     var.setValue(SelectedArrays);
     propWasSet = filter->setProperty("SelectedArrayNames", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
@@ -200,18 +199,34 @@ void addReadH5EBSDFilter(FilterPipeline::Pointer pipeline)
 // -----------------------------------------------------------------------------
 void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
 {
-  QString filtName = "ImportImageStack";
+  QString filtName = "ITKImportImageStack";
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
     QVariant var;
 
+    propWasSet = filter->setProperty("DataContainerName", "SEMImageDataContainer");
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    //    propWasSet = filter->setProperty("CellAttributeMatrixName", "ImageData");
+    //    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    FloatVec3_t origin = {0, 0, 0};
+    var.setValue(origin);
+    propWasSet = filter->setProperty("Origin", var);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    FloatVec3_t resolution = {1, 1, 1};
+    var.setValue(resolution);
+    propWasSet = filter->setProperty("Resolution", var);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
     FileListInfo_t input;
-    input.InputPath = UnitTest::TestDataDir  + "/" + UnitTest::AnisotropyTest::TestTifExtension;
+    input.InputPath = UnitTest::TestDataDir + "/" + UnitTest::AnisotropyTest::TestTifExtension;
     input.StartIndex = UnitTest::AnisotropyTest::TestTifStartIndex;
     input.EndIndex = UnitTest::AnisotropyTest::TestTifEndIndex;
     input.FilePrefix = UnitTest::AnisotropyTest::TestTifPrefix;
@@ -222,18 +237,9 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     var.setValue(input);
     propWasSet = filter->setProperty("InputFileListInfo", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    propWasSet = filter->setProperty("GeometryType", 0);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    FloatVec3_t origin = { 0, 0, 0 };
-    var.setValue(origin);
-    propWasSet = filter->setProperty("Origin", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    FloatVec3_t resolution = { 1, 1, 1 };
-    var.setValue(resolution);
-    propWasSet = filter->setProperty("Resolution", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    propWasSet = filter->setProperty("DataContainerName", "SEMImageDataContainer");
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    //    propWasSet = filter->setProperty("GeometryType", 0);
+    //    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     pipeline->pushBack(filter);
   }
@@ -253,7 +259,7 @@ void addMultiThresholdObjectsFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     QVariant var;
@@ -277,7 +283,6 @@ void addMultiThresholdObjectsFilter(FilterPipeline::Pointer pipeline)
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -287,7 +292,7 @@ void addConvertOrientationsFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -323,7 +328,7 @@ void addEBSDSegmentFeatures(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -351,23 +356,23 @@ void addAdaptiveAlignmentFeatureFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
 
-  propWasSet = filter->setProperty("GlobalCorrection", 2);
-  DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-  propWasSet = filter->setProperty("ShiftX", 0);
-  DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-  propWasSet = filter->setProperty("ShiftY", 0);
-  DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-  propWasSet = filter->setProperty("WriteAlignmentShifts", true);
-  DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-  propWasSet = filter->setProperty("AlignmentShiftFileName", UnitTest::AnisotropyTest::TestOutput1);
+    propWasSet = filter->setProperty("GlobalCorrection", 2);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    propWasSet = filter->setProperty("ShiftX", 0);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    propWasSet = filter->setProperty("ShiftY", 0);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    propWasSet = filter->setProperty("WriteAlignmentShifts", true);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    propWasSet = filter->setProperty("AlignmentShiftFileName", UnitTest::AnisotropyTest::TestOutput1);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-  pipeline->pushBack(filter);
+    pipeline->pushBack(filter);
   }
   else
   {
@@ -385,7 +390,7 @@ void addAdaptiveAlignmentMisorientationFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
 
@@ -426,7 +431,7 @@ void addAdaptiveAlignmentMutualInformationFilter(FilterPipeline::Pointer pipelin
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -460,7 +465,7 @@ void addSteinerCompactFilter(FilterPipeline::Pointer pipeline)
   FilterManager* fm = FilterManager::Instance();
   IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
 
-  if (nullptr != filterFactory.get())
+  if(nullptr != filterFactory.get())
   {
     AbstractFilter::Pointer filter = filterFactory->create();
     bool propWasSet;
@@ -492,22 +497,74 @@ void addSteinerCompactFilter(FilterPipeline::Pointer pipeline)
 // -----------------------------------------------------------------------------
 int TestAnisotropy()
 {
+  Observer obs;
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  pipeline->addMessageReceiver(&obs);
 
   {
     addReadH5EBSDFilter(pipeline);
+    int err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addImportImageStackFilter(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addConvertOrientationsFilter(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addAdaptiveAlignmentMisorientationFilter(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addMultiThresholdObjectsFilter(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addAdaptiveAlignmentFeatureFilter(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addAdaptiveAlignmentMutualInformationFilter(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addEBSDSegmentFeatures(pipeline);
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+
     addSteinerCompactFilter(pipeline);
-    pipeline->execute();
+    err = pipeline->preflightPipeline();
+    DREAM3D_REQUIRE_EQUAL(err, 0)
+    // pipeline->execute();
     DREAM3D_REQUIRE_EQUAL(pipeline->getErrorCondition(), 0)
   }
 
+  if(UnitTest::AnisotropyTest::PipelineJsonFile.isEmpty() == false)
+  {
+    QFile outputFile(UnitTest::AnisotropyTest::PipelineJsonFile);
+    QFileInfo info(outputFile);
+    QString parentPath = info.absolutePath();
+    QDir parentDir(parentPath);
+
+    if(parentDir.exists() == false)
+    {
+      parentDir.mkpath(parentPath);
+    }
+
+    QJsonDocument doc(pipeline->toJson());
+
+    if(outputFile.exists() == true)
+    {
+      outputFile.remove();
+    }
+    if(outputFile.open(QIODevice::WriteOnly))
+    {
+      outputFile.write(doc.toJson());
+      outputFile.close();
+    }
+  }
   return EXIT_SUCCESS;
 }
 
@@ -524,7 +581,6 @@ void loadFilterPlugins()
   QMetaObjectUtilities::RegisterMetaTypes();
 }
 
-
 // -----------------------------------------------------------------------------
 //  Use test framework
 // -----------------------------------------------------------------------------
@@ -539,8 +595,8 @@ int main(int argc, char** argv)
 
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( loadFilterPlugins() );
-  DREAM3D_REGISTER_TEST( TestFilterAvailability() );
+  DREAM3D_REGISTER_TEST(loadFilterPlugins());
+  DREAM3D_REGISTER_TEST(TestFilterAvailability());
   DREAM3D_REGISTER_TEST(TestAnisotropy())
   DREAM3D_REGISTER_TEST(RemoveTestFiles())
 
@@ -548,4 +604,3 @@ int main(int argc, char** argv)
 
   return err;
 }
-

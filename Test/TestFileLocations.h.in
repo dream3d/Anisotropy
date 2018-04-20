@@ -31,6 +31,8 @@ namespace UnitTest
 	  const QString TestOutput3("@TEST_TEMP_DIR@/AdaptiveAlignmentMutualInformation.txt");
 	  const QString TestOutput4("@TEST_TEMP_DIR@/SteinerCompact.vtk");
 	  const QString TestOutput5("@TEST_TEMP_DIR@/SteinerCompact.txt");
+	  const QString PipelineJsonFile("@TEST_TEMP_DIR@/TestPipeline.json");
+	  
 	  const QString TestTifPrefix("AlMgSc-TD_");
 	  const QString TestTifSuffix("");
 	  const QString TestTifExtension("tif");

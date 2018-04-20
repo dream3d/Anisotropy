@@ -68,8 +68,6 @@ AdaptiveAlignmentMisorientation::AdaptiveAlignmentMisorientation()
   m_RandomSeed = QDateTime::currentMSecsSinceEpoch();
 
   m_OrientationOps = LaueOps::getOrientationOpsQVector();
-
-  // only setting up the child parameters because the parent constructor has already been called
 }
 
 // -----------------------------------------------------------------------------
@@ -531,12 +529,12 @@ float AdaptiveAlignmentMisorientation::compute_error1(uint64_t iter, uint64_t in
   int64_t xshifts = 0;
   int64_t yshifts = 0;
 
-  double sumX = 0.0f;
-  double sumX_2 = 0.0f;
-  double x_sumY = 0.0f;
-  double x_sumXY = 0.0f;
-  double y_sumY = 0.0f;
-  double y_sumXY = 0.0f;
+  double sumX = 0.0;
+  double sumX_2 = 0.0;
+  double x_sumY = 0.0;
+  double x_sumXY = 0.0;
+  double y_sumY = 0.0;
+  double y_sumXY = 0.0;
 
   for(int64_t i = 1; i <= n; i++)
   {
