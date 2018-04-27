@@ -10,7 +10,13 @@ class AnisotropyGuiPlugin : public AnisotropyPlugin
 
 public:
   AnisotropyGuiPlugin();
-  ~AnisotropyGuiPlugin() override;
+   ~AnisotropyGuiPlugin() override;
+  
+  /**
+   * @brief Register all the filters with the FilterWidgetFactory
+   */
+  void registerFilterWidgets(FilterWidgetManager* fwm) override;
+  
 
 public:
   AnisotropyGuiPlugin(const AnisotropyGuiPlugin&) = delete;            // Copy Constructor Not Implemented

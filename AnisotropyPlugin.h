@@ -42,14 +42,17 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
 
+#include "Anisotropy/AnisotropyDLLExport.h"
+
 /**
- * @class AnisotropyPlugin AnisotropyPlugin.h Anisotropy/AnisotropyPlugin.h
+ * @class AnisotropyPlugin AnisotropyPlugin.hAnisotropy/AnisotropyPlugin.h
  * @brief
  *
  * @date April 06, 2016
  * @version 1.0
  */
-class AnisotropyPlugin : public QObject, public ISIMPLibPlugin
+class Anisotropy_EXPORT AnisotropyPlugin : public QObject, public ISIMPLibPlugin
+
 {
     Q_OBJECT
     Q_INTERFACES(ISIMPLibPlugin)
