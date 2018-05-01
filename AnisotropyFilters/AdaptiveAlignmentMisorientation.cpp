@@ -274,7 +274,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
     progInt = static_cast<uint64_t>(iter * 100 / static_cast<float>(dims[2]));
     QString ss = QObject::tr("Aligning Anisotropic Sections || Determining Shifts || %1% Complete").arg(progInt);
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-    if(getCancel() == true)
+    if(getCancel())
     {
       return;
     }
@@ -433,7 +433,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
         QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);
         ;
         notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-        if(getCancel() == true)
+        if(getCancel())
         {
           return;
         }

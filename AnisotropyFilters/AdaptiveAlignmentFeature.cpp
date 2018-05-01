@@ -313,7 +313,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
         QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);
         ;
         notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-        if(getCancel() == true)
+        if(getCancel())
         {
           return;
         }
