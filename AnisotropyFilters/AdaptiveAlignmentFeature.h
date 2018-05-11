@@ -45,10 +45,12 @@
 
 #include "Anisotropy/AnisotropyFilters/AdaptiveAlignment.h"
 
+#include "Anisotropy/AnisotropyDLLExport.h"
+
 /**
  * @brief The AdaptiveAlignmentFeature class. See [Filter documentation](@ref AdaptiveAlignmentfeature) for details.
  */
-class AdaptiveAlignmentFeature : public AdaptiveAlignment
+class Anisotropy_EXPORT AdaptiveAlignmentFeature : public AdaptiveAlignment
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(AdaptiveAlignmentFeature SUPERCLASS AbstractFilter)

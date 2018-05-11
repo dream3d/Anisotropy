@@ -40,10 +40,12 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "Anisotropy/AnisotropyDLLExport.h"
+
 /**
  * @brief The SteinerCompact class. See [Filter documentation](@ref steinercompact) for details.
  */
-class SteinerCompact : public AbstractFilter
+class Anisotropy_EXPORT SteinerCompact : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(SteinerCompact SUPERCLASS AbstractFilter)

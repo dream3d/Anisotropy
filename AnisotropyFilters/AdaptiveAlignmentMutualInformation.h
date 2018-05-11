@@ -44,10 +44,12 @@
 
 #include "Anisotropy/AnisotropyFilters/AdaptiveAlignment.h"
 
+#include "Anisotropy/AnisotropyDLLExport.h"
+
 /**
 * @brief The AdaptiveAlignmentMutualInformation class. See [Filter documentation](@ref AdaptiveAlignmentmutualinformation) for details.
 */
-class AdaptiveAlignmentMutualInformation : public AdaptiveAlignment
+class Anisotropy_EXPORT AdaptiveAlignmentMutualInformation : public AdaptiveAlignment
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(AdaptiveAlignmentMutualInformation SUPERCLASS AbstractFilter)

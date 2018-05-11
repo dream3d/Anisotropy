@@ -43,10 +43,12 @@
 #include "AdaptiveAlignment.h"
 #include "OrientationLib/LaueOps/LaueOps.h"
 
+#include "Anisotropy/AnisotropyDLLExport.h"
+
 /**
 * @brief The AdaptiveAlignmentMisorientation class. See [Filter documentation](@ref AdaptiveAlignmentmisorientation) for details.
 */
-class AdaptiveAlignmentMisorientation : public AdaptiveAlignment
+class Anisotropy_EXPORT AdaptiveAlignmentMisorientation : public AdaptiveAlignment
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(AdaptiveAlignmentMisorientation SUPERCLASS AbstractFilter)

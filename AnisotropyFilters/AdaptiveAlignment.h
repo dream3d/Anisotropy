@@ -42,11 +42,13 @@
 
 #include "Anisotropy/AnisotropyConstants.h"
 
+#include "Anisotropy/AnisotropyDLLExport.h"
+
 /**
 * @brief The AdaptiveAlignment class. This class serves as a superclass for other classes
 * in the Reconstruction plugin.
 */
-class AdaptiveAlignment : public AbstractFilter
+class Anisotropy_EXPORT AdaptiveAlignment : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(AdaptiveAlignment SUPERCLASS AbstractFilter)
