@@ -209,37 +209,31 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     bool propWasSet;
     QVariant var;
 
-    propWasSet = filter->setProperty("DataContainerName", "SEMImageDataContainer");
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-    //    propWasSet = filter->setProperty("CellAttributeMatrixName", "ImageData");
-    //    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-    FloatVec3_t origin = {0, 0, 0};
-    var.setValue(origin);
-    propWasSet = filter->setProperty("Origin", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-    FloatVec3_t resolution = {1, 1, 1};
-    var.setValue(resolution);
-    propWasSet = filter->setProperty("Resolution", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
     FileListInfo_t input;
-    input.InputPath = UnitTest::TestDataDir + "/" + UnitTest::AnisotropyTest::TestTifExtension;
+    input.InputPath = UnitTest::TestDataDir  + "/" + UnitTest::AnisotropyTest::TestTifExtension;
     input.StartIndex = UnitTest::AnisotropyTest::TestTifStartIndex;
     input.EndIndex = UnitTest::AnisotropyTest::TestTifEndIndex;
     input.FilePrefix = UnitTest::AnisotropyTest::TestTifPrefix;
     input.FileSuffix = UnitTest::AnisotropyTest::TestTifSuffix;
+    input.IncrementIndex = 1;
     input.FileExtension = UnitTest::AnisotropyTest::TestTifExtension;
     input.PaddingDigits = UnitTest::AnisotropyTest::TestTifPaddingDigits;
     input.Ordering = 0;
     var.setValue(input);
     propWasSet = filter->setProperty("InputFileListInfo", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-    //    propWasSet = filter->setProperty("GeometryType", 0);
-    //    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    propWasSet = filter->setProperty("GeometryType", 0);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    FloatVec3_t origin = { 0, 0, 0 };
+    var.setValue(origin);
+    propWasSet = filter->setProperty("Origin", var);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    FloatVec3_t resolution = { 1, 1, 1 };
+    var.setValue(resolution);
+    propWasSet = filter->setProperty("Resolution", var);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    propWasSet = filter->setProperty("DataContainerName", "SEMImageDataContainer");
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     pipeline->pushBack(filter);
   }
