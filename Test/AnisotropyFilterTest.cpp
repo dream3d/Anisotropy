@@ -222,8 +222,6 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     var.setValue(input);
     propWasSet = filter->setProperty("InputFileListInfo", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    propWasSet = filter->setProperty("GeometryType", 0);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     FloatVec3_t origin = { 0, 0, 0 };
     var.setValue(origin);
     propWasSet = filter->setProperty("Origin", var);
