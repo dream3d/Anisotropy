@@ -1,8 +1,8 @@
 {
     "0": {
-        "CellAttributeMatrixName": "CellData",
-        "CellEnsembleAttributeMatrixName": "CellEnsembleData",
-        "DataContainerName": "ImageDataContainer",
+        "CellAttributeMatrixName": "EBSD & SEM Scan Data",
+        "CellEnsembleAttributeMatrixName": "Phase Data",
+        "DataContainerName": "AlMgSc Data",
         "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Read H5EBSD File",
         "Filter_Name": "ReadH5Ebsd",
@@ -24,8 +24,8 @@
     },
     "1": {
         "BoundsFile": "",
-        "CellAttributeMatrixName": "CellData",
-        "DataContainerName": "SEMImageDataContainer",
+        "CellAttributeMatrixName": "EBSD & SEM Scan Data",
+        "DataContainerName": "SEMAlMgSc Data",
         "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Import Images (3D Stack)",
         "Filter_Name": "ImportImageStack",
@@ -57,9 +57,9 @@
         "Filter_Human_Label": "Convert Orientation Representation",
         "Filter_Name": "ConvertOrientations",
         "InputOrientationArrayPath": {
-            "Attribute Matrix Name": "CellData",
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "EulerAngles",
-            "Data Container Name": "ImageDataContainer"
+            "Data Container Name": "AlMgSc Data"
         },
         "InputType": 0,
         "OutputOrientationArrayName": "Quats",
@@ -68,33 +68,33 @@
     "3": {
         "AlignmentShiftFileName": "TestDataAdaptiveAlignment-MutualInformation-SEMImages.txt",
         "CellPhasesArrayPath": {
-            "Attribute Matrix Name": "CellData",
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "Phases",
-            "Data Container Name": "ImageDataContainer"
+            "Data Container Name": "AlMgSc Data"
         },
         "CrystalStructuresArrayPath": {
-            "Attribute Matrix Name": "CellEnsembleData",
+            "Attribute Matrix Name": "Phase Data",
             "Data Array Name": "CrystalStructures",
-            "Data Container Name": "ImageDataContainer"
+            "Data Container Name": "AlMgSc Data"
         },
         "FilterVersion": "6.2.327",
         "Filter_Human_Label": "Adaptive Alignment (Mutual Information)",
         "Filter_Name": "AdaptiveAlignmentMutualInformation",
         "GlobalCorrection": 1,
         "GoodVoxelsArrayPath": {
-            "Attribute Matrix Name": "CellData",
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "",
-            "Data Container Name": "ImageDataContainer"
+            "Data Container Name": "AlMgSc Data"
         },
         "ImageDataArrayPath": {
-            "Attribute Matrix Name": "CellData",
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "ImageData",
-            "Data Container Name": "SEMImageDataContainer"
+            "Data Container Name": "SEMAlMgSc Data"
         },
         "QuatsArrayPath": {
-            "Attribute Matrix Name": "CellData",
+            "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "Quats",
-            "Data Container Name": "ImageDataContainer"
+            "Data Container Name": "AlMgSc Data"
         },
         "ShiftX": 0,
         "ShiftY": 0,
