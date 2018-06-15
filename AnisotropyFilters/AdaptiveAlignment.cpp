@@ -74,9 +74,7 @@ AdaptiveAlignment::AdaptiveAlignment()
 , m_NewCellArrayName("")
 , m_MinRadius(0.0f)
 , m_MaxRadius(0.0f)
-, m_NumberCircles(0)
-, m_FlatImageData(nullptr)
-{
+, m_NumberCircles(0){
 }
 
 // -----------------------------------------------------------------------------
@@ -189,7 +187,7 @@ void AdaptiveAlignment::dataCheck()
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  if(m_WriteAlignmentShifts == true && m_AlignmentShiftFileName.isEmpty() == true)
+  if(m_WriteAlignmentShifts && m_AlignmentShiftFileName.isEmpty() )
   {
     QString ss = QObject::tr("The alignment shift file name is empty");
     setErrorCondition(-3011);
@@ -378,13 +376,13 @@ bool AdaptiveAlignment::find_calibrating_circles()
       // check that the circles were found correctly:
       // midpoint of the centres is not far from the centre of the image
       if(std::fabs(0.5f * static_cast<float>(icenter[0] + icenter[2]) - 0.5f * static_cast<float>(dims[0])) > 100.0f)
-        found = false;
+       { found = false; }
       // circles are in lower part of the image
       if(icenter[1] < dims[1] / 2 || icenter[3] < dims[1] / 2)
-        found = false;
+       { found = false; }
       // y-coordinates of the circles do not differ much
       if((icenter[1] - icenter[3]) > 20)
-        found = false;
+        {found = false;}
     }
 
     if(found)
@@ -405,13 +403,13 @@ bool AdaptiveAlignment::find_calibrating_circles()
         ymin = icenter[2 * circle + 1] - range_factor * radius[circle];
         ymax = icenter[2 * circle + 1] + range_factor * radius[circle];
         if(int64_t(xmin) < 0)
-          xmin = 0;
+          {xmin = 0;}
         if(xmax > dims[0] - 1)
-          xmax = dims[0] - 1;
+          {xmax = dims[0] - 1;}
         if(int64_t(ymin) < 0)
-          ymin = 0;
+          {ymin = 0;}
         if(ymax > dims[1] - 1)
-          ymax = dims[1] - 1;
+          {ymax = dims[1] - 1;}
 
         totalweight = 0.0f;
         for(uint64_t x = xmin; x <= xmax; x++)
@@ -472,13 +470,13 @@ bool AdaptiveAlignment::find_rectangles()
         if(m_ImageData[comp * index] == 0 && m_ImageData[comp * index + 1] == 255 && m_ImageData[comp * index + 2] == 0) // green pixel
         {
           if(k < m_RectangleCorners[i][0])
-            m_RectangleCorners[i][0] = k; // x-coordinate of upper left corner
+            {m_RectangleCorners[i][0] = k;}// x-coordinate of upper left corner
           if(j < m_RectangleCorners[i][1])
-            m_RectangleCorners[i][1] = j; // y-coordinate of upper left corner
+            {m_RectangleCorners[i][1] = j;} // y-coordinate of upper left corner
           if(k > m_RectangleCorners[i][2])
-            m_RectangleCorners[i][2] = k; // x-coordinate of bottom right corner
+            {m_RectangleCorners[i][2] = k;} // x-coordinate of bottom right corner
           if(j > m_RectangleCorners[i][3])
-            m_RectangleCorners[i][3] = j; // y-coordinate of bottom right corner
+            {m_RectangleCorners[i][3] = j;} // y-coordinate of bottom right corner
         }
       }
     if(m_RectangleCorners[i][0] == dims[0] - 1 || m_RectangleCorners[i][1] == dims[1] - 1 || m_RectangleCorners[i][2] == 0 || m_RectangleCorners[i][3] == 0)
@@ -497,7 +495,7 @@ bool AdaptiveAlignment::find_interface_edges()
   notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
-  QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
+  //QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
 
   size_t udims[3] = {0, 0, 0};
   std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
@@ -516,25 +514,25 @@ bool AdaptiveAlignment::find_interface_edges()
     uint64_t yrange2 = static_cast<uint64_t>(floor(m_CalibratingCircles[i][1]));
 
     if(yrange1 >= yrange2)
-      return false;
+      {return false;}
 
     std::vector<float> mean(yrange2 - yrange1 + 1, 0);
-    for(uint64_t y = yrange1; y <= yrange2; y++)
+    for(uint64_t y = yrange1; y <= yrange2; y++){
       for(uint64_t x = xrange1; x <= xrange2; x++)
       {
         mean[y - yrange1] += m_FlatImageData[i * dims[0] * dims[1] + y * dims[0] + x] / static_cast<float>(mean.size());
       }
-
+    }
     // maximum difference between two rows of vertical distance 2 is found
     float maxdif = 0.0f;
     uint64_t argmaxdif;
-    for(uint64_t y = yrange1; y <= yrange2 - 2; y++)
+    for(uint64_t y = yrange1; y <= yrange2 - 2; y++) {
       if(std::fabs(mean[y - yrange1 + 2] - mean[y - yrange1]) > maxdif)
       {
         maxdif = std::fabs(mean[y - yrange1 + 2] - mean[y - yrange1]);
         argmaxdif = y;
       }
-
+    }
     m_InterfaceEdges[i] = argmaxdif;
   }
 
@@ -689,8 +687,8 @@ void AdaptiveAlignment::execute()
   if(m_GlobalCorrection == 2)
   {
     // user-defined shifts related to one pair of consecutive sections and converted to voxels
-    float xinitvalue = m_ShiftX / (float)dims[2] / res[2];
-    float yinitvalue = m_ShiftY / (float)dims[2] / res[2];
+    float xinitvalue = m_ShiftX / static_cast<float>(dims[2] / res[2]);
+    float yinitvalue = m_ShiftY / static_cast<float>(dims[2] / res[2]);
     xneedshifts.resize(1, xinitvalue);
     yneedshifts.resize(1, yinitvalue);
   }
@@ -770,7 +768,7 @@ void AdaptiveAlignment::execute()
     if(i > prog)
     {
 
-      progressInt = ((float)i / dims[2]) * 100.0f;
+      progressInt = (static_cast<float>(i) / dims[2]) * 100.0f;
       QString ss = QObject::tr("Transferring Cell Data || %1% Complete").arg(progressInt);
       notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       prog = prog + progIncrement;

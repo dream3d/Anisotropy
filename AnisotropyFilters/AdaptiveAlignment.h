@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AdaptiveAlignment_H_
-#define _AdaptiveAlignment_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -266,4 +265,3 @@ public:
   AdaptiveAlignment& operator=(AdaptiveAlignment&&) = delete;      // Move Assignment
 };
 
-#endif /* AdaptiveAlignment_H_ */
