@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SteinerCompact_H_
-#define _SteinerCompact_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -240,4 +239,3 @@ public:
   SteinerCompact& operator=(SteinerCompact&&) = delete;      // Move Assignment
 };
 
-#endif /* _SteinerCompact_H_ */

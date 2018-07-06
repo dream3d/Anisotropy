@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _Anisotropy_H_
-#define _Anisotropy_H_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -191,5 +190,4 @@ class Anisotropy_EXPORT AnisotropyPlugin : public QObject, public ISIMPLibPlugin
     void operator=(const AnisotropyPlugin&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _Anisotropy_H_ */
 

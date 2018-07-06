@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AdaptiveAlignmentMutualInformation_H_
-#define _AdaptiveAlignmentMutualInformation_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -202,4 +201,3 @@ private:
   void operator=(const AdaptiveAlignmentMutualInformation&) = delete;                     // Move assignment Not Implemented
 };
 
-#endif /* AdaptiveAlignmentMutualInformation_H_ */

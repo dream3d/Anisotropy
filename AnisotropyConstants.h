@@ -1,5 +1,4 @@
-#ifndef _anisotropyConstants_H_
-#define _anisotropyConstants_H_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -96,4 +95,3 @@ namespace AnisotropyConstants
   typedef itk::Image< DoublePixelType, SliceDimension > DoubleSliceType;
 
 }
-#endif

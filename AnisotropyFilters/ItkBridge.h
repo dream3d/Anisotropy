@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _itkbridge_h_
-#define _itkbridge_h_
+#pragma once
 
 // ITK Includes first
 #include "itkExtractImageFilter.h"
@@ -579,4 +578,3 @@ typedef ItkBridge<AnisotropyConstants::DefaultPixelType>   ITKUtilitiesType;
 
 
 
-#endif /* _ItkBridge_H_ */

@@ -34,8 +34,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AdaptiveAlignmentFeature_H_
-#define _AdaptiveAlignmentFeature_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -191,4 +190,3 @@ private:
   void operator=(const AdaptiveAlignmentFeature&);           // Move assignment Not Implemented
 };
 
-#endif /* AdaptiveAlignmentFeature_H_ */

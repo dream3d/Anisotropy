@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AdaptiveAlignmentMisorientation_H_
-#define _AdaptiveAlignmentMisorientation_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -195,4 +194,3 @@ private:
   void operator=(const AdaptiveAlignmentMisorientation&) = delete;                  // Move assignment Not Implemented
 };
 
-#endif /* AdaptiveAlignmentMisorientation_H_ */
