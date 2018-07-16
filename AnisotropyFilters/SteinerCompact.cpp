@@ -1076,14 +1076,6 @@ void SteinerCompact::execute()
     return;
   }
 
-  if(getErrorCondition() < 0)
-  {
-    QString ss = QObject::tr("Some error message");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
   int32_t maxPhase = 0;
   size_t totalPoints = m_FeatureIdsPtr.lock()->getNumberOfTuples();
   for(int i = 0; i < totalPoints; i++)
