@@ -360,7 +360,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       AnisotropyConstants::FloatSliceType::Pointer localAccumulator = houghFilter->GetOutput();
 
       // find circles
-      HoughTransformFilterType::CirclesListType circles = houghFilter->GetCircles(m_NumberCircles);
+      HoughTransformFilterType::CirclesListType circles = houghFilter->GetCircles();
       HoughTransformFilterType::CirclesListType::const_iterator itCircles;
 
       /// circle variables here
