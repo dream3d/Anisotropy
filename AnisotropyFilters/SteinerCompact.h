@@ -234,7 +234,7 @@ private:
 
 public:
   SteinerCompact(const SteinerCompact&) = delete; // Copy Constructor Not Implemented
-  SteinerCompact(SteinerCompact&&) = delete;      // Move Constructor
+  SteinerCompact(SteinerCompact&&) = delete;      // Move Constructor Not Implemented
   SteinerCompact& operator=(const SteinerCompact&) = delete; // Copy Assignment Not Implemented
   SteinerCompact& operator=(SteinerCompact&&) = delete;      // Move Assignment
 };

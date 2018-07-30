@@ -20,7 +20,7 @@ public:
 
 public:
   AnisotropyGuiPlugin(const AnisotropyGuiPlugin&) = delete;            // Copy Constructor Not Implemented
-  AnisotropyGuiPlugin(AnisotropyGuiPlugin&&) = delete;                 // Move Constructor
+  AnisotropyGuiPlugin(AnisotropyGuiPlugin&&) = delete;                 // Move Constructor Not Implemented
   AnisotropyGuiPlugin& operator=(const AnisotropyGuiPlugin&) = delete; // Copy Assignment Not Implemented
   AnisotropyGuiPlugin& operator=(AnisotropyGuiPlugin&&) = delete;      // Move Assignment Not Implemented
 };
