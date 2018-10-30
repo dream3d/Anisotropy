@@ -46,6 +46,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #if defined(__APPLE__)
 //  #include "sitkExplicitITK.h"
@@ -187,12 +188,7 @@ void AdaptiveAlignment::dataCheck()
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  if(m_WriteAlignmentShifts && m_AlignmentShiftFileName.isEmpty() )
-  {
-    QString ss = QObject::tr("The alignment shift file name is empty");
-    setErrorCondition(-3011);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
+  FileSystemPathHelper::CheckOutputFile(this, "Alignment Shift File Name", getAlignmentShiftFileName(), true);
 
   if(m_GlobalCorrection == 1)
   {

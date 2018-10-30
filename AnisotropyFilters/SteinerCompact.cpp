@@ -52,6 +52,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Math/SIMPLibRandom.h"
@@ -176,60 +177,14 @@ void SteinerCompact::dataCheck()
   QVector<size_t> cDims(1, 1);
   QVector<DataArrayPath> dataArrayPaths;
 
-  if(m_VtkOutput == true)
+  if(getVtkOutput())
   {
-    if(m_VtkFileName.isEmpty() == true)
-    {
-      QString ss = QObject::tr("The vtk output file must be set before executing this filter.");
-      setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    }
-
-    // Make sure what we are checking is an actual file name and not a directory
-    QFileInfo fi(m_VtkFileName);
-    if(fi.isDir() == false)
-    {
-      QDir parentPath = fi.path();
-      if(parentPath.exists() == false)
-      {
-        QString ss = QObject::tr("The directory path for the output file does not exist.");
-        notifyWarningMessage(getHumanLabel(), ss, -1);
-      }
-    }
-    else
-    {
-      QString ss = QObject::tr("The output file path is a path to an existing directory. Please change the path to point to a file");
-      setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    }
+    FileSystemPathHelper::CheckOutputFile(this, "VTK Output File", getVtkFileName(), true);
   }
 
-  if(m_TxtOutput == true)
+  if(getTxtOutput())
   {
-    if(m_TxtFileName.isEmpty() == true)
-    {
-      QString ss = QObject::tr("The text output file must be set before executing this filter.");
-      setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    }
-
-    // Make sure what we are checking is an actual file name and not a directory
-    QFileInfo fi(m_TxtFileName);
-    if(fi.isDir() == false)
-    {
-      QDir parentPath = fi.path();
-      if(parentPath.exists() == false)
-      {
-        QString ss = QObject::tr("The directory path for the output file does not exist.");
-        notifyWarningMessage(getHumanLabel(), ss, -1);
-      }
-    }
-    else
-    {
-      QString ss = QObject::tr("The output file path is a path to an existing directory. Please change the path to point to a file");
-      setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    }
+    FileSystemPathHelper::CheckOutputFile(this, "Text Output File", getTxtFileName(), true);
   }
 
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
