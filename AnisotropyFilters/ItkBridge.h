@@ -567,9 +567,11 @@ class ItkBridge
   protected:
     ItkBridge() {}
 
-  private:
+  public:
     ItkBridge(const ItkBridge&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const ItkBridge&) = delete; // Move assignment Not Implemented
+    ItkBridge(ItkBridge&&) = delete;           // Move Constructor Not Implemented
+    ItkBridge& operator=(const ItkBridge&) = delete; // Copy Assignment Not Implemented
+    ItkBridge& operator=(ItkBridge&&) = delete;      // Move Assignment Not Implemented
 };
 
 

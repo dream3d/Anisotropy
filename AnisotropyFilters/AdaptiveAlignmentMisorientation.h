@@ -190,7 +190,10 @@ private:
 
   uint64_t m_RandomSeed;
 
+public:
   AdaptiveAlignmentMisorientation(const AdaptiveAlignmentMisorientation&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AdaptiveAlignmentMisorientation&) = delete;                  // Move assignment Not Implemented
+  AdaptiveAlignmentMisorientation(AdaptiveAlignmentMisorientation&&) = delete;      // Move Constructor Not Implemented
+  AdaptiveAlignmentMisorientation& operator=(const AdaptiveAlignmentMisorientation&) = delete; // Copy Assignment Not Implemented
+  AdaptiveAlignmentMisorientation& operator=(AdaptiveAlignmentMisorientation&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -197,7 +197,10 @@ private:
   Int32ArrayType::Pointer m_MIFeaturesPtr;
   uint64_t m_Seed;
 
+public:
   AdaptiveAlignmentMutualInformation(const AdaptiveAlignmentMutualInformation&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AdaptiveAlignmentMutualInformation&) = delete;                     // Move assignment Not Implemented
+  AdaptiveAlignmentMutualInformation(AdaptiveAlignmentMutualInformation&&) = delete;      // Move Constructor Not Implemented
+  AdaptiveAlignmentMutualInformation& operator=(const AdaptiveAlignmentMutualInformation&) = delete; // Copy Assignment Not Implemented
+  AdaptiveAlignmentMutualInformation& operator=(AdaptiveAlignmentMutualInformation&&) = delete;      // Move Assignment Not Implemented
 };
 
