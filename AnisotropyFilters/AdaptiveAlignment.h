@@ -262,6 +262,6 @@ public:
   AdaptiveAlignment(const AdaptiveAlignment&) = delete; // Copy Constructor Not Implemented
   AdaptiveAlignment(AdaptiveAlignment&&) = delete;      // Move Constructor Not Implemented
   AdaptiveAlignment& operator=(const AdaptiveAlignment&) = delete; // Copy Assignment Not Implemented
-  AdaptiveAlignment& operator=(AdaptiveAlignment&&) = delete;      // Move Assignment
+  AdaptiveAlignment& operator=(AdaptiveAlignment&&) = delete;      // Move Assignment Not Implemented
 };
 
