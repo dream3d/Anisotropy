@@ -177,7 +177,7 @@ void AdaptiveAlignmentMisorientation::dataCheck()
     dataArrayPaths.push_back(getCellPhasesArrayPath());
   }
 
-  if(m_UseGoodVoxels == true)
+  if(m_UseGoodVoxels)
   {
     m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(),
                                                                                                        cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -229,8 +229,10 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
   };
 
   uint64_t maxstoredshifts = 1;
-  if(xneedshifts.size() > 0)
+  if(!xneedshifts.empty())
+  {
     maxstoredshifts = 20;
+  }
 
   float disorientation = 0.0f;
 
@@ -299,7 +301,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
         {
           disorientation = 0.0f;
           count = 0.0f;
-          if(llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+          if(llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && !misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1])
           {
             for(uint64_t l = 0; l < dims[1]; l = l + 4)
             {
@@ -310,7 +312,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
                   count++;
                   refposition = ((slice + 1) * dims[0] * dims[1]) + (l * dims[0]) + n;
                   curposition = (slice * dims[0] * dims[1]) + ((l + j + oldyshift) * dims[0]) + (n + k + oldxshift);
-                  if(m_UseGoodVoxels == false || (m_GoodVoxels[refposition] == true && m_GoodVoxels[curposition] == true))
+                  if(!m_UseGoodVoxels || (m_GoodVoxels[refposition] && m_GoodVoxels[curposition]))
                   {
                     w = std::numeric_limits<float>::max();
                     if(m_CellPhases[refposition] > 0 && m_CellPhases[curposition] > 0)
@@ -329,13 +331,13 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
                       disorientation++;
                     }
                   }
-                  if(m_UseGoodVoxels == true)
+                  if(m_UseGoodVoxels)
                   {
-                    if(m_GoodVoxels[refposition] == true && m_GoodVoxels[curposition] == false)
+                    if(m_GoodVoxels[refposition] && !m_GoodVoxels[curposition])
                     {
                       disorientation++;
                     }
-                    if(m_GoodVoxels[refposition] == false && m_GoodVoxels[curposition] == true)
+                    if(!m_GoodVoxels[refposition] && m_GoodVoxels[curposition])
                     {
                       disorientation++;
                     }
@@ -383,7 +385,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
   std::vector<uint64_t> curindex(dims[2], 0);
 
   // find corrected shifts
-  if(xneedshifts.size() > 0)
+  if(!xneedshifts.empty())
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
@@ -501,7 +503,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
     }
   }
 
-  if(getWriteAlignmentShifts() == true)
+  if(getWriteAlignmentShifts())
   {
     std::ofstream outFile;
     outFile.open(getAlignmentShiftFileName().toLatin1().data());
@@ -627,7 +629,7 @@ void AdaptiveAlignmentMisorientation::execute()
 AbstractFilter::Pointer AdaptiveAlignmentMisorientation::newFilterInstance(bool copyFilterParameters) const
 {
   AdaptiveAlignmentMisorientation::Pointer filter = AdaptiveAlignmentMisorientation::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

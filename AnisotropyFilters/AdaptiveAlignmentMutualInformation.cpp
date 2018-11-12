@@ -182,7 +182,7 @@ void AdaptiveAlignmentMutualInformation::dataCheck()
   {
     dataArrayPaths.push_back(getCellPhasesArrayPath());
   }
-  if(m_UseGoodVoxels == true)
+  if(m_UseGoodVoxels)
   {
     m_GoodVoxelsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getGoodVoxelsArrayPath(),
                                                                                                        cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -239,8 +239,10 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
   };
 
   uint64_t maxstoredshifts = 1;
-  if(xneedshifts.size() > 0)
+  if(!xneedshifts.empty())
+  {
     maxstoredshifts = 20;
+  }
 
   float disorientation = 0.0f;
 
@@ -319,8 +321,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
         {
           disorientation = 0;
           count = 0;
-          if(static_cast<uint64_t>(std::abs(k + oldxshift)) < halfDim0 && static_cast<uint64_t>(std::abs(j + oldyshift)) < halfDim1 &&
-             misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+          if(static_cast<uint64_t>(std::abs(k + oldxshift)) < halfDim0 && static_cast<uint64_t>(std::abs(j + oldyshift)) < halfDim1 && !misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1])
           {
             for(uint64_t l = 0; l < dims[1]; l = l + 4)
             {
@@ -443,7 +444,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
   std::vector<uint64_t> curindex(dims[2], 0);
 
   // find corrected shifts
-  if(xneedshifts.size() > 0)
+  if(!xneedshifts.empty())
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
@@ -561,7 +562,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
     }
   }
 
-  if(getWriteAlignmentShifts() == true)
+  if(getWriteAlignmentShifts())
   {
     std::ofstream outFile;
     outFile.open(getAlignmentShiftFileName().toLatin1().data());
@@ -718,7 +719,7 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
     featurecount = 1;
     noseeds = false;
-    while(noseeds == false)
+    while(!noseeds)
     {
       seed = -1;
       randx = int64_t(float(rg.genrand_res53()) * float(dims[0]));
@@ -739,7 +740,7 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
             y = y - dims[1];
           }
           point = (z * dims[0] * dims[1]) + (y * dims[0]) + x;
-          if((m_UseGoodVoxels == false || m_GoodVoxels[point] == true) && miFeatureIds[point] == 0 && m_CellPhases[point] > 0)
+          if((!m_UseGoodVoxels || m_GoodVoxels[point]) && miFeatureIds[point] == 0 && m_CellPhases[point] > 0)
           {
             seed = point;
           }
@@ -790,7 +791,7 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
             {
               good = false;
             }
-            if(good == true && miFeatureIds[neighbor] <= 0 && m_CellPhases[neighbor] > 0)
+            if(good && miFeatureIds[neighbor] <= 0 && m_CellPhases[neighbor] > 0)
             {
               w = std::numeric_limits<float>::max();
               QuaternionMathF::Copy(quats[neighbor], q2);
@@ -854,7 +855,7 @@ void AdaptiveAlignmentMutualInformation::execute()
 AbstractFilter::Pointer AdaptiveAlignmentMutualInformation::newFilterInstance(bool copyFilterParameters) const
 {
   AdaptiveAlignmentMutualInformation::Pointer filter = AdaptiveAlignmentMutualInformation::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

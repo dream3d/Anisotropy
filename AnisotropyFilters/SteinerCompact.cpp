@@ -258,9 +258,13 @@ void SteinerCompact::rose_of_intersections(std::vector<std::vector<float>>& ROI)
 
   float maxdim = static_cast<float>(dims[0]) * res[0];
   if(static_cast<float>(dims[1]) * res[1] > maxdim)
+  {
     maxdim = static_cast<float>(dims[1]) * res[1];
+  }
   if(static_cast<float>(dims[2]) * res[2] > maxdim)
+  {
     maxdim = static_cast<float>(dims[2]) * res[2];
+  }
   float totlength = 1000 * maxdim;
 
   // rotation of arrays with dimensions and resolution for planes different from xy
@@ -319,7 +323,9 @@ void SteinerCompact::rose_of_intersections(std::vector<std::vector<float>>& ROI)
     }
 
     for(int32_t phase = 1; phase < ROI.size(); phase++)
+    {
       ROI[phase][i] = 0;
+    }
 
     length = 0.0f;
 
@@ -396,12 +402,17 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
 
       low = (int64_t)(trunc(fmin(limit1, limit2)));
       if(low < 0)
+      {
         low = 0;
+      }
       up = (int64_t)(ceil(fmax(limit1, limit2)));
       if(up > dims[1] - 1)
+      {
         up = dims[1] - 1;
+      }
 
       if(line[0] <= 0)
+      {
         for(int64_t y = low; y <= up; y++)
         {
           rectangle[1] = static_cast<float>(y) * res[1];
@@ -416,7 +427,9 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
             ycoor1.push_back(yintersections[1]);
           }
         }
+      }
       else if(line[0] > 0)
+      {
         for(int64_t y = up; y >= low; y--)
         {
           rectangle[1] = static_cast<float>(y) * res[1];
@@ -431,15 +444,20 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
             ycoor1.push_back(yintersections[1]);
           }
         }
+      }
     }
   }
   else
   {
     int64_t x = (uint64_t)round(-line[2] / (line[0] * res[0]));
     if(x < 0)
+    {
       x = 0;
+    }
     if(x > dims[0] - 1)
+    {
       x = dims[0] - 1;
+    }
     rectangle[0] = static_cast<float>(x) * res[0];
     rectangle[2] = static_cast<float>(x + 1) * res[0];
     for(int64_t y = 0; y < dims[1]; y++)
@@ -499,7 +517,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
     g1 = m_FeatureIds[point1];
     phase0 = m_CellPhases[point0];
     phase1 = m_CellPhases[point1];
-    if(g0 != g1 && (interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g1) == interfaces.end())))
+    if(g0 != g1 && (interfaces.empty() || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g1) == interfaces.end())))
     {
       penalization = false;
       if(i < static_cast<int64_t>(xvoxels.size()) - 2)
@@ -528,7 +546,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
           }
         }
       }
-      if(penalization == false)
+      if(!penalization)
       {
         interfaces.push_back(g0 * numfeatures + g1);
         numofintersections[phase0] += 1.0f;
@@ -556,7 +574,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
           g2 = m_FeatureIds[point2];
           if(g0 != g2)
           {
-            if(interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
+            if(interfaces.empty() || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
             {
               phase2 = m_CellPhases[point2];
               interfaces.push_back(g0 * numfeatures + g2);
@@ -582,7 +600,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
           g2 = m_FeatureIds[point2];
           if(g0 != g2)
           {
-            if(interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
+            if(interfaces.empty() || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
             {
               phase2 = m_CellPhases[point2];
               interfaces.push_back(g0 * numfeatures + g2);
@@ -611,7 +629,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
           g2 = m_FeatureIds[point2];
           if(g0 != g2)
           {
-            if(interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
+            if(interfaces.empty() || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
             {
               phase2 = m_CellPhases[point2];
               interfaces.push_back(g0 * numfeatures + g2);
@@ -637,7 +655,7 @@ void SteinerCompact::find_intersections(float line[3], int64_t z, int64_t dims[3
           g2 = m_FeatureIds[point2];
           if(g0 != g2)
           {
-            if(interfaces.size() == 0 || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
+            if(interfaces.empty() || (std::find(interfaces.begin(), interfaces.end(), g0 * numfeatures + g2) == interfaces.end()))
             {
               phase2 = m_CellPhases[point2];
               interfaces.push_back(g0 * numfeatures + g2);
@@ -720,9 +738,13 @@ void SteinerCompact::find_one_site_vertices(std::vector<float> ROI, int64_t inde
   for(int64_t i = 0; i < size; i++)
   {
     if(index + i < size)
+    {
       ROI2[i] = ROI[index + i];
+    }
     else
+    {
       ROI2[i] = ROI[index + i - size];
+    }
   }
 
   // at first, find coordinates for the reordered array which corresponds to a vertical site
@@ -734,20 +756,26 @@ void SteinerCompact::find_one_site_vertices(std::vector<float> ROI, int64_t inde
       ang = -(static_cast<float>(i)) * SIMPLib::Constants::k_Pi / static_cast<float>(size);
       coor = (ROI2[0] * cos(ang) - ROI2[i]) / sin(ang);
       if(coor < cmin)
+      {
         cmin = coor;
+      }
     }
     if(i < size - 1)
     {
       ang = (static_cast<float>(i + 1)) * SIMPLib::Constants::k_Pi / static_cast<float>(size);
       coor = (ROI2[0] * cos(ang) - ROI2[size - 1 - i]) / sin(ang);
       if(coor > cmax)
+      {
         cmax = coor;
+      }
     }
   }
 
   length = cmin - cmax;
   if(length < 0)
+  {
     length = 0;
+  }
 
   // now convert to polar coordinates and rotate the vertices
   radius = sqrt(ROI2[0] * ROI2[0] + cmin * cmin);
@@ -886,11 +914,17 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
       s = sinf(static_cast<float>(i) * angle);
       c = cosf(static_cast<float>(i) * angle);
       if(m_Plane == 0)
+      {
         fprintf(vtk, "%f %f %f\n", r * c, r * s, p);
+      }
       else if(m_Plane == 1)
+      {
         fprintf(vtk, "%f %f %f\n", r * c, p, r * s);
+      }
       else if(m_Plane == 2)
+      {
         fprintf(vtk, "%f %f %f\n", p, r * c, r * s);
+      }
     }
   }
 
@@ -990,7 +1024,9 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
         angle = (static_cast<float>(site + symmetry * numdirections) + 0.5f) * stepangle + 0.5f * SIMPLib::Constants::k_Pif;
         angle *= 180.0f / SIMPLib::Constants::k_Pi;
         if(angle >= 360.0f)
+        {
           angle -= 360.0f;
+        }
         fprintf(txt, "%lld   %f   %f\n", static_cast<long long int>(phase), angle, ROI[phase][site]);
       }
     }
@@ -1036,7 +1072,9 @@ void SteinerCompact::execute()
   for(int i = 0; i < totalPoints; i++)
   {
     if(m_CellPhases[i] > maxPhase)
+    {
       maxPhase = m_CellPhases[i];
+    }
   }
 
   uint64_t directions;
@@ -1070,7 +1108,7 @@ void SteinerCompact::execute()
   rose_of_intersections(ROI);
 
   // write the Steiner compact to vtk or txt file
-  if(m_VtkOutput == true || m_TxtOutput == true)
+  if(m_VtkOutput || m_TxtOutput)
   {
     QString ss = QObject::tr("Write Output File(s)");
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
@@ -1078,10 +1116,14 @@ void SteinerCompact::execute()
     std::vector<std::vector<float>> draw_vertices_y;
     std::vector<std::vector<float>> radii;
     find_all_vertices(draw_vertices_x, draw_vertices_y, radii, ROI);
-    if(m_VtkOutput == true)
+    if(m_VtkOutput)
+    {
       output_vtk(draw_vertices_x, draw_vertices_y, radii, ROI);
-    if(m_TxtOutput == true)
+    }
+    if(m_TxtOutput)
+    {
       output_txt(draw_vertices_x, draw_vertices_y, ROI);
+    }
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
@@ -1093,7 +1135,7 @@ void SteinerCompact::execute()
 AbstractFilter::Pointer SteinerCompact::newFilterInstance(bool copyFilterParameters) const
 {
   SteinerCompact::Pointer filter = SteinerCompact::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

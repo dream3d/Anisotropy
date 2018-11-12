@@ -150,8 +150,10 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   };
 
   uint64_t maxstoredshifts = 1;
-  if(xneedshifts.size() > 0)
+  if(!xneedshifts.empty())
+  {
     maxstoredshifts = 20;
+  }
 
   float disorientation = 0.0f;
 
@@ -206,7 +208,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
           disorientation = 0.0f;
           count = 0.0f;
           if((llabs(k + oldxshift) < static_cast<long long int>(halfDim0)) && llabs(j + oldyshift) < static_cast<long long int>(halfDim1) &&
-             misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1] == false)
+             !misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1])
           {
             for(int64_t l = 0; l < dims[1]; l = l + 4)
             {
@@ -263,7 +265,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   std::vector<uint64_t> curindex(dims[2], 0);
 
   // find corrected shifts
-  if(xneedshifts.size() > 0)
+  if(!xneedshifts.empty())
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
@@ -381,7 +383,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
     }
   }
 
-  if(getWriteAlignmentShifts() == true)
+  if(getWriteAlignmentShifts())
   {
     std::ofstream outFile;
     outFile.open(getAlignmentShiftFileName().toLatin1().data());
@@ -506,7 +508,7 @@ void AdaptiveAlignmentFeature::execute()
 AbstractFilter::Pointer AdaptiveAlignmentFeature::newFilterInstance(bool copyFilterParameters) const
 {
   AdaptiveAlignmentFeature::Pointer filter = AdaptiveAlignmentFeature::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -533,21 +533,21 @@ int TestAnisotropy()
     DREAM3D_REQUIRE_EQUAL(pipeline->getErrorCondition(), 0)
   }
 
-  if(UnitTest::AnisotropyTest::PipelineJsonFile.isEmpty() == false)
+  if(!UnitTest::AnisotropyTest::PipelineJsonFile.isEmpty())
   {
     QFile outputFile(UnitTest::AnisotropyTest::PipelineJsonFile);
     QFileInfo info(outputFile);
     QString parentPath = info.absolutePath();
     QDir parentDir(parentPath);
 
-    if(parentDir.exists() == false)
+    if(!parentDir.exists())
     {
       parentDir.mkpath(parentPath);
     }
 
     QJsonDocument doc(pipeline->toJson());
 
-    if(outputFile.exists() == true)
+    if(outputFile.exists())
     {
       outputFile.remove();
     }

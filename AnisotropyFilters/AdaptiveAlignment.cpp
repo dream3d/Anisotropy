@@ -409,6 +409,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
 
         totalweight = 0.0f;
         for(uint64_t x = xmin; x <= xmax; x++)
+        {
           for(uint64_t y = ymin; y <= ymax; y++)
           {
             weight = exp(weighting_factor * m_FlatImageData[i * dims[0] * dims[1] + y * dims[0] + x]);
@@ -416,6 +417,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
             fcenter[2 * circle + 1] += static_cast<float>(y) * weight;
             totalweight += weight;
           }
+        }
         if(totalweight > 0)
         {
           fcenter[2 * circle] /= totalweight;
@@ -460,6 +462,7 @@ bool AdaptiveAlignment::find_rectangles()
     m_RectangleCorners[i][2] = 0;
     m_RectangleCorners[i][3] = 0;
     for(uint64_t j = 0; j < dims[1]; j++)
+    {
       for(uint64_t k = 0; k < dims[0]; k++)
       {
         index = (i * dims[0] * dims[1]) + (j * dims[0]) + k;
@@ -475,6 +478,7 @@ bool AdaptiveAlignment::find_rectangles()
             {m_RectangleCorners[i][3] = j;} // y-coordinate of bottom right corner
         }
       }
+    }
     if(m_RectangleCorners[i][0] == dims[0] - 1 || m_RectangleCorners[i][1] == dims[1] - 1 || m_RectangleCorners[i][2] == 0 || m_RectangleCorners[i][3] == 0)
     {
       found = false;
@@ -624,7 +628,6 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 // -----------------------------------------------------------------------------
 void AdaptiveAlignment::find_shifts(std::vector<int64_t>& xshifts, std::vector<int64_t>& yshifts, std::vector<float>& xneedshifts, std::vector<float>& yneedshifts)
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -826,7 +829,7 @@ void AdaptiveAlignment::execute()
 AbstractFilter::Pointer AdaptiveAlignment::newFilterInstance(bool copyFilterParameters) const
 {
   AdaptiveAlignment::Pointer filter = AdaptiveAlignment::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
