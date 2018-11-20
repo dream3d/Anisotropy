@@ -59,10 +59,6 @@ AdaptiveAlignmentMutualInformation::AdaptiveAlignmentMutualInformation()
 , m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases)
 , m_GoodVoxelsArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask)
 , m_CrystalStructuresArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellEnsembleAttributeMatrixName, SIMPL::EnsembleData::CrystalStructures)
-, m_Quats(nullptr)
-, m_CellPhases(nullptr)
-, m_GoodVoxels(nullptr)
-, m_CrystalStructures(nullptr)
 {
   m_Seed = QDateTime::currentMSecsSinceEpoch();
 

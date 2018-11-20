@@ -73,8 +73,6 @@ SteinerCompact::SteinerCompact()
 , m_CellPhasesArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Phases)
 , m_Plane(0)
 , m_Sites(1)
-, m_FeatureIds(nullptr)
-, m_CellPhases(nullptr)
 {
 }
 
