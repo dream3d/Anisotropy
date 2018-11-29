@@ -1,31 +1,36 @@
 {
     "0": {
+        "AngleRepresentation": 0,
         "CellAttributeMatrixName": "EBSD & SEM Scan Data",
         "CellEnsembleAttributeMatrixName": "Phase Data",
         "DataContainerName": "AlMgSc Data",
-        "FilterVersion": "6.2.327",
-        "Filter_Human_Label": "Read H5EBSD File",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Import H5EBSD File",
         "Filter_Name": "ReadH5Ebsd",
-        "InputFile": "Data/AlMgSc.h5ebsd",
+        "Filter_Uuid": "{4ef7f56b-616e-5a80-9e68-1da8f35ad235}",
+        "InputFile": "Data/Anisotropy/AlMgSc.h5ebsd",
         "RefFrameZDir": 2,
         "SelectedArrayNames": [
-            "Fit",
-            "SEM Signal",
-            "Confidence Index",
             "Image Quality",
             "Y Position",
-            "EulerAngles",
             "Phases",
-            "X Position"
+            "X Position",
+            "Confidence Index",
+            "Fit",
+            "EulerAngles",
+            "SEM Signal"
         ],
         "UseTransformations": 1,
         "ZEndIndex": 9,
         "ZStartIndex": 0
     },
     "1": {
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Convert Orientation Representation",
         "Filter_Name": "ConvertOrientations",
+        "Filter_Uuid": "{e5629880-98c4-5656-82b8-c9fe2b9744de}",
         "InputOrientationArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "EulerAngles",
@@ -36,7 +41,7 @@
         "OutputType": 2
     },
     "2": {
-        "AlignmentShiftFileName": "TestDataAdaptiveAlignment-Misorientation-ZeroShifts.txt",
+        "AlignmentShiftFileName": "Data/Output/Anisotropy/TestDataAdaptiveAlignment-Misorientation-ZeroShifts.txt",
         "CellPhasesArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "Phases",
@@ -47,15 +52,29 @@
             "Data Array Name": "CrystalStructures",
             "Data Container Name": "AlMgSc Data"
         },
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "1.2.724",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Adaptive Alignment (Misorientation)",
         "Filter_Name": "AdaptiveAlignmentMisorientation",
+        "Filter_Uuid": "{8ef88380-ece9-5f8e-a12d-d149d0856752}",
         "GlobalCorrection": 2,
         "GoodVoxelsArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "",
             "Data Container Name": "AlMgSc Data"
         },
+        "IgnoredDataArrayPaths": [
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "X Position",
+                "Data Container Name": "AlMgSc Data"
+            },
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "Y Position",
+                "Data Container Name": "AlMgSc Data"
+            }
+        ],
         "ImageDataArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "",
@@ -75,6 +94,6 @@
     "PipelineBuilder": {
         "Name": "02_Adaptive Alignment - Misorientation - Zero Shifts",
         "Number_Filters": 3,
-        "Version": "6.2"
+        "Version": 6
     }
 }

@@ -89,8 +89,8 @@ void AdaptiveAlignment::setupFilterParameters()
   FilterParameterVector parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));
-  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Alignment File", AlignmentShiftFileName, FilterParameter::Parameter, AdaptiveAlignment, "", "*.txt"));
+//  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));
+//  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Alignment File", AlignmentShiftFileName, FilterParameter::Parameter, AdaptiveAlignment, "", "*.txt"));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
@@ -189,7 +189,10 @@ void AdaptiveAlignment::dataCheck()
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  FileSystemPathHelper::CheckOutputFile(this, "Alignment Shift File Name", getAlignmentShiftFileName(), true);
+  if(getWriteAlignmentShifts())
+  {
+    FileSystemPathHelper::CheckOutputFile(this, "Alignment Shift File Name", getAlignmentShiftFileName(), true);
+  }
 
   if(m_GlobalCorrection == 1)
   {
@@ -759,10 +762,7 @@ void AdaptiveAlignment::execute()
   QList<QString> voxelArrayNames = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArrayNames();
   for(const auto& dataArrayPath : m_IgnoredDataArrayPaths)
   {
-    if(voxelArrayNames.contains(dataArrayPath.getDataArrayName()))
-    {
-      voxelArrayNames.removeAll(dataArrayPath.getDataArrayName());
-    }
+    voxelArrayNames.removeAll(dataArrayPath.getDataArrayName());
   }
 
   int64_t progIncrement = dims[2] / 100;
