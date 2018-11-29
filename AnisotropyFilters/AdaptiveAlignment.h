@@ -106,6 +106,9 @@ public:
   SIMPL_FILTER_PARAMETER(int, NumberCircles)
   Q_PROPERTY(int NumberCircles READ getNumberCircles WRITE setNumberCircles)
 
+  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, IgnoredDataArrayPaths)
+  Q_PROPERTY(QVector<DataArrayPath> IgnoredDataArrayPaths READ getIgnoredDataArrayPaths WRITE setIgnoredDataArrayPaths)
+
   /**
   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
   */
