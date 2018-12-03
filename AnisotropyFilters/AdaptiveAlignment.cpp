@@ -47,13 +47,10 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/FileSystemPathHelper.h"
+#include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 
-#if defined(__APPLE__)
-//  #include "sitkExplicitITK.h"
-#endif
 
 #include "Anisotropy/AnisotropyConstants.h"
-
 #include "Anisotropy/AnisotropyFilters/ItkBridge.h"
 
 #include "itkHoughTransform2DCirclesImageFilter.h"
@@ -75,7 +72,8 @@ AdaptiveAlignment::AdaptiveAlignment()
 , m_NewCellArrayName("")
 , m_MinRadius(0.0f)
 , m_MaxRadius(0.0f)
-, m_NumberCircles(0){
+, m_NumberCircles(0)
+{
 }
 
 // -----------------------------------------------------------------------------
@@ -91,8 +89,8 @@ void AdaptiveAlignment::setupFilterParameters()
   FilterParameterVector parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));
-  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Alignment File", AlignmentShiftFileName, FilterParameter::Parameter, AdaptiveAlignment, "", "*.txt"));
+//  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));
+//  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Alignment File", AlignmentShiftFileName, FilterParameter::Parameter, AdaptiveAlignment, "", "*.txt"));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
@@ -133,7 +131,10 @@ void AdaptiveAlignment::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_FLOAT_FP("Total Shift In X-Direction (Microns)", ShiftX, FilterParameter::Parameter, AdaptiveAlignment, 2));
     parameters.push_back(SIMPL_NEW_FLOAT_FP("Total Shift In Y-Direction (Microns)", ShiftY, FilterParameter::Parameter, AdaptiveAlignment, 2));
   }
-
+  {
+    MultiDataArraySelectionFilterParameter::RequirementType req;
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Ignore", IgnoredDataArrayPaths, FilterParameter::Parameter, AdaptiveAlignment, req));
+  }
   setFilterParameters(parameters);
 }
 
@@ -188,7 +189,10 @@ void AdaptiveAlignment::dataCheck()
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  FileSystemPathHelper::CheckOutputFile(this, "Alignment Shift File Name", getAlignmentShiftFileName(), true);
+  if(getWriteAlignmentShifts())
+  {
+    FileSystemPathHelper::CheckOutputFile(this, "Alignment Shift File Name", getAlignmentShiftFileName(), true);
+  }
 
   if(m_GlobalCorrection == 1)
   {
@@ -756,6 +760,11 @@ void AdaptiveAlignment::execute()
   uint64_t currentPosition = 0;
 
   QList<QString> voxelArrayNames = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArrayNames();
+  for(const auto& dataArrayPath : m_IgnoredDataArrayPaths)
+  {
+    voxelArrayNames.removeAll(dataArrayPath.getDataArrayName());
+  }
+
   int64_t progIncrement = dims[2] / 100;
   int64_t prog = 1;
   int64_t progressInt = 0;
@@ -801,17 +810,17 @@ void AdaptiveAlignment::execute()
         currentPosition = (slice * dims[0] * dims[1]) + ((yspot + yshifts[i]) * dims[0]) + (xspot + xshifts[i]);
         if(int64_t((yspot + yshifts[i])) >= 0 && (yspot + yshifts[i]) <= dims[1] - 1 && int64_t((xspot + xshifts[i])) >= 0 && (xspot + xshifts[i]) <= dims[0] - 1)
         {
-          for(QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
+          for(const auto& arrayName : voxelArrayNames)
           {
-            IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(*iter);
+            IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(arrayName);
             p->copyTuple(currentPosition, newPosition);
           }
         }
         if(int64_t((yspot + yshifts[i])) < 0 || (yspot + yshifts[i]) > dims[1] - 1 || int64_t((xspot + xshifts[i])) < 0 || (xspot + xshifts[i]) > dims[0] - 1)
         {
-          for(QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
+          for(const auto& arrayName : voxelArrayNames)
           {
-            IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(*iter);
+            IDataArray::Pointer p = m->getAttributeMatrix(getCellAttributeMatrixName())->getAttributeArray(arrayName);
             EXECUTE_FUNCTION_TEMPLATE(this, initializeArrayValues, p, p, newPosition)
           }
         }

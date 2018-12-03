@@ -821,8 +821,8 @@ void SteinerCompact::find_all_vertices(std::vector<std::vector<float>>& vertices
 
 void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std::vector<std::vector<float>>& vertices_y, std::vector<std::vector<float>>& radii, std::vector<std::vector<float>>& ROI)
 {
-  std::ofstream pom("pom.txt");
-  pom << m_VtkOutput << std::endl;
+//  std::ofstream pom("pom.txt");
+//  pom << m_VtkOutput << std::endl;
 
   FILE* vtk = nullptr;
 

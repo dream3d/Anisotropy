@@ -1,22 +1,29 @@
 {
     "0": {
+        "AngleRepresentation": 0,
         "CellAttributeMatrixName": "EBSD & SEM Scan Data",
         "CellEnsembleAttributeMatrixName": "Phase Data",
         "DataContainerName": "AlMgSc Data",
-        "FilterVersion": "6.2.327",
-        "Filter_Human_Label": "Read H5EBSD File",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Import H5EBSD File",
         "Filter_Name": "ReadH5Ebsd",
-        "InputFile": "Data/AlMgSc.h5ebsd",
-        "RefFrameZDir": 2,
+        "Filter_Uuid": "{4ef7f56b-616e-5a80-9e68-1da8f35ad235}",
+        "InputFile": "Data/Anisotropy/AlMgSc.h5ebsd",
+        "RefFrameZDir": 0,
         "SelectedArrayNames": [
-            "SEM Signal",
             "Image Quality",
-            "Confidence Index",
-            "X Position",
             "Y Position",
-            "Fit",
             "Phases",
-            "EulerAngles"
+            "X Position",
+            "Confidence Index",
+            "Fit",
+            "Phi1",
+            "Phi",
+            "PhaseData",
+            "EulerAngles",
+            "SEM Signal",
+            "Phi2"
         ],
         "UseTransformations": 1,
         "ZEndIndex": 9,
@@ -24,15 +31,17 @@
     },
     "1": {
         "DestinationArrayName": "Mask",
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "1.2.724",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Threshold Objects",
         "Filter_Name": "MultiThresholdObjects",
+        "Filter_Uuid": "{014b7300-cf36-5ede-a751-5faf9b119dae}",
         "SelectedThresholds": [
             {
                 "Attribute Array Name": "Confidence Index",
                 "Attribute Matrix Name": "EBSD & SEM Scan Data",
                 "Comparison Operator": 1,
-                "Comparison Value": 0.05,
+                "Comparison Value": 0.05000000074505806,
                 "Data Container Name": "AlMgSc Data"
             },
             {
@@ -45,9 +54,11 @@
         ]
     },
     "2": {
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Convert Orientation Representation",
         "Filter_Name": "ConvertOrientations",
+        "Filter_Uuid": "{e5629880-98c4-5656-82b8-c9fe2b9744de}",
         "InputOrientationArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "EulerAngles",
@@ -68,9 +79,11 @@
             "Data Array Name": "CrystalStructures",
             "Data Container Name": "AlMgSc Data"
         },
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Neighbor Orientation Comparison (Bad Data)",
         "Filter_Name": "BadDataNeighborOrientationCheck",
+        "Filter_Uuid": "{f4a7c2df-e9b0-5da9-b745-a862666d6c99}",
         "GoodVoxelsArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "Mask",
@@ -100,11 +113,25 @@
             "Data Array Name": "CrystalStructures",
             "Data Container Name": "AlMgSc Data"
         },
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Neighbor Orientation Correlation",
         "Filter_Name": "NeighborOrientationCorrelation",
+        "Filter_Uuid": "{6427cd5e-0ad2-5a24-8847-29f8e0720f4f}",
+        "IgnoredDataArrayPaths": [
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "X Position",
+                "Data Container Name": "AlMgSc Data"
+            },
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "Y Position",
+                "Data Container Name": "AlMgSc Data"
+            }
+        ],
         "Level": 2,
-        "MinConfidence": 0.05,
+        "MinConfidence": 0.05000000074505806,
         "MisorientationTolerance": 2,
         "QuatsArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
@@ -126,9 +153,11 @@
             "Data Container Name": "AlMgSc Data"
         },
         "FeatureIdsArrayName": "FeatureIds",
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Segment Features (Misorientation)",
         "Filter_Name": "EBSDSegmentFeatures",
+        "Filter_Uuid": "{7861c691-b821-537b-bd25-dc195578e0ea}",
         "GoodVoxelsArrayPath": {
             "Attribute Matrix Name": "EBSD & SEM Scan Data",
             "Data Array Name": "Mask",
@@ -149,9 +178,23 @@
             "Data Array Name": "FeatureIds",
             "Data Container Name": "AlMgSc Data"
         },
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "6.5.77",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Erode/Dilate Bad Data",
         "Filter_Name": "ErodeDilateBadData",
+        "Filter_Uuid": "{3adfe077-c3c9-5cd0-ad74-cf5f8ff3d254}",
+        "IgnoredDataArrayPaths": [
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "X Position",
+                "Data Container Name": "AlMgSc Data"
+            },
+            {
+                "Attribute Matrix Name": "EBSD & SEM Scan Data",
+                "Data Array Name": "Y Position",
+                "Data Container Name": "AlMgSc Data"
+            }
+        ],
         "NumIterations": 3,
         "XDirOn": 1,
         "YDirOn": 1,
@@ -168,19 +211,21 @@
             "Data Array Name": "FeatureIds",
             "Data Container Name": "AlMgSc Data"
         },
-        "FilterVersion": "6.2.327",
+        "FilterVersion": "1.2.724",
+        "Filter_Enabled": true,
         "Filter_Human_Label": "Steiner Compact",
         "Filter_Name": "SteinerCompact",
+        "Filter_Uuid": "{07b1048e-d6d4-56d0-8cc5-132ac79bdf60}",
         "Plane": 0,
         "Sites": 1,
-        "TxtFileName": "SteinerCompactXY.txt",
+        "TxtFileName": "Data/Output/Anisotropy/SteinerCompactXY.txt",
         "TxtOutput": 1,
-        "VtkFileName": "SteinerCompactXY.vtk",
+        "VtkFileName": "Data/Output/Anisotropy/SteinerCompactXY.vtk",
         "VtkOutput": 1
     },
     "PipelineBuilder": {
         "Name": "04_Steiner Compact",
         "Number_Filters": 8,
-        "Version": "6.2"
+        "Version": 6
     }
 }
