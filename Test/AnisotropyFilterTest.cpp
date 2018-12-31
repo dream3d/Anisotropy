@@ -51,7 +51,6 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Utilities/FilePathGenerator.h"
 #include "UnitTestSupport.hpp"
 
 #include "AnisotropyTestFileLocations.h"
@@ -62,26 +61,6 @@
 void RemoveTestFiles()
 {
 #if REMOVE_TEST_FILES
-  /*
-  // remove input files
-  QFile::remove(UnitTest::AnisotropyTest::TestInput);
-  bool hasMissingFiles = false;
-  bool orderAscending = true;
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(UnitTest::AnisotropyTest::TestTifStartIndex,
-    UnitTest::AnisotropyTest::TestTifEndIndex, hasMissingFiles, orderAscending,
-    UnitTest::TestDataDir, UnitTest::AnisotropyTest::TestTifPrefix,
-    UnitTest::AnisotropyTest::TestTifSuffix, UnitTest::AnisotropyTest::TestTifExtension,
-    UnitTest::AnisotropyTest::TestTifPaddingDigits);
-  if (fileList.size() == 0)
-  {
-    for (QVector<QString>::iterator filepath = fileList.begin(); filepath != fileList.end(); ++filepath)
-    {
-      QString imageFName = *filepath;
-      QFile::remove(imageFName);
-    }
-  }
-  */
-
   // remove output files
   QFile::remove(UnitTest::AnisotropyTest::TestOutput1);
   QFile::remove(UnitTest::AnisotropyTest::TestOutput2);
