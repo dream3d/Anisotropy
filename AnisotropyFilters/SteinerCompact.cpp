@@ -1124,7 +1124,6 @@ void SteinerCompact::execute()
     }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

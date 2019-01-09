@@ -840,9 +840,6 @@ void AdaptiveAlignmentMutualInformation::execute()
   m_MisorientationTolerance = m_MisorientationTolerance * SIMPLib::Constants::k_Pi / 180.0f;
 
   AdaptiveAlignment::execute();
-
-  // If there is an error set this to something negative and also set a message
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
