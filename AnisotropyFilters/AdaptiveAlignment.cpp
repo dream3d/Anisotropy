@@ -86,7 +86,7 @@ AdaptiveAlignment::~AdaptiveAlignment() = default;
 // -----------------------------------------------------------------------------
 void AdaptiveAlignment::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
 //  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));

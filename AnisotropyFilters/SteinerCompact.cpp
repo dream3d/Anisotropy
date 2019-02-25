@@ -86,7 +86,7 @@ SteinerCompact::~SteinerCompact() = default;
 // -----------------------------------------------------------------------------
 void SteinerCompact::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   QStringList linkedProps;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
