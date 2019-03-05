@@ -674,12 +674,12 @@ void AdaptiveAlignment::execute()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  float res[3] = {0.0f, 0.0f, 0.0f};
-  m->getGeometryAs<ImageGeom>()->getResolution(res);
+  FloatVec3Type res = {0.0f, 0.0f, 0.0f};
+  m->getGeometryAs<ImageGeom>()->getSpacing(res);
 
   if(res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
   {
-    QString ss = QObject::tr("Resolution was not recognized correctly.");
+    QString ss = QObject::tr("Spacing was not recognized correctly.");
     setErrorCondition(-99999999);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }

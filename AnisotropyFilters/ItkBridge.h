@@ -108,7 +108,7 @@ class Dream3DToItkImageConversion
       region.SetSize(  size  );
       importFilter->SetRegion( region );
 
-      float sampleOrigin[3] = {0.0f, 0.0f, 0.0f};
+      FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
       m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
       double origin[ AnisotropyConstants::ImageDimension ];
       origin[0] = sampleOrigin[0];    // X coordinate
@@ -116,8 +116,8 @@ class Dream3DToItkImageConversion
       origin[2] = sampleOrigin[2];    // Z coordinate
       importFilter->SetOrigin( origin );
 
-      float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-      m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+      FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
+      m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
       double spacing[ AnisotropyConstants::ImageDimension ];
       spacing[0] = voxelResolution[0];    // along X direction
       spacing[1] = voxelResolution[1];    // along Y direction
@@ -189,7 +189,7 @@ class ItkBridge2
       importFilter->getGeometryAs<ImageGeom>()->setOrigin( origin );
 
       float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-      m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+      m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
       double spacing[ AnisotropyConstants::ImageDimension ];
       spacing[0] = voxelResolution[0];    // along X direction
       spacing[1] = voxelResolution[1];    // along Y direction
@@ -253,7 +253,7 @@ class CreateItkWrapperForDataPointer
       region.SetSize(  size  );
       importFilter->SetRegion( region );
 
-      float sampleOrigin[3] = {0.0f, 0.0f, 0.0f};
+      FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
       m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
       double origin[ AnisotropyConstants::ImageDimension ];
       origin[0] = sampleOrigin[0];    // X coordinate
@@ -261,8 +261,8 @@ class CreateItkWrapperForDataPointer
       origin[2] = sampleOrigin[2];    // Z coordinate
       importFilter->SetOrigin( origin );
 
-      float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-      m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+      FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
+      m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
       double spacing[ AnisotropyConstants::ImageDimension ];
       spacing[0] = voxelResolution[0];    // along X direction
       spacing[1] = voxelResolution[1];    // along Y direction
@@ -360,7 +360,7 @@ class ItkBridge
       region.SetSize(  size  );
       importFilter->SetRegion( region );
 
-      float sampleOrigin[3] = {0.0f, 0.0f, 0.0f};
+      FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
       m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
       double origin[ AnisotropyConstants::ImageDimension ];
       origin[0] = sampleOrigin[0];    // X coordinate
@@ -368,8 +368,8 @@ class ItkBridge
       origin[2] = sampleOrigin[2];    // Z coordinate
       importFilter->SetOrigin( origin );
 
-      float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-      m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+      FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
+      m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
       double spacing[ AnisotropyConstants::ImageDimension ];
       spacing[0] = voxelResolution[0];    // along X direction
       spacing[1] = voxelResolution[1];    // along Y direction
@@ -422,8 +422,8 @@ class ItkBridge
       origin[2] = sampleOrigin[2];    // Z coordinate
       importFilter->SetOrigin( origin );
 
-//      float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-//      m->getResolution(voxelResolution);
+      //      float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
+      //      m->getSpacing(voxelResolution);
       double spacing[ AnisotropyConstants::ImageDimension ];
       spacing[0] = voxelResolution[0];    // along X direction
       spacing[1] = voxelResolution[1];    // along Y direction

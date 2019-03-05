@@ -201,13 +201,13 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     var.setValue(input);
     propWasSet = filter->setProperty("InputFileListInfo", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    FloatVec3_t origin = { 0, 0, 0 };
+    FloatVec3Type origin = {0, 0, 0};
     var.setValue(origin);
     propWasSet = filter->setProperty("Origin", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    FloatVec3_t resolution = { 1, 1, 1 };
+    FloatVec3Type resolution = {1, 1, 1};
     var.setValue(resolution);
-    propWasSet = filter->setProperty("Resolution", var);
+    propWasSet = filter->setProperty("Spacing", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     propWasSet = filter->setProperty("DataContainerName", "SEMImageDataContainer");
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
