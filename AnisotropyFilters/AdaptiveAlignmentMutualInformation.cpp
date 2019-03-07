@@ -694,7 +694,7 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
   size_t size = 0;
   size_t initialVoxelsListSize = 1000;
 
-  m_FeatureCounts->resize(dims[2]);
+  m_FeatureCounts->resizeTuples(dims[2]);
   featurecounts = m_FeatureCounts->getPointer(0);
 
   int32_t* miFeatureIds = m_MIFeaturesPtr->getPointer(0);
