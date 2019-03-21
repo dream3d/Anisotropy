@@ -209,7 +209,8 @@ void addImportImageStackFilter(FilterPipeline::Pointer pipeline)
     var.setValue(resolution);
     propWasSet = filter->setProperty("Spacing", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-    propWasSet = filter->setProperty("DataContainerName", "SEMImageDataContainer");
+    var.setValue(DataArrayPath("SEMImageDataContainer"));
+    propWasSet = filter->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     pipeline->pushBack(filter);
