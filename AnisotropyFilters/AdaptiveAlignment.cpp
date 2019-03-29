@@ -182,7 +182,8 @@ void AdaptiveAlignment::dataCheck()
   {
     QString ss =
         QObject::tr("The Image Geometry is not 3D and cannot be run through this filter. The dimensions are (%1,%2,%3)").arg(image->getXPoints()).arg(image->getYPoints()).arg(image->getZPoints());
-    notifyErrorMessage("", ss, -3010);
+    setErrorCondition(-3010);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
@@ -231,7 +232,8 @@ void AdaptiveAlignment::dataCheck()
     if(static_cast<uint64_t>(udims1[2]) != static_cast<uint64_t>(udims2[2]))
     {
       QString ss = QObject::tr("Image Data and Cell Data must have the same Z-dimension.");
-      notifyErrorMessage("", ss, -3012);
+      setErrorCondition(-3012);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
 }
@@ -275,7 +277,7 @@ void AdaptiveAlignment::flatten_image()
   int32_t comp = m_ImageDataPtr.lock()->getNumberOfComponents();
   size_t totalPoints = m_ImageDataPtr.lock()->getNumberOfTuples();
 
-  notifyStatusMessage("", "Flatten image");
+  notifyStatusMessage(getHumanLabel(), "Flatten image");
   if(comp > 1)
   {
     float Rfactor = 0.21f;
@@ -301,7 +303,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
   QString ss = "";
   bool found = true;
 
-  notifyStatusMessage("", "Find circles");
+  notifyStatusMessage(getHumanLabel(), "Find circles");
   // DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataContainerName());
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
   QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
@@ -350,7 +352,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
     {
       // extract slice and transform
       ss = QObject::tr("Finding Calibrating Circles");
-      notifyStatusMessage(getMessagePrefix(), ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
       // input slice here
       houghFilter->SetInput(inputSlice);
@@ -388,7 +390,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       // exponential smoothing in encapsulating square for finer (float) center
       // this is done for each slice to identify the circles
       ss = QObject::tr("Exponential smoothing");
-      notifyStatusMessage(getMessagePrefix(), ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
       float weighting_factor = -0.01f;
       float range_factor = 1.5f;
@@ -443,7 +445,7 @@ bool AdaptiveAlignment::find_rectangles()
   bool found = true;
 
   QString ss = QObject::tr("Finding The Mapped Areas");
-  notifyStatusMessage(getMessagePrefix(), ss);
+  notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
 
@@ -494,7 +496,7 @@ bool AdaptiveAlignment::find_interface_edges()
   bool found = true;
 
   QString ss = QObject::tr("Finding Edge Of The Sample");
-  notifyStatusMessage(getMessagePrefix(), ss);
+  notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
   //QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
@@ -545,7 +547,7 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 {
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
 
-  notifyStatusMessage("", "Estimate shifts from images");
+  notifyStatusMessage(getHumanLabel(), "Estimate shifts from images");
 
   size_t udims[3] = {0, 0, 0};
   std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
@@ -668,7 +670,8 @@ void AdaptiveAlignment::execute()
   if(dims[0] == 0.0f || dims[1] == 0.0f || dims[2] == 0.0f)
   {
     QString ss = QObject::tr("Dimensions were not recognized correctly.");
-    notifyErrorMessage("", ss, -99999999);
+    setErrorCondition(-99999999);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   float res[3] = {0.0f, 0.0f, 0.0f};
@@ -677,7 +680,8 @@ void AdaptiveAlignment::execute()
   if(res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
   {
     QString ss = QObject::tr("Resolution was not recognized correctly.");
-    notifyErrorMessage("", ss, -99999999);
+    setErrorCondition(-99999999);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   std::vector<float> xneedshifts;
@@ -711,7 +715,8 @@ void AdaptiveAlignment::execute()
     if(!find_rectangles())
     {
       QString ss = QObject::tr("Area of EBSD mapping could not be identified from the input images.");
-      notifyErrorMessage("", ss, -1);
+      setErrorCondition(-1);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
@@ -723,7 +728,8 @@ void AdaptiveAlignment::execute()
     if(!find_calibrating_circles())
     {
       QString ss = QObject::tr("Calibrating circles could not be identified from the input images.");
-      notifyErrorMessage("", ss, -1);
+      setErrorCondition(-1);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
@@ -731,7 +737,8 @@ void AdaptiveAlignment::execute()
     if(!find_interface_edges())
     {
       QString ss = QObject::tr("Edge of the sample could not be identified from the input images.");
-      notifyErrorMessage("", ss, -1);
+      setErrorCondition(-1);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
@@ -771,7 +778,7 @@ void AdaptiveAlignment::execute()
 
       progressInt = (static_cast<float>(i) / dims[2]) * 100.0f;
       QString ss = QObject::tr("Transferring Cell Data || %1% Complete").arg(progressInt);
-      notifyStatusMessage(getMessagePrefix(), ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       prog = prog + progIncrement;
     }
     if(getCancel())

@@ -303,7 +303,7 @@ void SteinerCompact::rose_of_intersections(std::vector<std::vector<float>>& ROI)
   {
     progressInt = (static_cast<float>(i) / static_cast<float>(directions)) * 100.0f;
     QString ss = QObject::tr("Evaluate random intersections || %1% Complete").arg(progressInt);
-    notifyStatusMessage(getMessagePrefix(), ss);
+    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
 
     alpha = (static_cast<float>(i) + 0.5f) * SIMPLib::Constants::k_Pi / static_cast<float>(directions);
     // alpha = (static_cast<float>(i)) * SIMPLib::Constants::k_Pi / directions;
@@ -834,7 +834,8 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    notifyErrorMessage("", ss, -2031000);
+    setErrorCondition(-2031000);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -842,7 +843,8 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   if(nullptr == vtk)
   {
     QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
-    notifyErrorMessage("", ss, -2031001);
+    setErrorCondition(-2031001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   ScopedFileMonitor fMon(vtk);
@@ -989,7 +991,8 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    notifyErrorMessage("", ss, -2031000);
+    setErrorCondition(-2031000);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -997,7 +1000,8 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   if(nullptr == txt)
   {
     QString ss = QObject::tr("Error opening output txt file '%1'\n ").arg(m_TxtFileName);
-    notifyErrorMessage("", ss, -2031001);
+    setErrorCondition(-2031001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   ScopedFileMonitor fMon(txt);
@@ -1105,7 +1109,7 @@ void SteinerCompact::execute()
   if(m_VtkOutput || m_TxtOutput)
   {
     QString ss = QObject::tr("Write Output File(s)");
-    notifyStatusMessage(getMessagePrefix(), ss);
+    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
     std::vector<std::vector<float>> draw_vertices_x;
     std::vector<std::vector<float>> draw_vertices_y;
     std::vector<std::vector<float>> radii;
