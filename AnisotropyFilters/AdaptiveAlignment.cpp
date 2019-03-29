@@ -183,7 +183,7 @@ void AdaptiveAlignment::dataCheck()
     QString ss =
         QObject::tr("The Image Geometry is not 3D and cannot be run through this filter. The dimensions are (%1,%2,%3)").arg(image->getXPoints()).arg(image->getYPoints()).arg(image->getZPoints());
     setErrorCondition(-3010);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
   }
 
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
@@ -233,7 +233,7 @@ void AdaptiveAlignment::dataCheck()
     {
       QString ss = QObject::tr("Image Data and Cell Data must have the same Z-dimension.");
       setErrorCondition(-3012);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage(ss, getErrorCondition());
     }
   }
 }
@@ -671,7 +671,7 @@ void AdaptiveAlignment::execute()
   {
     QString ss = QObject::tr("Dimensions were not recognized correctly.");
     setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
   }
 
   float res[3] = {0.0f, 0.0f, 0.0f};
@@ -681,7 +681,7 @@ void AdaptiveAlignment::execute()
   {
     QString ss = QObject::tr("Resolution was not recognized correctly.");
     setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
   }
 
   std::vector<float> xneedshifts;
@@ -716,7 +716,7 @@ void AdaptiveAlignment::execute()
     {
       QString ss = QObject::tr("Area of EBSD mapping could not be identified from the input images.");
       setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage(ss, getErrorCondition());
       return;
     }
 
@@ -729,7 +729,7 @@ void AdaptiveAlignment::execute()
     {
       QString ss = QObject::tr("Calibrating circles could not be identified from the input images.");
       setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage(ss, getErrorCondition());
       return;
     }
 
@@ -738,7 +738,7 @@ void AdaptiveAlignment::execute()
     {
       QString ss = QObject::tr("Edge of the sample could not be identified from the input images.");
       setErrorCondition(-1);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage(ss, getErrorCondition());
       return;
     }
 

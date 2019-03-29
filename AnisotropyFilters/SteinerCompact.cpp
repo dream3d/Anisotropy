@@ -835,7 +835,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
     setErrorCondition(-2031000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
     return;
   }
 
@@ -844,7 +844,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   {
     QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
     setErrorCondition(-2031001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
     return;
   }
   ScopedFileMonitor fMon(vtk);
@@ -992,7 +992,7 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
     setErrorCondition(-2031000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
     return;
   }
 
@@ -1001,7 +1001,7 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   {
     QString ss = QObject::tr("Error opening output txt file '%1'\n ").arg(m_TxtFileName);
     setErrorCondition(-2031001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage(ss, getErrorCondition());
     return;
   }
   ScopedFileMonitor fMon(txt);
