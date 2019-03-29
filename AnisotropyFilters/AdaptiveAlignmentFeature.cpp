@@ -267,7 +267,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
   if(!xneedshifts.empty())
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
 
     std::vector<float> changedisorientation(dims[2], 0);
     std::vector<uint64_t> changeindex(dims[2], 0);
@@ -313,7 +313,7 @@ void AdaptiveAlignmentFeature::find_shifts(std::vector<int64_t>& xshifts, std::v
       {
         QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);
         ;
-        notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+        notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
         if(getCancel())
         {
           return;

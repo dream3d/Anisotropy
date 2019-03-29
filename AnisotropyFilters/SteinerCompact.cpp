@@ -303,7 +303,7 @@ void SteinerCompact::rose_of_intersections(std::vector<std::vector<float>>& ROI)
   {
     progressInt = (static_cast<float>(i) / static_cast<float>(directions)) * 100.0f;
     QString ss = QObject::tr("Evaluate random intersections || %1% Complete").arg(progressInt);
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
 
     alpha = (static_cast<float>(i) + 0.5f) * SIMPLib::Constants::k_Pi / static_cast<float>(directions);
     // alpha = (static_cast<float>(i)) * SIMPLib::Constants::k_Pi / directions;
@@ -1109,7 +1109,7 @@ void SteinerCompact::execute()
   if(m_VtkOutput || m_TxtOutput)
   {
     QString ss = QObject::tr("Write Output File(s)");
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
     std::vector<std::vector<float>> draw_vertices_x;
     std::vector<std::vector<float>> draw_vertices_y;
     std::vector<std::vector<float>> radii;

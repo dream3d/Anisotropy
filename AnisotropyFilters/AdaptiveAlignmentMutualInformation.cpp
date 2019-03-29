@@ -279,7 +279,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
   {
     progInt = static_cast<uint64_t>(iter * 100 / static_cast<float>(dims[2]));
     QString ss = QObject::tr("Aligning Anisotropic Sections || Determining Shifts || %1% Complete").arg(progInt);
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
 
     slice = (dims[2] - 1) - iter;
     featurecount1 = featurecounts[slice];
@@ -443,7 +443,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
   if(!xneedshifts.empty())
   {
     QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting shifts");
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
 
     std::vector<float> changedisorientation(dims[2], 0);
     std::vector<uint64_t> changeindex(dims[2], 0);
@@ -489,7 +489,7 @@ void AdaptiveAlignmentMutualInformation::find_shifts(std::vector<int64_t>& xshif
       {
         QString ss = QObject::tr("Aligning Anisotropic Sections || Correcting Shifts || Iteration %1").arg(++progInt);
         ;
-        notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+        notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
         if(getCancel())
         {
           return;
@@ -712,7 +712,7 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
   {
     float prog = ((float)slice / dims[2]) * 100;
     QString ss = QObject::tr("Aligning Sections || Identifying Features on Sections || %1% Complete").arg(QString::number(prog, 'f', 0));
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
     featurecount = 1;
     noseeds = false;
     while(!noseeds)
