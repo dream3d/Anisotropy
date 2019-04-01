@@ -173,7 +173,7 @@ void AdaptiveAlignment::dataCheck()
   DataArrayPath tempPath;
 
   ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -182,8 +182,7 @@ void AdaptiveAlignment::dataCheck()
   {
     QString ss =
         QObject::tr("The Image Geometry is not 3D and cannot be run through this filter. The dimensions are (%1,%2,%3)").arg(image->getXPoints()).arg(image->getYPoints()).arg(image->getZPoints());
-    setErrorCondition(-3010);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-3010, ss);
   }
 
   tempPath.update(getDataContainerName(), getCellAttributeMatrixName(), "");
@@ -199,7 +198,7 @@ void AdaptiveAlignment::dataCheck()
     int32_t numImageComp = 1;
     QVector<DataArrayPath> imageDataArrayPaths;
     IDataArray::Pointer iDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getImageDataArrayPath());
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -214,7 +213,7 @@ void AdaptiveAlignment::dataCheck()
     {
       m_ImageData = m_ImageDataPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       imageDataArrayPaths.push_back(getImageDataArrayPath());
     }
@@ -232,8 +231,7 @@ void AdaptiveAlignment::dataCheck()
     if(static_cast<uint64_t>(udims1[2]) != static_cast<uint64_t>(udims2[2]))
     {
       QString ss = QObject::tr("Image Data and Cell Data must have the same Z-dimension.");
-      setErrorCondition(-3012);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-3012, ss);
     }
   }
 }
@@ -653,7 +651,7 @@ void AdaptiveAlignment::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -670,8 +668,7 @@ void AdaptiveAlignment::execute()
   if(dims[0] == 0.0f || dims[1] == 0.0f || dims[2] == 0.0f)
   {
     QString ss = QObject::tr("Dimensions were not recognized correctly.");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-99999999, ss);
   }
 
   float res[3] = {0.0f, 0.0f, 0.0f};
@@ -680,8 +677,7 @@ void AdaptiveAlignment::execute()
   if(res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
   {
     QString ss = QObject::tr("Resolution was not recognized correctly.");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-99999999, ss);
   }
 
   std::vector<float> xneedshifts;
@@ -715,8 +711,7 @@ void AdaptiveAlignment::execute()
     if(!find_rectangles())
     {
       QString ss = QObject::tr("Area of EBSD mapping could not be identified from the input images.");
-      setErrorCondition(-1);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-1, ss);
       return;
     }
 
@@ -728,8 +723,7 @@ void AdaptiveAlignment::execute()
     if(!find_calibrating_circles())
     {
       QString ss = QObject::tr("Calibrating circles could not be identified from the input images.");
-      setErrorCondition(-1);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-1, ss);
       return;
     }
 
@@ -737,8 +731,7 @@ void AdaptiveAlignment::execute()
     if(!find_interface_edges())
     {
       QString ss = QObject::tr("Edge of the sample could not be identified from the input images.");
-      setErrorCondition(-1);
-      notifyErrorMessage(ss, getErrorCondition());
+      setErrorCondition(-1, ss);
       return;
     }
 

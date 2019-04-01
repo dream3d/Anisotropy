@@ -161,7 +161,7 @@ void addReadH5EBSDFilter(FilterPipeline::Pointer pipeline)
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     filter->setDataContainerArray(dca);
     filter->preflight();
-    int err = filter->getErrorCondition();
+    int err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     pipeline->pushBack(filter);
@@ -509,7 +509,7 @@ int TestAnisotropy()
     err = pipeline->preflightPipeline();
     DREAM3D_REQUIRE_EQUAL(err, 0)
     // pipeline->execute();
-    DREAM3D_REQUIRE_EQUAL(pipeline->getErrorCondition(), 0)
+    DREAM3D_REQUIRE_EQUAL(pipeline->getErrorCode(), 0)
   }
 
   if(!UnitTest::AnisotropyTest::PipelineJsonFile.isEmpty())

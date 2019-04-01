@@ -191,7 +191,7 @@ void SteinerCompact::dataCheck()
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getFeatureIdsArrayPath());
   }
@@ -202,7 +202,7 @@ void SteinerCompact::dataCheck()
   {
     m_CellPhases = m_CellPhasesPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getCellPhasesArrayPath());
   }
@@ -834,8 +834,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    setErrorCondition(-2031000);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-2031000, ss);
     return;
   }
 
@@ -843,8 +842,7 @@ void SteinerCompact::output_vtk(std::vector<std::vector<float>>& vertices_x, std
   if(nullptr == vtk)
   {
     QString ss = QObject::tr("Error opening output vtk file '%1'\n ").arg(m_VtkFileName);
-    setErrorCondition(-2031001);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-2031001, ss);
     return;
   }
   ScopedFileMonitor fMon(vtk);
@@ -991,8 +989,7 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    setErrorCondition(-2031000);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-2031000, ss);
     return;
   }
 
@@ -1000,8 +997,7 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
   if(nullptr == txt)
   {
     QString ss = QObject::tr("Error opening output txt file '%1'\n ").arg(m_TxtFileName);
-    setErrorCondition(-2031001);
-    notifyErrorMessage(ss, getErrorCondition());
+    setErrorCondition(-2031001, ss);
     return;
   }
   ScopedFileMonitor fMon(txt);
@@ -1055,7 +1051,7 @@ void SteinerCompact::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
