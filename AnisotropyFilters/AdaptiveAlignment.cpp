@@ -86,7 +86,7 @@ AdaptiveAlignment::~AdaptiveAlignment() = default;
 // -----------------------------------------------------------------------------
 void AdaptiveAlignment::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   QStringList linkedProps("AlignmentShiftFileName");
 
 //  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, AdaptiveAlignment, linkedProps));
@@ -671,8 +671,8 @@ void AdaptiveAlignment::execute()
     setErrorCondition(-99999999, ss);
   }
 
-  float res[3] = {0.0f, 0.0f, 0.0f};
-  m->getGeometryAs<ImageGeom>()->getResolution(res);
+  FloatVec3Type res = {0.0f, 0.0f, 0.0f};
+  m->getGeometryAs<ImageGeom>()->getSpacing(res);
 
   if(res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
   {

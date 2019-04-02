@@ -81,7 +81,7 @@ void AdaptiveAlignmentMutualInformation::setupFilterParameters()
 {
   AdaptiveAlignment::setupFilterParameters();
   // getting the current parameters that were set by the parent and adding to it before resetting it
-  FilterParameterVector parameters = getFilterParameters();
+  FilterParameterVectorType parameters = getFilterParameters();
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, AdaptiveAlignmentMutualInformation));
   QStringList linkedProps("GoodVoxelsArrayPath");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask Array", UseGoodVoxels, FilterParameter::Parameter, AdaptiveAlignmentMutualInformation, linkedProps));
@@ -694,7 +694,7 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
   size_t size = 0;
   size_t initialVoxelsListSize = 1000;
 
-  m_FeatureCounts->resize(dims[2]);
+  m_FeatureCounts->resizeTuples(dims[2]);
   featurecounts = m_FeatureCounts->getPointer(0);
 
   int32_t* miFeatureIds = m_MIFeaturesPtr->getPointer(0);
