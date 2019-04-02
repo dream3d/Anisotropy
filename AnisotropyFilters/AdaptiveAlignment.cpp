@@ -350,7 +350,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
     {
       // extract slice and transform
       ss = QObject::tr("Finding Calibrating Circles");
-      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+      notifyStatusMessage(ss);
 
       // input slice here
       houghFilter->SetInput(inputSlice);
@@ -388,7 +388,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
       // exponential smoothing in encapsulating square for finer (float) center
       // this is done for each slice to identify the circles
       ss = QObject::tr("Exponential smoothing");
-      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+      notifyStatusMessage(ss);
 
       float weighting_factor = -0.01f;
       float range_factor = 1.5f;
@@ -443,7 +443,7 @@ bool AdaptiveAlignment::find_rectangles()
   bool found = true;
 
   QString ss = QObject::tr("Finding The Mapped Areas");
-  notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+  notifyStatusMessage(ss);
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
 
@@ -494,7 +494,7 @@ bool AdaptiveAlignment::find_interface_edges()
   bool found = true;
 
   QString ss = QObject::tr("Finding Edge Of The Sample");
-  notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+  notifyStatusMessage(ss);
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
   //QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
@@ -771,7 +771,7 @@ void AdaptiveAlignment::execute()
 
       progressInt = (static_cast<float>(i) / dims[2]) * 100.0f;
       QString ss = QObject::tr("Transferring Cell Data || %1% Complete").arg(progressInt);
-      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+      notifyStatusMessage(ss);
       prog = prog + progIncrement;
     }
     if(getCancel())
