@@ -1048,8 +1048,8 @@ void SteinerCompact::output_txt(std::vector<std::vector<float>>& vertices_x, std
 // -----------------------------------------------------------------------------
 void SteinerCompact::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

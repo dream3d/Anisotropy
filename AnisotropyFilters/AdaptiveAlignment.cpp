@@ -168,8 +168,8 @@ void AdaptiveAlignment::initialize()
 // -----------------------------------------------------------------------------
 void AdaptiveAlignment::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   DataArrayPath tempPath;
 
   ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
@@ -648,8 +648,8 @@ template <typename T> void initializeArrayValues(IDataArray::Pointer p, size_t i
 // -----------------------------------------------------------------------------
 void AdaptiveAlignment::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

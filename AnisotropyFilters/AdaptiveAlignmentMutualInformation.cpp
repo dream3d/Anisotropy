@@ -138,8 +138,8 @@ void AdaptiveAlignmentMutualInformation::initialize()
 // -----------------------------------------------------------------------------
 void AdaptiveAlignmentMutualInformation::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   // Set the DataContainerName and AttributematrixName for the Parent Class (AdaptiveAlignment) to Use.
   setDataContainerName(m_QuatsArrayPath.getDataContainerName());
@@ -828,8 +828,8 @@ void AdaptiveAlignmentMutualInformation::form_features_sections()
 // -----------------------------------------------------------------------------
 void AdaptiveAlignmentMutualInformation::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {
