@@ -322,8 +322,11 @@ bool AdaptiveAlignment::find_calibrating_circles()
 
   // AnisotropyConstants::DefaultImageType::Pointer outputImage = ITKUtilitiesType::CreateItkWrapperForDataPointer(m, attrMatName, m_NewCellArray); // delete this
   // AnisotropyConstants::DefaultSliceType::IndexType localIndex; // delete this
-
-  typedef itk::HoughTransform2DCirclesImageFilter<AnisotropyConstants::DefaultPixelType, AnisotropyConstants::FloatPixelType> HoughTransformFilterType;
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+  using HoughTransformFilterType = itk::HoughTransform2DCirclesImageFilter<AnisotropyConstants::DefaultPixelType, AnisotropyConstants::FloatPixelType>;
+#else
+  using HoughTransformFilterType = itk::HoughTransform2DCirclesImageFilter<AnisotropyConstants::DefaultPixelType, AnisotropyConstants::FloatPixelType, AnisotropyConstants::FloatPixelType>;
+#endif
   HoughTransformFilterType::Pointer houghFilter = HoughTransformFilterType::New();
   houghFilter->SetNumberOfCircles(m_NumberCircles);
   houghFilter->SetMinimumRadius(m_MinRadius);
@@ -365,12 +368,19 @@ bool AdaptiveAlignment::find_calibrating_circles()
       itCircles = circles.begin();
       icenter[0] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(0));
       icenter[1] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(1));
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
       radius[0] = static_cast<float>((*itCircles)->GetRadius()[0]);
+#else
+      radius[0] = static_cast<float>((*itCircles)->GetRadiusInObjectSpace()[0]);
+#endif
       itCircles++;
       icenter[2] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(0));
       icenter[3] = static_cast<uint64_t>((*itCircles)->GetObjectToParentTransform()->GetOffset().GetElement(1));
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
       radius[1] = static_cast<float>((*itCircles)->GetRadius()[0]);
-
+#else
+      radius[1] = static_cast<float>((*itCircles)->GetRadiusInObjectSpace()[0]);
+#endif
       // check that the circles were found correctly:
       // midpoint of the centres is not far from the centre of the image
       if(std::fabs(0.5f * static_cast<float>(icenter[0] + icenter[2]) - 0.5f * static_cast<float>(dims[0])) > 100.0f)
@@ -379,8 +389,8 @@ bool AdaptiveAlignment::find_calibrating_circles()
       if(icenter[1] < dims[1] / 2 || icenter[3] < dims[1] / 2)
        { found = false; }
       // y-coordinates of the circles do not differ much
-      if((icenter[1] - icenter[3]) > 20)
-        {found = false;}
+       if((icenter[1] - icenter[3]) > 20)
+       {found = false;}
     }
 
     if(found)
