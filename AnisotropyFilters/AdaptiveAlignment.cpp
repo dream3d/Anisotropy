@@ -220,13 +220,11 @@ void AdaptiveAlignment::dataCheck()
 
     getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, imageDataArrayPaths);
 
-    size_t udims1[3] = {0, 0, 0};
     DataContainer::Pointer m1 = getDataContainerArray()->getDataContainer(getDataContainerName());
-    std::tie(udims1[0], udims1[1], udims1[2]) = m1->getGeometryAs<ImageGeom>()->getDimensions();
+    SizeVec3Type udims1 = m1->getGeometryAs<ImageGeom>()->getDimensions();
 
-    size_t udims2[3] = {0, 0, 0};
     DataContainer::Pointer m2 = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
-    std::tie(udims2[0], udims2[1], udims2[2]) = m2->getGeometryAs<ImageGeom>()->getDimensions();
+    SizeVec3Type udims2 = m2->getGeometryAs<ImageGeom>()->getDimensions();
 
     if(static_cast<uint64_t>(udims1[2]) != static_cast<uint64_t>(udims2[2]))
     {
@@ -310,8 +308,7 @@ bool AdaptiveAlignment::find_calibrating_circles()
   m_MinRadius = 10;
   m_MaxRadius = 60;
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   uint64_t dims[3] = {
       static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
@@ -457,8 +454,7 @@ bool AdaptiveAlignment::find_rectangles()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   uint64_t dims[3] = {
       static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
@@ -509,8 +505,7 @@ bool AdaptiveAlignment::find_interface_edges()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getImageDataArrayPath());
   //QString attrMatName = getImageDataArrayPath().getAttributeMatrixName();
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   uint64_t dims[3] = {
       static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
@@ -557,8 +552,7 @@ void AdaptiveAlignment::estimate_shifts_from_images(std::vector<float>& xneedshi
 
   notifyStatusMessage("Estimate shifts from images");
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   uint64_t dims[3] = {
       static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
@@ -668,8 +662,7 @@ void AdaptiveAlignment::execute()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   uint64_t dims[3] = {
       static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
@@ -681,8 +674,7 @@ void AdaptiveAlignment::execute()
     setErrorCondition(-99999999, ss);
   }
 
-  FloatVec3Type res = {0.0f, 0.0f, 0.0f};
-  m->getGeometryAs<ImageGeom>()->getSpacing(res);
+  FloatVec3Type res = m->getGeometryAs<ImageGeom>()->getSpacing();
 
   if(res[0] == 0.0f || res[1] == 0.0f || res[2] == 0.0f)
   {
