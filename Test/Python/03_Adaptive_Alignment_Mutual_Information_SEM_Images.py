@@ -27,25 +27,27 @@ def adaptive_alignment():
     imageWriter.registerImageIOFactories()
 
     # Read H5EBSD File
+    print("Loading H5EBSD File")
     err = orientationanalysispy.read_h5_ebsd(dca, "AlMgSc Data", "Phase Data", "EBSD SEM Scan Data",
-                                            sd.GetBuildDirectory() + "/Debug/Data/AlMgSc.h5ebsd",
+                                            sd.GetBuildDirectory() + "/Data/Anisotropy/AlMgSc.h5ebsd",
                                             0, 9, True, sc.AngleRepresentation.Radians,
                                             simpl.StringSet({"Fit", "Image Quality", "EulerAngles",
-                                                             "SEM Signal", "Confidence Index", "Phases",
-                                                             "X Position", "Y Position"}))
+                                                             "SEM Signal", "Confidence Index", "Phases"}))
     if err < 0:
         print("ReadH5Ebsd ErrorCondition %d" % err)
-
+    
     # Import Image Stack [ITK]
-    fileListInfo = simpl.FileListInfo(3, 0, 0, 9, 0, sd.GetBuildDirectory() + "/Debug/Data/Anisotropy/tif",
+    print("Loading Images...")
+    fileListInfo = simpl.FileListInfo(3, 0, 0, 9, 1, sd.GetBuildDirectory() + "/Data/Anisotropy/tif",
                                       "AlMgSc-TD_", "", "tif")
     err = itkimageprocessingpy.itk_import_image_stack(dca, "SEMAlMgSc Data", "EBSD SEM Scan Data",
-                                                      simpl.FloatVec3Type(0, 0, 0), simpl.FloatVec3Type(1, 1, 1),
-                                                      "", fileListInfo, 10, "ImageData")
+                                                      simpl.FloatVec3Type([0, 0, 0]), simpl.FloatVec3Type([1, 1, 1]),
+                                                      fileListInfo, 10, "ImageData")
     if err < 0:
         print("ITK Import Image Stack ErrorCondition %d" % err)
 
     # Convert Orientation Representation
+    print("Creating Quats....")
     err = orientationanalysispy.convert_orientations(dca, 0, 2,
                                                     simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "EulerAngles"),
                                                     "Quats")
@@ -57,7 +59,10 @@ def adaptive_alignment():
                                                              simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "Quats"),
                                                              simpl.DataArrayPath("AlMgSc Data", "EBSD SEM Scan Data", "Phases"),
                                                              simpl.DataArrayPath("", "", ""),
-                                                             simpl.DataArrayPath("AlMgSc Data", "Phase Data", "CrystalStructures"))
+                                                             simpl.DataArrayPath("AlMgSc Data", "Phase Data", "CrystalStructures"),
+                                                             1,  # Global Correction
+                                                             simpl.DataArrayPath("SEMAlMgSc Data", "EBSD SEM Scan Data", "ImageData"),
+                                                             )
     if err < 0:
         print("AdaptiveAlignment Mutual Information %d" % err)
 

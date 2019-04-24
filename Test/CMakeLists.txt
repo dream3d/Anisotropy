@@ -104,7 +104,7 @@ if(SIMPL_ENABLE_PYTHON)
     # These names should match the names "EXACTLY" (including capitalization).
     # NO Spaces in the names (which means no spaces in the variable names)
     set(PLUGIN_PYTHON_TESTS
-      01_Adaptive_Alignment_Import_Data
+      # 01_Adaptive_Alignment_Import_Data # The conversion is already complete so this does not need to run
       02_Adaptive_Alignment_Misorientation_Zero_Shifts
       03_Adaptive_Alignment_Mutual_Information_SEM_Images
       04_Adaptive_Alignment_Steiner_Compact
@@ -116,7 +116,7 @@ if(SIMPL_ENABLE_PYTHON)
         configure_file(${SIMPL_PYTHON_TEST_SCRIPT}
                         "${SIMPL_PYTHON_TEST_DRIVER}" @ONLY)
 
-        add_test(NAME ${PLUGIN_NAME}_${test} COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
+        add_test(NAME PY_${PLUGIN_NAME}_${test} COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
     endforeach(test ${PLUGIN_PYTHON_TESTS})
     #------------------------------
     # Also setup a unit test for the base python unit test file that is generated as part
@@ -125,6 +125,6 @@ if(SIMPL_ENABLE_PYTHON)
     set(SIMPL_PYTHON_TEST_DRIVER "${SIMPL_ANACONDA_OUTPUT_DIR}/UnitTest/${PLUGIN_NAME}/${PLUGIN_NAME}.sh")
     set(test "${PLUGIN_NAME}_UnitTest")
     configure_file(${SIMPL_PYTHON_TEST_SCRIPT}  "${SIMPL_PYTHON_TEST_DRIVER}" @ONLY)
-    add_test(NAME ${PLUGIN_NAME}_Python_UnitTest COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
+    add_test(NAME PY_${PLUGIN_NAME}_UnitTest COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
 endif()
 

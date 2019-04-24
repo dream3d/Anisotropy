@@ -58,6 +58,9 @@ class Anisotropy_EXPORT AdaptiveAlignmentMutualInformation : public AdaptiveAlig
   PYB11_PROPERTY(DataArrayPath CellPhasesArrayPath READ getCellPhasesArrayPath WRITE setCellPhasesArrayPath)
   PYB11_PROPERTY(DataArrayPath GoodVoxelsArrayPath READ getGoodVoxelsArrayPath WRITE setGoodVoxelsArrayPath)
   PYB11_PROPERTY(DataArrayPath CrystalStructuresArrayPath READ getCrystalStructuresArrayPath WRITE setCrystalStructuresArrayPath)
+  PYB11_PROPERTY(int GlobalCorrection READ getGlobalCorrection WRITE setGlobalCorrection)
+  PYB11_PROPERTY(DataArrayPath ImageDataArrayPath READ getImageDataArrayPath WRITE setImageDataArrayPath)
+
 public:
   SIMPL_SHARED_POINTERS(AdaptiveAlignmentMutualInformation)
   SIMPL_FILTER_NEW_MACRO(AdaptiveAlignmentMutualInformation)

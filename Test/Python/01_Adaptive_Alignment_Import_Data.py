@@ -20,8 +20,8 @@ def import_data():
     # Create Data Container Array
     dca = simpl.DataContainerArray.New()
 
-    err = orientationanalysispy.ebsd_to_h5_ebsd(dca, sd.GetBuildDirectory() + "\Debug\Data\\ang",
-                          sd.GetBuildDirectory() + "\Debug\Data\AlMgSc.h5ebsd",
+    err = orientationanalysispy.ebsd_to_h5_ebsd(dca, sd.GetBuildDirectory() + "/Data/Anisotropy/ang",
+                          sd.GetBuildDirectory() + "/Data/Output/Anisotropy/AlMgSc.h5ebsd",
                           "AlMgSc-TD_", "", "ang", 3,
                           0, 9, simpl.AxisAngleInput(0, 0, 0, 0), simpl.AxisAngleInput(0, 0, 0, 0))
     if err < 0:
