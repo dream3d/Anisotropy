@@ -296,7 +296,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
         {
           disorientation = 0.0f;
           count = 0.0f;
-          if(llabs(k + oldxshift) < halfDim0 && llabs(j + oldyshift) < halfDim1 && !misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1])
+          if(llabs(k + oldxshift) < static_cast<int64_t>(halfDim0) && llabs(j + oldyshift) < static_cast<int64_t>(halfDim1) && !misorients[k + oldxshift + halfDim0][j + oldyshift + halfDim1])
           {
             for(uint64_t l = 0; l < dims[1]; l = l + 4)
             {
@@ -355,7 +355,7 @@ void AdaptiveAlignmentMisorientation::find_shifts(std::vector<int64_t>& xshifts,
             }
 
             // new shift is stored with index 's' in the arrays
-            if(s < maxstoredshifts)
+            if(s < static_cast<int64_t>(maxstoredshifts))
             {
               // lag the shifts already stored
               for(int64_t t = maxstoredshifts - 1; t > s; t--)

@@ -662,13 +662,9 @@ void AdaptiveAlignment::execute()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
 
-  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type dims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
-  uint64_t dims[3] = {
-      static_cast<uint64_t>(udims[0]), static_cast<uint64_t>(udims[1]), static_cast<uint64_t>(udims[2]),
-  };
-
-  if(dims[0] == 0.0f || dims[1] == 0.0f || dims[2] == 0.0f)
+  if(dims[0] == 0 || dims[1] == 0 || dims[2] == 0)
   {
     QString ss = QObject::tr("Dimensions were not recognized correctly.");
     setErrorCondition(-99999999, ss);
@@ -766,7 +762,7 @@ void AdaptiveAlignment::execute()
   uint64_t slice = 0;
 
   // transfer cell data
-  for(uint64_t i = 1; i < dims[2]; i++)
+  for(size_t i = 1; i < dims[2]; i++)
   {
     if(i > prog)
     {
@@ -781,9 +777,9 @@ void AdaptiveAlignment::execute()
       return;
     }
     slice = (dims[2] - 1) - i;
-    for(uint64_t l = 0; l < dims[1]; l++)
+    for(size_t l = 0; l < dims[1]; l++)
     {
-      for(uint64_t n = 0; n < dims[0]; n++)
+      for(size_t n = 0; n < dims[0]; n++)
       {
         if(yshifts[i] >= 0)
         {
