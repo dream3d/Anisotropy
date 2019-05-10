@@ -32,6 +32,7 @@
 #    Czech Ministry of Education, Youth and Sports (MSMT), project no. LM2015087
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+message(FATAL_ERROR "Anisotropy has been merged into DREAM3DReview. You don't need this plugin any more")
 
 set(PLUGIN_NAME Anisotropy)
 set(${PLUGIN_NAME}_VERSION "1.0")
